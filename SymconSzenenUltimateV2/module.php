@@ -40,7 +40,7 @@
             
             $targets = $this->checkFolder("Targets", null, 3);
 
-            $this->setPosition($automatik, "|After|" . $sperre);
+            $this->setPosition($automatik, "|AFTER|" . $sperre);
     
         }
     
