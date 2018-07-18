@@ -85,6 +85,8 @@
 
             $scenes = $this->ReadPropertyString("Names");
 
+            $scenes = json_decode($scenes);
+
             print_r($scenes);
 
         }
