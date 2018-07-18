@@ -89,7 +89,7 @@
 
             $scenes = json_decode($scenes);
 
-            print_r($scenes);
+            //print_r($scenes);
 
             $existingScenes = $this->getAllSceneVars();
 
