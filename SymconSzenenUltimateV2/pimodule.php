@@ -47,7 +47,7 @@ abstract class PISymconModule extends IPSModule {
 
     public function ApplyChanges() {
 
-        parent::ApplyChanges();
+        parent::ApplyChanges(); 
 
         $this->CheckProfiles();
 
@@ -769,7 +769,7 @@ abstract class PISymconModule extends IPSModule {
     protected function dynamicVariableProfileName ($name) {
 
         return $this->prefix . $this->InstanceID . "." . $name;
-        
+
     }
 
 }
