@@ -533,7 +533,7 @@ abstract class PISymconModule extends IPSModule {
             $parent = $this->InstanceID;
         }
 
-        if (!$this->doesExist($this->searchObjectByName($onChangeEventName))) {
+        if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $this->searchObjectByName("Events")))) {
 
             $eid = IPS_CreateEvent(0);
             IPS_SetEventTrigger($eid, 0, $targetId);
