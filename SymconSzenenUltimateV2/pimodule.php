@@ -49,6 +49,8 @@ abstract class PISymconModule extends IPSModule {
 
         parent::ApplyChanges();
 
+        $this->CheckProfiles();
+
     }
 
     public function CheckVariables () {
@@ -66,6 +68,10 @@ abstract class PISymconModule extends IPSModule {
     public function CheckScripts () {
 
         // Hier werden alle nötigen Scripts erstellt
+
+    }
+
+    public function CheckProfiles () {
 
     }
 
@@ -257,7 +263,11 @@ abstract class PISymconModule extends IPSModule {
         {
             IPS_SetVariableCustomProfile($vid,"Switch");
             $this->addSetValue($vid);
-        
+        } else {
+
+            $name, $type, $min = 0, $max = 0, $max = 100, $steps = 1, $associations = null
+            $this->checkVariableProfile("Switch", $this->varTypeByName("boolean"), 0, 1, 1, array("Aus" => "0", "An" => "1"));
+
         }
 
     }
@@ -356,7 +366,7 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    // Ausbaufähig
+    // Ausbaufähig (---> Fehler, )
     protected function setPosition ($id, $position) {
 
         if ($this->doesExist($id)) {
@@ -702,6 +712,37 @@ abstract class PISymconModule extends IPSModule {
                 IPS_SetLinkTargetID($link, $target);
                 IPS_SetHidden($link, false);
                 $this->setPosition($link, $linkPosition);
+
+            }
+
+        }
+
+    }
+
+    protected function checkVariableProfile ($name, $type, $min = 0, $max = 0, $max = 100, $steps = 1, $associations = null) {
+
+        if (IPS_VariableProfileExists($name)) {
+
+            $newProfile = IPS_CreateVariableProfile($name, $type);
+            IPS_SetVariableProfileValues ($name, $min, $max, $steps);
+            
+            if ($associations != null) {
+
+                foreach ($associations as $assocName => $assocValue) {
+
+                    $color = -1;
+
+                    if (strpos($assocValue, "|") !== false) {
+
+                        $color = explode($assocValue)[1];
+
+                    }
+
+                    $assocValue = intval($assocValue);
+
+                    IPS_SetVariableProfileAssociation($name, $assocValue, $assocName, "", $color);
+
+                }
 
             }
 
