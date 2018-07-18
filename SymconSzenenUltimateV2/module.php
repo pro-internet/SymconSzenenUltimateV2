@@ -42,7 +42,7 @@
             $targets = $this->checkFolder("Targets", null, 3);
             $events = $this->checkFolder("Events", null, 4);
 
-            $title = $this->checkString("SceneTitle", false, null, 5, "<div style='font-size: 26px; color: white; padding-top: 5px; padding-bottom: 5px;'>Szenen</div>");
+            $title = $this->checkString("", false, null, 5, "<div style='font-size: 26px; color: white; padding-top: 5px; padding-bottom: 5px;'>Szenen</div>");
 
             $this->addProfile($optionen, $this->prefix . ".Options");
             $this->addSetValue($optionen);
