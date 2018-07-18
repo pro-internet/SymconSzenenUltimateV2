@@ -18,10 +18,10 @@ abstract class PISymconModule extends IPSModule {
         $module = IPS_GetModule($moduleGUID);
         $ownInstance = IPS_GetObject($this->InstanceID);
 
-        $this->instanceName = $ownInstance['ObjectName'];
+        //$this->instanceName = $ownInstance['ObjectName'];
 
-        $this->moduleID = $module['ModuleID'];
-        $this->libraryID = $module['LibraryID'];
+        //$this->moduleID = $module['ModuleID'];
+        //$this->libraryID = $module['LibraryID'];
 
         $moduleJsonPath = __DIR__ . "\\module.json";
 
