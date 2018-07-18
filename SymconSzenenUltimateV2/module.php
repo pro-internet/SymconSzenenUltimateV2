@@ -37,7 +37,7 @@
             
             $targets = $this->checkFolder("Targets", null, 3);
 
-            $this->checkVariableProfile("DASISTEINTEST", $this->varTypeByName("boolean"), 0, 1, 1, array("Aus" => false, "An" => true));
+            $this->checkVariableProfile("DASISTEINTEST", $this->varTypeByName("boolean"), 0.00, 1.00, 1.00, array("Aus" => false, "An" => true));
     
         }
     
