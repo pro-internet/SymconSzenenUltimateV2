@@ -33,9 +33,14 @@
 
             $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
             
+            $automatik = $switches[0];
+            $sperre = $switches[1];
+
             $szenen = $this->checkInteger("Optionen", false, null, 2, 0);
             
             $targets = $this->checkFolder("Targets", null, 3);
+
+            $this->setPosition($automatik, "|After|" . $sperre);
     
         }
     
