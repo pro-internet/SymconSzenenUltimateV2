@@ -37,7 +37,7 @@
 
             $targets = $this->checkFolder("Targets", null, 3);
 
-            $this->addProfile($optionen, $this->checkVariableProfile("Options"));
+            $this->addProfile($optionen, $$this->dynamicVariableProfileName("Options"));
     
         }
     
