@@ -37,7 +37,7 @@
 
             $targets = $this->checkFolder("Targets", null, 3);
 
-            $this->addProfile($optionen, $this->dynamicVariableProfileName("Options"));
+            $this->addProfile($optionen, $this->prefix . "Options");
     
         }
     
@@ -56,7 +56,7 @@
         public function CheckProfiles () {
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
-            $this->checkVariableProfile($this->dynamicVariableProfileName("Options") . $this->InstanceID, $this->varTypeByName("integer"), 0.00, 2.00, 1.00, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
+            $this->checkVariableProfile($this->prefix . "Options", $this->varTypeByName("int"), 0.00, 2.00, 1.00, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
 
         }
     
