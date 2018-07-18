@@ -16,7 +16,7 @@ abstract class PISymconModule extends IPSModule {
         $moduleGUID = $this->getModuleGuidByName($className);
 
         $module = IPS_GetModule($moduleGUID);
-        $ownInstance = IPS_GetObject($this->InstanceID);
+        //$ownInstance = IPS_GetObject($this->InstanceID);
 
         //$this->instanceName = $ownInstance['ObjectName'];
 
