@@ -536,7 +536,7 @@ abstract class PISymconModule extends IPSModule {
         $eid = IPS_CreateEvent(0);
         IPS_SetEventTrigger($eid, 0, $targetId);
         IPS_SetParent($eid, $parent);
-        IPS_SetEventScript($eid, $this->prefix . "_" . $function);
+        IPS_SetEventScript($eid, "<?php " . $this->prefix . "_" . $function . "(" . $this->InstanceID . "); ?>");
         IPS_SetName($eid, $onChangeEventName);
         IPS_SetEventActive($eid, true);
         IPS_SetIdent($eid, $this->nameToIdent($onChangeEventName));
