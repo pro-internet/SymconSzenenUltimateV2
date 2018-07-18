@@ -74,7 +74,7 @@
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
             $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 1, 0, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
-            $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => "1|FF"));
+            $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
         }
 
         #       #
