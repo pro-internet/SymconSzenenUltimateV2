@@ -74,7 +74,7 @@
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
             $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 1, 1, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
-
+            $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 1, array("Speichern" => 0, "Ausführen" => "1|FF"));
         }
 
         #       #
@@ -83,11 +83,67 @@
 
         public function checkSceneVars () {
 
+            $own = IPS_GetObject($this->InstanceID);
+
             $scenes = $this->ReadPropertyString("Names");
 
             $scenes = json_decode($scenes);
 
-            print_r($scenes);
+            $existingScenes = $this->getAllSceneVars();
+
+            $sceneNames = null;
+
+            if (count($scenes > 0)) {
+
+                foreach ($scenes as $scene) {
+
+                    $doesexist = false;
+
+                    if (count($existingScenes) > 0) {
+
+                        foreach ($existingScenes as $escene) {
+
+                            if ($escene == $scene) {
+
+                                $doesexist = true;
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        protected function getAllSceneVars () {
+
+            $own = IPS_GetObject($this->InstanceID);
+
+            $ary = null;
+
+            foreach ($own['ChildrenIDs'] as $child) {
+
+                $obj = IPS_GetObject($child);
+
+                if ($obj['ObjectType'] == $this->objectTypeByName("variable")) {
+
+                    $obj = IPS_GetVariable($obj['ObjectID']);
+
+                    if ($obj['VariableCustomProfile'] == $this->prefix . ".SceneOptions") {
+
+                        $ary[] = $obj['VariableName'];
+
+                    }
+
+                }
+
+            }
+
+            return $ary;
 
         }
 
