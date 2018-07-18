@@ -40,16 +40,23 @@
             $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
 
             $targets = $this->checkFolder("Targets", null, 3);
-            $events = $this->checkFolder("Events", null, 3);
+            $events = $this->checkFolder("Events", null, 4);
+
+            $title = $this->checkString("SceneTitle", false, null, 5, "<div style='font-size: 26px; color: white; padding-top: 5px; padding-bottom: 5px;'>Szenen</div>");
 
             $this->addProfile($optionen, $this->prefix . ".Options");
             $this->addSetValue($optionen);
+
+            $this->addProfile($title, "~HTMLBox");
     
         }
     
         public function RegisterProperties () {
     
-            // Hier werden ale Properties registriert
+            $this->RegisterPropertyBoolean("ModeDaySet", false);
+            $this->RegisterPropertyString("Names", "");
+            $this->RegisterPropertyBoolean("ModeTime", false);
+            $this->RegisterPropertyBoolean("Loop", false);
     
         }
     
