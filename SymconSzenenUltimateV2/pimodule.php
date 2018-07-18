@@ -719,7 +719,7 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function checkVariableProfile ($name, $type, $min = 0, $max = 0, $max = 100, $steps = 1, $associations = null) {
+    protected function checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
 
         if (!IPS_VariableProfileExists($name)) {
 
