@@ -265,7 +265,7 @@ abstract class PISymconModule extends IPSModule {
             $this->addSetValue($vid);
         } else {
 
-            $name, $type, $min = 0, $max = 0, $max = 100, $steps = 1, $associations = null
+            //$name, $type, $min = 0, $max = 0, $max = 100, $steps = 1, $associations = null
             $this->checkVariableProfile("Switch", $this->varTypeByName("boolean"), 0, 1, 1, array("Aus" => "0", "An" => "1"));
 
         }
