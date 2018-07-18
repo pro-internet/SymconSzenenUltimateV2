@@ -28,6 +28,8 @@
 
             //$onChangeEventName, $targetId, $function, $parent = null
 
+            $this->checkSceneVars();
+
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Optionen"), "onOptionsChange", $this->searchObjectByName("Events"));
 
         }
@@ -45,6 +47,10 @@
             $title = $this->checkString("Szenen", false, null, 5, "");
 
             $this->addProfile($optionen, $this->prefix . ".Options");
+
+            $this->addIcon($optionen, "Database");
+            $this->addIcon($title, "Szenen");
+
             $this->addSetValue($optionen);
     
         }
@@ -70,6 +76,20 @@
             $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 1, 1, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
 
         }
+
+        #       #
+        #       #
+        #       #
+
+        public function checkSceneVars () {
+
+            $scenes = $this->ReadPropertyString("Names");
+
+            print_r($scenes);
+
+        }
+
+
 
         ##                 ##
         ## OnChange Events ##
