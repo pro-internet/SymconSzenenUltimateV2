@@ -40,9 +40,10 @@ abstract class PISymconModule extends IPSModule {
 
         $this->RegisterProperties();
 
+        $this->CheckProfiles();
+
         $this->CheckScripts();
 
-        $this->CheckProfiles();
 
     }
 

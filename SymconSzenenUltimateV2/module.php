@@ -38,6 +38,7 @@
             $targets = $this->checkFolder("Targets", null, 3);
 
             $this->addProfile($optionen, $this->prefix . ".Options");
+            $this->addSetValue($optionen);
     
         }
     
