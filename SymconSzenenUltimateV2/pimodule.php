@@ -721,7 +721,7 @@ abstract class PISymconModule extends IPSModule {
 
     protected function checkVariableProfile ($name, $type, $min = 0, $max = 0, $max = 100, $steps = 1, $associations = null) {
 
-        if (IPS_VariableProfileExists($name)) {
+        if (!IPS_VariableProfileExists($name)) {
 
             $newProfile = IPS_CreateVariableProfile($name, $type);
             IPS_SetVariableProfileValues ($name, $min, $max, $steps);
@@ -732,9 +732,13 @@ abstract class PISymconModule extends IPSModule {
 
                     $color = -1;
 
-                    if (strpos($assocValue, "|") !== false) {
+                    if (gettype("string")) {
 
-                        $color = explode($assocValue)[1];
+                        if (strpos($assocValue, "|") !== false) {
+
+                            $color = explode($assocValue)[1];
+    
+                        }
 
                     }
 
