@@ -781,9 +781,15 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function getHighestPosition ($in) {
+    protected function getHighestPosition ($in = null) {
 
         $obj = IPS_GetObject($in);
+
+        if ($in == null) {
+
+            $in = $this->InstanceID;
+
+        }
 
         $maxPos = 0;
 
