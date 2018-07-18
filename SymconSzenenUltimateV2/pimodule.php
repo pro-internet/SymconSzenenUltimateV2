@@ -42,6 +42,8 @@ abstract class PISymconModule extends IPSModule {
 
         $this->CheckScripts();
 
+        $this->CheckProfiles();
+
     }
 
 
