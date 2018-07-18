@@ -57,7 +57,7 @@
         public function CheckProfiles () {
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
-            $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 2, 1, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
+            $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 1, 1, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
 
         }
     
