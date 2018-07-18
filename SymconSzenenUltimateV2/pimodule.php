@@ -737,12 +737,25 @@ abstract class PISymconModule extends IPSModule {
                         if (strpos($assocValue, "|") !== false) {
 
                             $color = explode($assocValue)[1];
+                            $assocValue = explode($assocValue)[0];
+
+                            if ($assocValue == "true") {
+
+                                $assocValue = true;
+
+                            } else if ($assocValue == "false") {
+
+                                $assocValue = false;
+
+                            }
     
                         }
 
-                    }
+                    } else if (gettype("integer")) {
 
-                    $assocValue = intval($assocValue);
+                        $assocValue = intval($assocValue);
+
+                    }
 
                     IPS_SetVariableProfileAssociation($name, $assocValue, $assocName, "", $color);
 
