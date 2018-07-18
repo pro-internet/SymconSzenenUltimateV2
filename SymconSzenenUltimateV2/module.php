@@ -26,6 +26,10 @@
            
             parent::ApplyChanges();
 
+            //$onChangeEventName, $targetId, $function, $parent = null
+
+            $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Optionen"), "onOptionsChange", $this->searchObjectByName("Events"));
+
         }
 
 
@@ -33,9 +37,10 @@
 
             $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
 
-            $optionen = $this->checkInteger("Optionen", false, null, 2, 0);
+            $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
 
             $targets = $this->checkFolder("Targets", null, 3);
+            $events = $this->checkFolder("Events", null, 3);
 
             $this->addProfile($optionen, $this->prefix . ".Options");
             $this->addSetValue($optionen);
@@ -60,7 +65,16 @@
             $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 1, 1, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
 
         }
-    
+
+        ##                 ##
+        ## OnChange Events ##
+        ##                 ##
+        
+        public function onOptionsChange () {
+
+            echo "OptionsChanged :)";
+
+        }
 
  
     }
