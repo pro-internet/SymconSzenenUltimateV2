@@ -33,11 +33,11 @@
 
             $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
 
-            $szenen = $this->checkInteger("Optionen", false, null, 2, 0);
-            
+            $optionen = $this->checkInteger("Optionen", false, null, 2, 0);
+
             $targets = $this->checkFolder("Targets", null, 3);
 
-            $this->checkVariableProfile("DASISTEINTEST", $this->varTypeByName("boolean"), 0.00, 1.00, 1.00, array("Aus" => false, "An" => "true|0x0000FF"));
+            $this->addProfile($optionen, $this->checkVariableProfile("Options"));
     
         }
     
@@ -51,6 +51,13 @@
     
             // Hier werden alle nötigen Scripts erstellt
     
+        }
+
+        public function CheckProfiles () {
+
+            //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
+            $this->checkVariableProfile($this->dynamicVariableProfileName("Options") . $this->InstanceID, $this->varTypeByName("integer"), 0.00, 2.00, 1.00, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
+
         }
     
 

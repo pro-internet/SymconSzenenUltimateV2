@@ -265,8 +265,7 @@ abstract class PISymconModule extends IPSModule {
             $this->addSetValue($vid);
         } else {
 
-            //$name, $type, $min = 0, $max = 0, $max = 100, $steps = 1, $associations = null
-            $this->checkVariableProfile("Switch", $this->varTypeByName("boolean"), 0, 1, 1, array("Aus" => "0", "An" => "1"));
+            $this->checkVariableProfile("Switch", $this->varTypeByName("boolean"), 0.00, 1.00, 1.00, array("Aus" => false, "An" => "true|0x8000FF"));
 
         }
 
@@ -765,6 +764,12 @@ abstract class PISymconModule extends IPSModule {
 
         }
 
+    }
+
+    protected function dynamicVariableProfileName ($name) {
+
+        return $this->prefix . $this->InstanceID . "." . $name;
+        
     }
 
 }
