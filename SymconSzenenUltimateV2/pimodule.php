@@ -575,7 +575,9 @@ abstract class PISymconModule extends IPSModule {
 
     protected function varTypeByName ($name) {
 
-        $booleanAlias = array("Boolean", "boolean", "bool", "Bool", "b", "B", 0);
+        $name = (string) $name;
+
+        $booleanAlias = array("Boolean", "boolean", "bool", "Bool", "b", "B");
         $integerAlias = array("Integer", "integer", "Int", "int", "i", "I", 1);
         $floatAlias = array("Float", "float", "fl", "Fl", 2);
         $stringAlias = array("String", "string", "str", "Str", "s", "S", 3);
