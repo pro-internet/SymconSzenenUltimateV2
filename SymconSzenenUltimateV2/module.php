@@ -44,8 +44,6 @@
             $targets = $this->checkFolder("Targets", null, 3);
             $events = $this->checkFolder("Events", null, 4);
 
-            $title = $this->checkString("Szenen", false, null, 5, "");
-
             $this->addProfile($optionen, $this->prefix . ".Options");
 
             $this->setIcon($optionen, "Database");
@@ -146,7 +144,8 @@
 
                     if ($obj['VariableCustomProfile'] == $this->prefix . ".SceneOptions") {
 
-                        $ary[] = $obj['VariableName'];
+                        $obj = IPS_GetObject($obj['VariableID']);
+                        $ary[] = $obj['ObjectName'];
 
                     }
 
