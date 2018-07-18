@@ -49,7 +49,7 @@
             $this->addProfile($optionen, $this->prefix . ".Options");
 
             $this->setIcon($optionen, "Database");
-            $this->setIcon($title, "Szenen");
+            $this->setIcon($title, "Rocket");
 
             $this->addSetValue($optionen);
     
