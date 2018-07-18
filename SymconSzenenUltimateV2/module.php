@@ -120,7 +120,7 @@
                         $newPos = $this->getHighestPosition() + 1;
                         $newInt = $this->checkInteger($scene->name, false, $this->InstanceID, $newPos, -1);
                         $this->addSetValue($newInt);
-                        $this->setProfile($newInt, $this->prefix . ".SceneOptions");
+                        $this->addProfile($newInt, $this->prefix . ".SceneOptions");
 
                     }
 
