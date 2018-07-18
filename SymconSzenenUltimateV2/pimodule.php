@@ -757,7 +757,7 @@ abstract class PISymconModule extends IPSModule {
 
                     }
 
-                    IPS_SetVariableProfileAssociation($name, $assocValue, $assocName, "", 0x8000FF);
+                    IPS_SetVariableProfileAssociation($name, $assocValue, $assocName, "", $color);
 
                 }
 
