@@ -736,8 +736,8 @@ abstract class PISymconModule extends IPSModule {
 
                         if (strpos($assocValue, "|") !== false) {
 
-                            $color = explode($assocValue)[1];
-                            $assocValue = explode($assocValue)[0];
+                            $color = explode("|", $assocValue)[1];
+                            $assocValue = explode("|", $assocValue)[0];
 
                             if ($assocValue == "true") {
 
