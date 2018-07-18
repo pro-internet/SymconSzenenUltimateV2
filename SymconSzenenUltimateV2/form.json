@@ -11,7 +11,7 @@
 		"delete": true,
 		"columns": [{
 		  "label": "Name",
-		  "name": "name", 
+		  "name": "Name", 
 		  "width": "100px",
 		  "add": 0,
 		  "edit": {

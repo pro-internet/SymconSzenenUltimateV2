@@ -103,13 +103,22 @@
 
                         foreach ($existingScenes as $escene) {
 
-                            if ($escene == $scene) {
+                            if ($escene == $scene->Name) {
 
                                 $doesexist = true;
 
                             }
 
                         }
+
+                    }
+
+                    if (!$doesexist) {
+
+                        $newPos = $this->getHighestPosition() + 1;
+                        $newInt = $this->checkInteger($scene->Name, false, $this->InstanceID, $newPos, -1);
+                        $this->addSetValue($newInt);
+                        $this->setProfile($newInt, $this->prefix . ".SceneOptions");
 
                     }
 

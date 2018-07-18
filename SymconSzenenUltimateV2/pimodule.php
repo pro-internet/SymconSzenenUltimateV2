@@ -781,6 +781,32 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getHighestPosition ($in) {
+
+        $obj = IPS_GetObject($in);
+
+        $maxPos = 0;
+
+        if (count($obj['ChildrenIDs']) > 0) {
+
+            foreach ($obj['ChildrenIDs'] as $child) {
+
+                $child = IPS_GetObject($child);
+
+                if ($child['ObjectPosition'] >= $maxPos) {
+
+                    $maxPos = $child['ObjectPosition'];
+
+                }
+
+            }
+
+        }
+
+        return $maxPos;
+
+    }
+
 }
 
 
