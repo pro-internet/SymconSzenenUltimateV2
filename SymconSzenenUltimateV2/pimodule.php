@@ -1069,6 +1069,8 @@ abstract class PISymconModule extends IPSModule {
 
             $newAssocs = null;
 
+            print_r($changeAssoc);
+
             if (count($changeAssoc) > 0) {
 
                 foreach ($changeAssoc as $oldName => $newName) {
@@ -1100,9 +1102,9 @@ abstract class PISymconModule extends IPSModule {
 
             }
 
-            print_r($newAssocs);
-            IPS_DeleteVariableProfile($profileName);
-            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs);
+            //print_r($newAssocs);
+            //IPS_DeleteVariableProfile($profileName);
+            //$this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs);
 
         }
 
