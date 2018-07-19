@@ -202,7 +202,7 @@
     
         protected function updateSceneVarProfile () {
 
-            $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+            $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions" . $this->InstanceID);
 
             $assocs = null;
 
