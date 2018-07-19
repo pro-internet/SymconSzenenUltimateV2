@@ -1073,7 +1073,7 @@ abstract class PISymconModule extends IPSModule {
 
                 foreach ($changeAssoc as $oldName => $newName) {
 
-                    //echo "OLDNAME: " . $oldName . "  NewName: " . $newName . " \\n";
+                    echo "OLDNAME: " . $oldName . "  NewName: " . $newName . " \\n";
                    // if ($this->profileHasAssociation($profileName, $oldName)) {
 
                         foreach ($actualAssocs as $actualAssoc) {
