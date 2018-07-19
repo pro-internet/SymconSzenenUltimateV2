@@ -285,13 +285,13 @@
 
                     }
 
-                    if (count($sm->scenes) > 0) {
+                    if (count($sm->Scenes) > 0) {
 
-                        foreach ($sm->scenes as $subScene) {
+                        foreach ($sm->Scenes as $subScene) {
 
                             if ($subScene->ID == $scene->ID) {
 
-                                $sm->scenes[] = $scene;
+                                $sm->Scenes[] = $scene;
                                 //$sm->deleteSceneById();
 
                             }
