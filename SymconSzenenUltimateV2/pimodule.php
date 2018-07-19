@@ -36,11 +36,11 @@ abstract class PISymconModule extends IPSModule {
 
         parent::Create();
 
+        $this->CheckProfiles();
+
         $this->CheckVariables();
 
         $this->RegisterProperties();
-
-        $this->CheckProfiles();
 
         $this->CheckScripts();
 
