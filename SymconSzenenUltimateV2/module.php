@@ -268,7 +268,7 @@
 
                     $this->deleteObject($this->searchObjectByRealName("TargetsLink", $prnt));
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Verstecke Targets" => "Zeige Targets"));
-
+                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
                 }
 
             }
@@ -290,6 +290,7 @@
                     }
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul verkleinern" => "Modul vergrößern"));
+                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
@@ -307,6 +308,7 @@
                     }
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul vergrößern" => "Modul verkleinern"));
+                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
