@@ -919,6 +919,10 @@ abstract class PISymconModule extends IPSModule {
             return null;
         }
 
+        if (!$this->doesExist($id)) {
+            return null;
+        }
+
         $obj = IPS_GetObject($id);
 
         if ($obj['ObjectType'] == $this->objectTypeByName("Variable")) {

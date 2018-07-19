@@ -200,7 +200,9 @@
             // Verstecke Targets
             if ($optionsVal == 1) {
 
-                $this->deleteObject($this->searchObjectByName("TargetsLink", $prnt));
+                if ($this->doesExist($this->searchObjectByName("TargetsLink"))) {
+                    $this->deleteObject($this->searchObjectByName("TargetsLink", $prnt));
+                }
 
             }
 
