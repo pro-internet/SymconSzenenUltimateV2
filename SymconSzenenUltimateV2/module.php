@@ -141,7 +141,7 @@
                 $allTimerVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
                 $allSceneVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
-                print_r($allSceneVars);
+                //print_r($allSceneVars);
 
                 foreach ($allSceneVars as $sceneVar) {
 
