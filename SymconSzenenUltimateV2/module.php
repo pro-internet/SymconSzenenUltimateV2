@@ -274,10 +274,10 @@
                             if ($this->doesExist($child['TargetID'])) {
 
                                 $newState = new Status();
-                                $newState->Id = $child['TargetID'];
-                                $newState->State = GetValue($child['TargetID']);
+                                //$newID = $child['TargetID'];
+                                //$newState->State = GetValue($child['TargetID']);
 
-                                $scene->Status[] = $newState;
+                                $scene->Status[$newID] = GetValue($child['TargetID']);
 
                             }
 
