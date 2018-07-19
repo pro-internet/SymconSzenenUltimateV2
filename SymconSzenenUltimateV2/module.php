@@ -257,7 +257,7 @@
 
                     foreach ($scenes as $scene) {
 
-                        $this->hide($scene);
+                        $this->hide($this->searchObjectByName($scene));
 
                     }
 
@@ -267,7 +267,7 @@
 
                     foreach ($timers as $timer) {
 
-                        $this->hide($timer);
+                        $this->hide($this->searchObjectByName($timer));
 
                     }
 
@@ -282,7 +282,7 @@
 
                     foreach ($scenes as $scene) {
 
-                        $this->show($scene);
+                        $this->show($this->searchObjectByName($scene));
 
                     }
 
@@ -292,7 +292,7 @@
 
                     foreach ($timers as $timer) {
 
-                        $this->show($timer);
+                        $this->show($this->searchObjectByName($timer));
 
                     }
 
