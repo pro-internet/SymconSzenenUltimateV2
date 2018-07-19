@@ -187,7 +187,22 @@
         
         public function onOptionsChange () {
 
-            echo "OptionsChanged :)";
+            $optionsVal = GetValue($this->searchObjectByName("Optionen"));
+
+            // Zeige Targets
+            if ($optionsVal == 0) {
+
+                $prnt = IPS_GetParent($this->InstanceID);
+
+                $this->checkFolder("TargetsLink", $prnt);
+                $this->linkCompleteDummy($this->searchObjectByName("Targets"), $this->searchObjectByName("TargetsLink"));
+
+            } 
+
+            // Verstecke Targets
+            if ($optionsVal == 1) {
+
+            }
 
         }
 

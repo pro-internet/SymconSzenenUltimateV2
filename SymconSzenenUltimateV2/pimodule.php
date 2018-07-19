@@ -862,6 +862,49 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function linkCompleteDummy ($source, $target) {
+
+        $sourceObj = IPS_GetObject($source);
+        $targetObj = IPS_GetObject($target);
+
+        foreach ($sourceObj as $sourceChild) {
+
+            $sChildObj = IPS_GetObject($sourceChild);
+
+            $alreadyLinked = false;
+
+            if (count($targetObj['ChildrenIDs']) > 0) {
+
+              foreach ($targetObj['ChildrenIDs'] as $targetChild) {
+
+                $targetChildObj = IPS_GetObject($targetChild);
+
+                if ($targetChildObj['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                    $tg = IPS_GetLink($targetChildObj);
+
+                    if ($tg['TargetID'] == $sourceChild) {
+
+                        $alreadyLinked = true;
+
+                    }
+
+                }
+
+              }  
+
+            }
+            
+            if (!$alreadyLinked) {
+
+                $this->linkVar($sChildObj['ObjectID'], $sChildObj['ObjectName'], $targetObj['ObjectID']);
+
+            }
+
+        }
+
+    }
+
 }
 
 
