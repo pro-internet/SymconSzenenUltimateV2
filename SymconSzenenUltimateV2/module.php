@@ -435,7 +435,7 @@
 
             public function addState ($state) {
 
-                $status[] = $state
+                $status[] = $state;
 
             }
 
