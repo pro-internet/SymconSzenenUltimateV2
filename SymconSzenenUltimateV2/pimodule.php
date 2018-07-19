@@ -207,11 +207,22 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function checkString ($name, $setProfile = false, $position = "", $index = 0, $defaultValue = null) {
+    protected function checkString ($name, $setProfile = false, $position = "", $index = 0, $defaultValue = null, $istAbstand = false) {
 
-        if ($name != null) {
+        if ($name != null && !$istAbstand) {
 
             return $this->checkVar($name, 3, $setProfile, $position, $index, $defaultValue);
+
+        } else {
+
+            if (!$this->doesExist(IPS_GetObjectIDByIdent($this->InstanceID . "abstand" . $this->prefix))) {
+
+                $var = IPS_CreateVariable($this->varTypeByName("String"));
+                IPS_SetPosition($var, $index);
+                IPS_SetParent($var, $position);
+                $this->addProfile($var, "~String");
+
+            }
 
         }
 
