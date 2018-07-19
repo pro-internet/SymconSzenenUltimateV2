@@ -52,7 +52,7 @@
             //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null, $istAbstand = false
             //$this->checkString("", false, $this->InstanceID, "|AFTER|" . $sceneVar, null, true);
 
-            $this->addProfile($optionen, $this->prefix . ".Options");
+            $this->addProfile($optionen, $this->prefix . ".Options" . $this->InstanceID);
             $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
 
             $this->setIcon($optionen, "Database");
@@ -82,11 +82,9 @@
         public function CheckProfiles () {
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
-            $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 3, 0, array("Zeige Targets" => 0, "Verstecke Targets" => 1, "Modul verkleinern" => 2, "Modul vergrößern" => 3));
+            $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Targets" => 0, "Modul verkleinern" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . "SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null);
-
-            $this->changeAssociations($this->prefix . ".Options", array("Zeige Targets" => "Works", "Verstecke Targets" => "Test"));
 
         }
 
@@ -244,46 +242,78 @@
             } 
 
             // Verstecke Targets
-            if ($optionsVal == 1) {
+            if ($optionsVal == 0) {
 
-                if ($this->doesExist($this->searchObjectByRealName("TargetsLink", $prnt))) {
-                    $this->deleteObject($this->searchObjectByRealName("TargetsLink", $prnt));
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Targets")) {
+
+                    if ($this->doesExist($this->searchObjectByRealName("TargetsLink", $prnt))) {
+                        $this->deleteObject($this->searchObjectByRealName("TargetsLink", $prnt));
+                        $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Zeige Targets" => "Verstecke Targets"));
+                    }
+
+                } else {
+
+                    $nLink = $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Verstecke Targets" => "Zeige Targets"));
+
                 }
 
             }
 
             // Modul verkleinern
-            if ($optionsVal == 2) {
+            if ($optionsVal == 1) {
 
-                if (count($scenes) > 0) {
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul vergrößern")) {
 
-                    foreach ($scenes as $scene) {
+                    if (count($scenes) > 0) {
 
-                        $this->changeAssociations($this->prefix . ".Options", array("Zeige Targets" => "Works", "Verstecke Targets" => "Test"));
-                        $this->hide($this->searchObjectByName($scene));
-                        $this->hide($this->searchObjectByName($scene . " Timer"));
-
+                        foreach ($scenes as $scene) {
+    
+                            $this->hide($this->searchObjectByName($scene));
+                            $this->hide($this->searchObjectByName($scene . " Timer"));
+    
+                        }
+    
                     }
+
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul verkleinern" => "Modul vergrößern"));
+
+                }
+
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul verkleinern")) {
+
+                    if (count($scenes) > 0) {
+
+                        foreach ($scenes as $scene) {
+    
+                            $this->show($this->searchObjectByName($scene));
+                            $this->show($this->searchObjectByName($scene . " Timer"));
+    
+                        }
+    
+                    }
+
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul vergrößern" => "Modul verkleinern"));
 
                 }
 
             }
 
-            // Modul vergrößern
-            if ($optionsVal == 3) {
+            // // Modul vergrößern
+            // if ($optionsVal == 3) {
 
-                if (count($scenes) > 0) {
+            //     if (count($scenes) > 0) {
 
-                    foreach ($scenes as $scene) {
+            //         foreach ($scenes as $scene) {
 
-                        $this->show($this->searchObjectByName($scene));
-                        $this->show($this->searchObjectByName($scene . " Timer"));
+            //             $this->show($this->searchObjectByName($scene));
+            //             $this->show($this->searchObjectByName($scene . " Timer"));
 
-                    }
+            //         }
 
-                }
+            //     }
 
-            }
+            // }
 
             SetValue($this->searchObjectByName("Optionen"), -1);
 
