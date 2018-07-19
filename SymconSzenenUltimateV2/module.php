@@ -276,7 +276,7 @@
             // Modul verkleinern
             if ($optionsVal == 1) {
 
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul vergrößern")) {
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul verkleinern")) {
 
                     if (count($scenes) > 0) {
 
@@ -294,7 +294,7 @@
 
                 }
 
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul verkleinern")) {
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul vergrößern")) {
 
                     if (count($scenes) > 0) {
 
