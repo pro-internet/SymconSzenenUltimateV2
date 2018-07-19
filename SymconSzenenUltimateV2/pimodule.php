@@ -442,13 +442,16 @@ abstract class PISymconModule extends IPSModule {
                         if ($child == $afterThisElement) {
 
                             $elementFound = true;
+                            $subElementFound = false;
                             foreach ($own['ChildrenIDs'] as $subChild) {
 
                                 $oo = IPS_GetObject($subChild);
                                 if ($subChild == $child) {
-                                    break;
+                                    $subElementFound = true;
                                 } else {
-                                    $this->setPosition($child, $oo['ObjectPosition'] - 1);
+                                    if (!$subElementFound) {
+                                        $this->setPosition($child, $oo['ObjectPosition'] - 1);
+                                    }
                                 }
 
                             }
