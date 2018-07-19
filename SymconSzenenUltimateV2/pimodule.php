@@ -308,6 +308,10 @@ abstract class PISymconModule extends IPSModule {
 
     protected function doesExist ($id) {
 
+        if (gettype($id) != "integer") {
+            return false;
+        }
+
         if (IPS_ObjectExists($id) && $id != 0) {
             
             return true;
