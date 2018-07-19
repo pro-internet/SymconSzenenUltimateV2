@@ -303,7 +303,7 @@
 
                     }
 
-                    print_r($sm);
+                    print_r($sm->Scenes[0]->Status);
 
                 }
 
