@@ -813,6 +813,41 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getAllVarsByVariableCustomProfile ($name, $in = null) {
+
+        if ($in == null) {
+
+            $in = $this->InstanceID;
+            
+        }
+
+        $own = IPS_GetObject($in);
+
+        $ary = null;
+
+        foreach ($own['ChildrenIDs'] as $child) {
+
+            $obj = IPS_GetObject($child);
+
+            if ($obj['ObjectType'] == $this->objectTypeByName("variable")) {
+
+                $obj = IPS_GetVariable($obj['ObjectID']);
+
+                if ($obj['VariableCustomProfile'] == $name) {
+
+                    $obj = IPS_GetObject($obj['VariableID']);
+                    $ary[] = $obj['ObjectName'];
+
+                }
+
+            }
+
+        }
+
+        return $ary;
+
+    }
+
 }
 
 

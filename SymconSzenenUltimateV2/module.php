@@ -30,6 +30,8 @@
 
             $this->checkSceneVars();
 
+            $this->checkSceneTimerVars();
+
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Optionen"), "onOptionsChange", $this->searchObjectByName("Events"));
 
         }
@@ -73,13 +75,14 @@
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
             $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 1, 0, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
+            $this->checkVariableProfile($this->prefix . "SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null);
         }
 
-        #       #
-        #       #
-        #       #
+        #                            #
+        #   Modulspez. Funktionen    #
+        #                            #
 
-        public function checkSceneVars () {
+        protected function checkSceneVars () {
 
             $own = IPS_GetObject($this->InstanceID);
 
@@ -89,7 +92,7 @@
 
             //print_r($scenes);
 
-            $existingScenes = $this->getAllSceneVars();
+            $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
             $sceneNames = null;
 
@@ -129,36 +132,53 @@
 
         }
 
-        protected function getAllSceneVars () {
+        protected function checkSceneTimerVars () {
 
-            $own = IPS_GetObject($this->InstanceID);
+            $modeActivated = $this->ReadPropertyBoolean("ModeTime");
 
-            $ary = null;
+            if ($modeActivated) {
 
-            foreach ($own['ChildrenIDs'] as $child) {
+                $allTimerVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
+                $allSceneVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
-                $obj = IPS_GetObject($child);
+                foreach ($allSceneVars as $sceneVar) {
 
-                if ($obj['ObjectType'] == $this->objectTypeByName("variable")) {
+                    $doesExist = false;
 
-                    $obj = IPS_GetVariable($obj['ObjectID']);
+                    $sceneVarObj = IPS_GetObject($sceneVar);
 
-                    if ($obj['VariableCustomProfile'] == $this->prefix . ".SceneOptions") {
+                    if (count($allTimerVars) > 0) {
 
-                        $obj = IPS_GetObject($obj['VariableID']);
-                        $ary[] = $obj['ObjectName'];
+                        foreach ($allTimerVars as $timerVar) {
+
+                            $timerVarObj = IPS_GetObject($timerVar);
+
+                            if ($timerVarObj['ObjectName'] == $sceneVarObj['ObjectName'] . " Timer") {
+
+                                $doesExist = true;
+
+                            }
+
+                        }
+
+                    }
+
+                    if (!$doesExist) {
+
+                        //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null
+
+                        $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, $this->InstanceID, "|AFTER|" . $sceneVar, 10);
 
                     }
 
                 }
+                
 
             }
 
-            return $ary;
-
         }
 
-
+        
 
         ##                 ##
         ## OnChange Events ##
