@@ -36,6 +36,8 @@
 
             $this->updateSceneVarProfile();
 
+            $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+
         }
 
         public function Destroy () {
