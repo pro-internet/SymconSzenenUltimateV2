@@ -51,7 +51,7 @@
             $events = $this->checkFolder("Events", null, 5);
 
             //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null, $istAbstand = false
-            $this->checkString("", false, $this->InstanceID, "|AFTER|" . $sceneVar, null, true);
+            //$this->checkString("", false, $this->InstanceID, "|AFTER|" . $sceneVar, null, true);
 
             $this->addProfile($optionen, $this->prefix . ".Options");
             $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
