@@ -378,7 +378,11 @@ abstract class PISymconModule extends IPSModule {
     }
 
     // Ausbaufähig (---> Fehler, )
-    protected function setPosition ($id, $position) {
+    protected function setPosition ($id, $position, $in = null) {
+
+        if ($in == null) {
+            $in = $this->InstanceID;
+        }
 
         if ($this->doesExist($id)) {
 
@@ -386,7 +390,7 @@ abstract class PISymconModule extends IPSModule {
 
                 if ($position == "last" || $position == "Last") {
 
-                    $own = IPS_GetObject($this->InstanceID);
+                    $own = IPS_GetObject($in);
 
                     $lastChildPosition = 0;
                     $highestChildPositon = 0;
@@ -407,11 +411,11 @@ abstract class PISymconModule extends IPSModule {
 
                 } else if ($position == "first" || $position == "First") {
 
-                    $own = IPS_GetObject($this->InstanceID);
+                    $own = IPS_GetObject($in);
 
                     IPS_SetPosition($id, 0);
 
-                    if (IPS_HasChildren($this->InstanceID)) {
+                    if (IPS_HasChildren($in)) {
 
                         $isfirst = true;
 
@@ -747,6 +751,7 @@ abstract class PISymconModule extends IPSModule {
                 IPS_SetHidden($link, false);
                 $this->setPosition($link, $linkPosition);
 
+                return $link;
             }
 
         }

@@ -193,8 +193,9 @@
             // Zeige Targets
             if ($optionsVal == 0) {
 
-                $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
-                
+                $nLink = $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
+                $this->setPosition($nLink, "|AFTER|" . $this->InstanceID, $prnt);
+
             } 
 
             // Verstecke Targets
