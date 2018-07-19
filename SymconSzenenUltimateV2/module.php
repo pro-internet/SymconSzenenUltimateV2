@@ -300,7 +300,7 @@
 
                     }
 
-                    print_r($sm);
+                    print_r($newState);
 
                 }
 
