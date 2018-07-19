@@ -204,6 +204,8 @@
 
             }
 
+            SetValue($this->searchObjectByName("Optionen"), -1);
+
         }
 
  
