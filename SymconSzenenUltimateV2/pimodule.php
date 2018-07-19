@@ -1065,22 +1065,28 @@ abstract class PISymconModule extends IPSModule {
             $prefix = $profile['Prefix'];
             $actualAssocs = $profile['Associations'];
 
-            IPS_DeleteVariableProfile($profileName);
-
             //$name, $type, $min = 0, $max = 100, $steps = 1, $associations = null
-            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize);
+
+            $newAssocs = null;
 
             if (count($changeAssoc) > 0) {
 
                 foreach ($changeAssoc as $oldName => $newName) {
 
+                    echo "OLDNAME: " . $oldName . "  NewName: " . $newName . " \\n";
                    // if ($this->profileHasAssociation($profileName, $oldName)) {
 
                         foreach ($actualAssocs as $actualAssoc) {
 
                             if ($actualAssoc['Name'] == $oldName) {
 
-                                IPS_SetVariableProfileAssociation($profileName, intval($actualAssoc['Value']), $newName, $actualAssoc['Icon'], hexdec($actualAssoc['Color']));
+                                //IPS_SetVariableProfileAssociation($profileName, intval($actualAssoc['Value']), $newName, $actualAssoc['Icon'], hexdec($actualAssoc['Color']));
+
+                                $newAssocs[$newName] = intval($actualAssoc['Value']);
+
+                            } else {
+                                $aname = $actualAssoc['Name'];
+                                $newAssocs[$aname] = intval($actualAssoc['Value']);
 
                             }
 
@@ -1091,6 +1097,9 @@ abstract class PISymconModule extends IPSModule {
                 }
 
             }
+
+            IPS_DeleteVariableProfile($profileName);
+            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $newAssocs);
 
         }
 
