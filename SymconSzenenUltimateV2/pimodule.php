@@ -372,8 +372,6 @@ abstract class PISymconModule extends IPSModule {
     // Ausbaufähig (---> Fehler, )
     protected function setPosition ($id, $position) {
 
-        echo "Set Pos for " . $id . " to " . $position;
-
         if ($this->doesExist($id)) {
 
             if (gettype($position) == "string") {

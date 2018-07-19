@@ -168,7 +168,7 @@
                     if (!$doesExist) {
 
                         //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null
-                        $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, $this->InstanceID, 0, 10);
+                        $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, $this->InstanceID, "|AFTER|" . $sceneVar, 10);
 
                     }
 
