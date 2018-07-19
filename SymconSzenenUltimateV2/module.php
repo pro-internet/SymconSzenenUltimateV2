@@ -38,12 +38,6 @@
 
             $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
 
-            if (IPS_VariableProfileExists($this->prefix . ".ScenesVarProfile." . $this->InstanceID)) {
-
-                echo "Huh?";
-
-            }
-
         }
 
         public function Destroy () {
