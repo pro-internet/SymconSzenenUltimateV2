@@ -909,6 +909,36 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function deleteObject ($id) {
+
+        $obj = IPS_GetObject($id);
+
+        if ($obj['ObjectType'] == $this->objectTypeByName("Variable")) {
+            IPS_DeleteVariable($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Event")) {
+            IPS_DeleteEvent($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Link")) {
+            IPS_DeleteLink($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Script")) {
+            IPS_DeleteScript($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Kategorie")) {
+            if (IPS_HasChildren($id)) {
+                foreach ($obj['ChildrenIDs'] as $child) {
+                    $this->deleteObject($child);
+                }
+            }
+            IPS_DeleteCategory($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Instance")) {
+            if (IPS_HasChildren($id)) {
+                foreach ($obj['ChildrenIDs'] as $child) {
+                    $this->deleteObject($child);
+                }
+            }
+            IPS_DeleteInstance($id);
+        }
+
+    }
+
 }
 
 

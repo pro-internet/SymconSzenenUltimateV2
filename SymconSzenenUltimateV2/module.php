@@ -188,23 +188,19 @@
         public function onOptionsChange () {
 
             $optionsVal = GetValue($this->searchObjectByName("Optionen"));
+            $prnt = IPS_GetParent($this->InstanceID);
 
             // Zeige Targets
             if ($optionsVal == 0) {
 
-                $prnt = IPS_GetParent($this->InstanceID);
-
-                //$tglinks = $this->checkFolder("TargetsLink", $prnt);
-                //$this->show($tglinks);
-                //$target, $linkName = "Unnamed Link", $parent = null,
-
                 $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
                 
-
             } 
 
             // Verstecke Targets
             if ($optionsVal == 1) {
+
+                $this->deleteObject($this->searchObjectByName("TargetsLink", $prnt));
 
             }
 
