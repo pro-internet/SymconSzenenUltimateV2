@@ -276,7 +276,7 @@
                                 $newState->ID = $child['TargetID'];
                                 $newState->State = GetValue($child['TargetID']);
 
-                                $scene->addState($newState);
+                                $scene->Status[] = $newState;
 
                             }
 
@@ -434,12 +434,6 @@
 
             public $Name;
             public $Status; 
-
-            public function addState ($state) {
-
-                $status[] = $state;
-
-            }
 
         }
 
