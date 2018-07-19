@@ -83,7 +83,7 @@
         public function CheckProfiles () {
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
-            $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 1, 0, array("Zeige Targets" => 0, "Verstecke Targets" => 1));
+            $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 3, 0, array("Zeige Targets" => 0, "Verstecke Targets" => 1, "Modul verkleinern" => 2, "Modul vergrößern" => 3));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . "SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null);
         }
@@ -230,6 +230,9 @@
 
             $optionsVal = GetValue($this->searchObjectByName("Optionen"));
             $prnt = IPS_GetParent($this->InstanceID);
+            $own = IPS_GetObject($this->InstanceID);
+            $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+            $timers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
 
             // Zeige Targets
             if ($optionsVal == 0) {
@@ -243,6 +246,56 @@
 
                 if ($this->doesExist($this->searchObjectByRealName("TargetsLink", $prnt))) {
                     $this->deleteObject($this->searchObjectByRealName("TargetsLink", $prnt));
+                }
+
+            }
+
+            // Modul verkleinern
+            if ($optionsVal == 2) {
+
+                if (count($scenes) > 0) {
+
+                    foreach ($scenes as $scene) {
+
+                        $this->hide($scene);
+
+                    }
+
+                }
+
+                if (count($timers) > 0) {
+
+                    foreach ($timers as $timer) {
+
+                        $this->hide($timer);
+
+                    }
+
+                }
+
+            }
+
+            // Modul vergrößern
+            if ($optionsVal == 3) {
+
+                if (count($scenes) > 0) {
+
+                    foreach ($scenes as $scene) {
+
+                        $this->show($scene);
+
+                    }
+
+                }
+
+                if (count($timers) > 0) {
+
+                    foreach ($timers as $timer) {
+
+                        $this->show($timer);
+
+                    }
+
                 }
 
             }
