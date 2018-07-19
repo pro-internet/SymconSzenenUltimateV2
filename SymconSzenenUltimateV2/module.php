@@ -261,6 +261,7 @@
                     if ($this->doesExist($this->searchObjectByRealName("TargetsLink", $prnt))) {
                         $nLink = $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
                         $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Zeige Targets" => "Verstecke Targets"));
+                        $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
                     }
 
                 } else {
