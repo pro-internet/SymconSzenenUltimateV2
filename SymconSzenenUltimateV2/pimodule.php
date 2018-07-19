@@ -97,7 +97,8 @@ abstract class PISymconModule extends IPSModule {
         $newVariable = IPS_CreateVariable($type);
         IPS_SetName($newVariable, $name);
         IPS_SetParent($newVariable, $position);
-        IPS_SetPosition($newVariable, $index);
+        //IPS_SetPosition($newVariable, $index);
+        $this->setPosition($newVariable, $index);
         IPS_SetIdent($newVariable, $this->nameToIdent($name));
         
         if ($defaultValue != null) {
@@ -818,7 +819,7 @@ abstract class PISymconModule extends IPSModule {
         if ($in == null) {
 
             $in = $this->InstanceID;
-            
+
         }
 
         $own = IPS_GetObject($in);
