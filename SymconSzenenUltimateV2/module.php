@@ -436,7 +436,7 @@
 
         class SceneManager {
 
-            public $Scenes;
+            public $Scenes = array();
 
             public function __construct($jsonText) {
 
