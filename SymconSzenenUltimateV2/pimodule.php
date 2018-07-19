@@ -215,7 +215,13 @@ abstract class PISymconModule extends IPSModule {
 
         } else {
 
-            if (!$this->doesExist(IPS_GetObjectIDByIdent($this->InstanceID . "abstand" . $this->prefix))) {
+            if ($position == "") {
+
+                $position = $this->InstanceID;
+
+            }
+
+            if (!$this->doesExist(IPS_GetObjectIDByIdent($this->InstanceID . "abstand" . $this->prefix, $position))) {
 
                 $var = IPS_CreateVariable($this->varTypeByName("String"));
                 IPS_SetPosition($var, $index);
