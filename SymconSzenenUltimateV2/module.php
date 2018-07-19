@@ -257,7 +257,7 @@
 
                     foreach ($scenes as $scene) {
 
-                        $this->changeAssociations($this->prefix . ".Options", array("Zeige Targets" => "Works"));
+                        $this->changeAssociations($this->prefix . ".Options", array("Zeige Targets" => "Works", "Verstecke Targets" => "Test"));
                         $this->hide($this->searchObjectByName($scene));
                         $this->hide($this->searchObjectByName($scene . " Timer"));
 
