@@ -259,13 +259,13 @@
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Targets")) {
 
                     if ($this->doesExist($this->searchObjectByRealName("TargetsLink", $prnt))) {
-                        $this->deleteObject($this->searchObjectByRealName("TargetsLink", $prnt));
+                        $nLink = $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
                         $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Zeige Targets" => "Verstecke Targets"));
                     }
 
                 } else {
 
-                    $nLink = $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
+                    $this->deleteObject($this->searchObjectByRealName("TargetsLink", $prnt));
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Verstecke Targets" => "Zeige Targets"));
 
                 }
