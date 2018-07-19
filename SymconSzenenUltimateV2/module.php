@@ -258,7 +258,6 @@
 
                 $scene = new Scene();
 
-                $scene->ID = $senderVal;
                 $scene->Name = $senderObj['ObjectName'];
                 
                 if (count($targets['ChildrenIDs']) > 0) {
@@ -287,20 +286,24 @@
 
                     if (count($sm->Scenes) > 0) {
 
-                        foreach ($sm->Scenes as $subScene) {
+                        foreach ($sm->Scenes as $ssceneID => $sscene) {
 
-                            if ($subScene->ID == $scene->ID) {
+                            if ($ssceneID == $scene->ID) {
 
-                                $sm->Scenes[] = $scene;
-                                //$sm->deleteSceneById();
+                                $sm->deleteSceneById($senderVal);
+                                $sm->Scenes[$senderVal] = $scene;
 
                             }
 
                         }
 
+                    } else {
+
+                        $sm->Scenes[$senderVal] = $scene;
+
                     }
 
-                    print_r($newState);
+                    print_r($sm);
 
                 }
 
@@ -429,7 +432,6 @@
 
         class Scene {
 
-            public $ID;
             public $Name;
             public $Status; 
 
@@ -457,7 +459,7 @@
 
             public function deleteSceneById ($sceneId) {
 
-                
+                unset($this->Scenes[$sceneId]);
 
             }
 
@@ -467,9 +469,9 @@
 
                     $toReturn = null;
 
-                    foreach ($this->Scenes as $scene) {
+                    foreach ($this->Scenes as $sceneId => $scene) {
 
-                        if ($scene->ID == $id) {
+                        if ($sceneId == $id) {
 
                             $toReturn = $scene;
 
