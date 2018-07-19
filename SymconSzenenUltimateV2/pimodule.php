@@ -265,6 +265,54 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function searchObjectByRealName ($name, $searchIn = null, $objectType = null) {
+
+        if ($searchIn == null) {
+
+            $searchIn = $this->InstanceID;
+        
+        }
+        
+        $childs = IPS_GetChildrenIDs($searchIn);
+        
+        $returnId = 0;
+        
+        foreach ($childs as $child) {
+
+            $childObject = IPS_GetObject($child);
+
+            if ($childObject['ObjectName'] == $name) {
+                
+                $returnId = $childObject['ObjectID'];
+
+            }
+
+            if ($objectType == null) {
+                
+                if ($childObject['ObjectName'] == $name) {
+                    
+                    $returnId = $childObject['ObjectID'];
+
+                }
+
+            } else {
+                
+                if ($childObject['ObjectName'] == $name && $childObject['ObjectType'] == $this->objectTypeByName($objectType)) {
+                    
+                    $returnId = $childObject['ObjectID'];
+
+                }
+            }
+        }
+
+        if ($returnId == 0) {
+            return "ERROR";
+        }
+
+        return $returnId;
+
+    }
+
     protected function addSwitch ($vid) {
 
         if(IPS_VariableProfileExists("Switch"))
@@ -745,7 +793,7 @@ abstract class PISymconModule extends IPSModule {
 
                 $link = IPS_CreateLink();
                 IPS_SetName($link, $linkName);
-                IPS_SetIdent($link, $this->nameToIdent($linkName));
+                //IPS_SetIdent($link, $this->nameToIdent($linkName));
                 IPS_SetParent($link, $parent);
                 IPS_SetLinkTargetID($link, $target);
                 IPS_SetHidden($link, false);
