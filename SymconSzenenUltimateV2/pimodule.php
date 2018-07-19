@@ -257,6 +257,10 @@ abstract class PISymconModule extends IPSModule {
             }
         }
 
+        if ($returnId == 0) {
+            return "ERROR";
+        }
+
         return $returnId;
 
     }
@@ -910,6 +914,10 @@ abstract class PISymconModule extends IPSModule {
     }
 
     protected function deleteObject ($id) {
+
+        if ($id == 0) {
+            return null;
+        }
 
         $obj = IPS_GetObject($id);
 
