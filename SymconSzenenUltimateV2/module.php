@@ -256,12 +256,10 @@
             if ($senderVal == 0) {
 
                 $sm = new SceneManager($json);
-                $sm->Scenes = array();
 
                 $scene = new Scene();
 
                 $scene->Name = $senderObj['ObjectName'];
-                $scene->Status = array();
                 
                 if (count($targets['ChildrenIDs']) > 0) {
 
