@@ -49,6 +49,8 @@
             $this->addProfile($optionen, $this->prefix . ".Options");
 
             $this->setIcon($optionen, "Database");
+            $this->setIcon($switches[0], "Power");
+            $this->setIcon($switches[1], "Power");
             //$this->setIcon($title, "Rocket");
 
             $this->addSetValue($optionen);
@@ -169,6 +171,7 @@
 
                         $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, "", "|AFTER|" . $this->searchObjectByname($sceneVar), 10);
                         $this->setIcon($checkTimer, "Clock");
+                        $this->addSetValue($checkTimer);
 
                     }
 
