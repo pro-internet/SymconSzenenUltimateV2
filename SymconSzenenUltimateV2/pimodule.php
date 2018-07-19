@@ -1013,7 +1013,7 @@ abstract class PISymconModule extends IPSModule {
         if ($profileName != null && count($elements) > 0 ) {
 
             $min = 0;
-            $max = count($elements);
+            $max = count($elements) - 1;
 
             if (IPS_VariableProfileExists($profileName)) {
 
