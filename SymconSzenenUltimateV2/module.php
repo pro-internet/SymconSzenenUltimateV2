@@ -45,15 +45,18 @@
 
             $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
 
-            $targets = $this->checkFolder("Targets", null, 3);
-            $events = $this->checkFolder("Events", null, 4);
+            $scenenVar = $this->checkInteger("Szenen", false, null, 3, -1);
+
+            $targets = $this->checkFolder("Targets", null, 4);
+            $events = $this->checkFolder("Events", null, 5);
 
             $this->addProfile($optionen, $this->prefix . ".Options");
+            $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
 
             $this->setIcon($optionen, "Database");
             $this->setIcon($switches[0], "Power");
             $this->setIcon($switches[1], "Power");
-            //$this->setIcon($title, "Rocket");
+            $this->setIcon($sceneVar, "Rocket");
 
             $this->addSetValue($optionen);
     
