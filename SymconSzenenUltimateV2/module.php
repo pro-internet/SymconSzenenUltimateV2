@@ -148,7 +148,7 @@
                         $this->setIcon($newInt, "Rocket");
                         $this->addProfile($newInt, $this->prefix . ".SceneOptions");
 
-                        $this->easyCreateOnChangeFunctionEvent("onChange " . $newInt, $newInt, "", $this->searchObjectByName("Events"));
+                        $this->easyCreateOnChangeFunctionEvent("onChange " . $newInt, $newInt, "onSceneVarChange", $this->searchObjectByName("Events"));
 
 
                     }
@@ -243,7 +243,7 @@
         ## OnChange Events ##
         ##                 ##
         
-        public function  () {
+        public function onSceneVarChange () {
 
             $senderVar = $_IPS['VARIABLE'];
             $senderObj = IPS_GetObject($senderVar);
