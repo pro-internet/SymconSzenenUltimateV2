@@ -1131,7 +1131,6 @@ abstract class PISymconModule extends IPSModule {
 
             }
 
-            print_r($newAssocs);
             IPS_DeleteVariableProfile($profileName);
             $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs);
 
