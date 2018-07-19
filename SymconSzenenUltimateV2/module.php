@@ -121,7 +121,7 @@
                         $newPos = $this->getHighestPosition() + 1;
                         $newInt = $this->checkInteger($scene->Name, false, $this->InstanceID, $newPos, -1);
                         $this->addSetValue($newInt);
-                        $this->addIcon($newInt, "Rocket");
+                        $this->setIcon($newInt, "Rocket");
                         $this->addProfile($newInt, $this->prefix . ".SceneOptions");
 
                     }
