@@ -234,7 +234,6 @@
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
             $timers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
 
-
             if ($_IPS['OLDVALUE'] == $optionsVal) {
                 return;
             }

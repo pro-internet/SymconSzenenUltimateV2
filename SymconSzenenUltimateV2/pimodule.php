@@ -1150,7 +1150,7 @@ abstract class PISymconModule extends IPSModule {
 
                 foreach ($profile['Associations'] as $assoc) {
 
-                    if ($assoc == $searchedAssoc) {
+                    if ($assoc['Name'] == $searchedAssoc) {
                         $found = true;
                     }
 
