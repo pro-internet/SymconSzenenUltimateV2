@@ -234,10 +234,8 @@
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
             $timers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
 
-            print_r($_IPS);
-            return;
 
-            if ($_IPS['SENDER'] != "WebFront") {
+            if ($_IPS['OLDVALUE'] == $optionsVal) {
                 return;
             }
 
