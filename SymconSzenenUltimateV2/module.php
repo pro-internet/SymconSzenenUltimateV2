@@ -167,8 +167,8 @@
 
                     if (!$doesExist) {
 
-                        //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null
                         $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, "", "|AFTER|" . $this->searchObjectByname($sceneVar), 10);
+                        $this->setIcon($checkTimer, "Clock");
 
                     }
 
