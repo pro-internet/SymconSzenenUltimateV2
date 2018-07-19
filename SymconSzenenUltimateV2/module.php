@@ -256,6 +256,7 @@
             if ($senderVal == 0) {
 
                 $sm = new SceneManager($json);
+                $sm->Scenes = array();
 
                 $scene = new Scene();
 
