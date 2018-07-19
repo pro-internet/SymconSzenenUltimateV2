@@ -1021,7 +1021,7 @@ abstract class PISymconModule extends IPSModule {
 
             }
 
-            $this->checkVariableProfile($profileName, 1, $min, $max, 1, $elements);
+            $this->checkVariableProfile($profileName, 1, $min, $max, 0, $elements);
 
         }
 

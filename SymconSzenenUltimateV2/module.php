@@ -45,7 +45,7 @@
 
             $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
 
-            $sceneVar = $this->checkInteger("Szenen", false, null, 3, -1);
+            $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
             $events = $this->checkFolder("Events", null, 5);
