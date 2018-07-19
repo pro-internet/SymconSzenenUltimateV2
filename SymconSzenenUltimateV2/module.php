@@ -194,7 +194,6 @@
             if ($optionsVal == 0) {
 
                 $nLink = $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
-                $this->setPosition($nLink, "|AFTER|" . $this->InstanceID, $prnt);
 
             } 
 
