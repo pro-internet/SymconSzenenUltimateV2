@@ -258,16 +258,7 @@
                     foreach ($scenes as $scene) {
 
                         $this->hide($this->searchObjectByName($scene));
-
-                    }
-
-                }
-
-                if (count($timers) > 0) {
-
-                    foreach ($timers as $timer) {
-
-                        $this->hide($this->searchObjectByName($timer));
+                        $this->hide($this->searchObjectByName($scene . " Timer"));
 
                     }
 
@@ -283,16 +274,7 @@
                     foreach ($scenes as $scene) {
 
                         $this->show($this->searchObjectByName($scene));
-
-                    }
-
-                }
-
-                if (count($timers) > 0) {
-
-                    foreach ($timers as $timer) {
-
-                        $this->show($this->searchObjectByName($timer));
+                        $this->show($this->searchObjectByName($scene . " Timer"));
 
                     }
 
