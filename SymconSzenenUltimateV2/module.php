@@ -106,7 +106,7 @@
 
                         foreach ($existingScenes as $escene) {
 
-                            if ($escene == $scene->name) {
+                            if ($escene == $scene->Name) {
 
                                 $doesexist = true;
 
