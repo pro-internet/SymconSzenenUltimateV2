@@ -275,7 +275,7 @@
                             if ($this->doesExist($child['TargetID'])) {
 
                                 //$newState = new Status();
-                                //$newID = $child['TargetID'];
+                                $newID = $child['TargetID'];
                                 //$newState->State = GetValue($child['TargetID']);
 
                                 $scene->Status[$newID] = GetValue($child['TargetID']);
