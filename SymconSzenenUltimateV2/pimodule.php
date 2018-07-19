@@ -226,6 +226,7 @@ abstract class PISymconModule extends IPSModule {
                 $var = IPS_CreateVariable($this->varTypeByName("String"));
                 $this->setPosition($var, $index);
                 IPS_SetParent($var, $position);
+                IPS_SetName($var, " ");
                 $this->addProfile($var, "~String");
 
             }
