@@ -248,7 +248,7 @@
             // Verstecke Targets
             if ($optionsVal == 0) {
 
-                $ergebnis = $this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Targets";
+                $ergebnis = $this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Targets");
 
                 if ($ergebnis) {
                     echo "Found it!";
