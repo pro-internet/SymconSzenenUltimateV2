@@ -290,12 +290,12 @@
 
                         foreach ($sm->Scenes as $ssceneID => $sscene) {
 
-                            if ($ssceneID == $scene->ID) {
+                            // if ($ssceneID == $scene) {
 
-                                $sm->deleteSceneById($senderName);
-                                $sm->Scenes[$senderName] = $scene;
+                            //     //$sm->deleteSceneById($senderName);
+                            //     $sm->Scenes[$senderName] = $scene;
 
-                            }
+                            // }
 
                         }
 
