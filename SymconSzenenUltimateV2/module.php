@@ -86,6 +86,8 @@
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . "SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null);
 
+            $this->changeAssociations($this->prefix . ".Options", array("Zeige Targets" => "Works", "Verstecke Targets" => "Test"));
+
         }
 
         #                            #
