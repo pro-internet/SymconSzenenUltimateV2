@@ -96,7 +96,7 @@
 
             $sceneNames = null;
 
-            if (count($scenes > 0)) {
+            if (count($scenes0) > 0) {
 
                 foreach ($scenes as $scene) {
 
