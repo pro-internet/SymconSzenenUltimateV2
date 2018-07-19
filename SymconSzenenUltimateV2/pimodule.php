@@ -164,7 +164,7 @@ abstract class PISymconModule extends IPSModule {
             }
             
             if ($index != 0) {
-                IPS_SetPosition($nVar, $index);
+                $this->setPosition($nVar, $index);
             }
             
             return $nVar;
