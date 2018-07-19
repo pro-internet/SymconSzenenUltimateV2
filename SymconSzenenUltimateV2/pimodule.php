@@ -1078,6 +1078,8 @@ abstract class PISymconModule extends IPSModule {
 
                         foreach ($actualAssocs as $actualAssoc) {
 
+                            print($actualAssoc);
+
                             if ($actualAssoc['Name'] == $oldName) {
 
                                 //IPS_SetVariableProfileAssociation($profileName, intval($actualAssoc['Value']), $newName, $actualAssoc['Icon'], hexdec($actualAssoc['Color']));
