@@ -36,12 +36,13 @@
 
             $this->updateSceneVarProfile();
 
-            if (!IPS_VariableProfileExists($this->prefix . ".ScenesVarProfile." . $this->InstanceID)) {
+            $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+
+            if (IPS_VariableProfileExists($this->prefix . ".ScenesVarProfile." . $this->InstanceID)) {
 
                 echo "Huh?";
 
             }
-            $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
 
         }
 
