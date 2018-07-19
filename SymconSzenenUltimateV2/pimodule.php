@@ -1045,7 +1045,90 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    //
+    //  "AlterName" => "NeuerName"
+    //
+
+    protected function changeAssociations ($profileName, $changeAssoc) {
+
+        if (IPS_VariableProfileExists($profileName)) {
+
+            $profile = IPS_GetVariableProfile($profileName);
+
+            $name = $profileName;
+            $type  $profile['ProfileType'];
+            $maxVal = $profile['MaxValue'];
+            $minVal = $profile['MinValue'];
+            $stepSize = $profile['StepSize'];
+            $digits = $profile['Digits'];
+            $suffix = $profile['Suffix'];
+            $prefix = $profile['Prefix'];
+            $actualAssocs = $profile['Associations'];
+
+            IPS_DeleteVariableProfile($profileName);
+
+            //$name, $type, $min = 0, $max = 100, $steps = 1, $associations = null
+            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize);
+
+            if (count($changeAssoc) > 0) {
+
+                foreach ($changeAssoc as $oldName => $newName) {
+
+                    if ($this->profileHasAssociation($profileName, $oldName)) {
+
+                        foreach ($actualAssocs as $actualAssoc) {
+
+                            if ($actualAssoc['Name'] == $oldName) {
+
+                                IPS_SetVariableProfileAssociation($profileName, $actualAssoc['Value'], $newName, $actualAssoc['Icon'], $actualAssoc['Color']);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    protected function profileHasAssociation ($profileName, $searchedAssoc) {
+
+        if (IPS_VariableProfileExists($profileName)) {
+
+            $profile = IPS_GetVariableProfile($profileName);
+
+            if (count($profile['Associations']) > 0) {
+
+                $found = false;
+
+                foreach ($profile['Associations'] as $assoc) {
+
+                    if ($assoc == $searchedAssoc) {
+                        $found = true;
+                    }
+
+                }
+
+                return $found;
+
+            } else {
+
+                return false;
+
+            }
+
+        }
+
+    }
+
 }
+
+
 
 
 ?>

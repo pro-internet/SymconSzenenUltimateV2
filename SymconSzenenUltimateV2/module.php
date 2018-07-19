@@ -44,7 +44,6 @@
             $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
 
             $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
-
             $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
@@ -76,7 +75,7 @@
     
         public function CheckScripts () {
     
-            // Hier werden alle nötigen Scripts erstellt
+            // Hier werden alle nötigen Scripts erstellt (SetValue wird automatisch erstellt)
     
         }
 
@@ -86,6 +85,7 @@
             $this->checkVariableProfile($this->prefix . ".Options", $this->varTypeByName("int"), 0, 3, 0, array("Zeige Targets" => 0, "Verstecke Targets" => 1, "Modul verkleinern" => 2, "Modul vergrößern" => 3));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . "SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null);
+
         }
 
         #                            #
@@ -257,6 +257,7 @@
 
                     foreach ($scenes as $scene) {
 
+                        $this->changeAssociations($this->prefix . ".Options", array("Zeige Targets" => "Works"));
                         $this->hide($this->searchObjectByName($scene));
                         $this->hide($this->searchObjectByName($scene . " Timer"));
 
