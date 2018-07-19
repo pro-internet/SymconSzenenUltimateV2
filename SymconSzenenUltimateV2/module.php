@@ -305,7 +305,7 @@
                     }
 
                     SetValue($this->searchObjectByName("Scenes"), $sm->scenesToJson());
-                    print_r($sm->Scenes[0]->Status);
+                    //print_r($sm->Scenes[0]->Status);
 
                 }
 
