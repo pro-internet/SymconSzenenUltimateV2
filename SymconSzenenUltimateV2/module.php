@@ -38,6 +38,14 @@
 
         }
 
+        public function Destroy () {
+
+            parent::Destroy();
+
+            IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
+
+        }
+
 
         public function CheckVariables () {
 
