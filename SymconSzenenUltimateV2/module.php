@@ -194,7 +194,8 @@
 
                 $prnt = IPS_GetParent($this->InstanceID);
 
-                $this->checkFolder("TargetsLink", $prnt);
+                $tglinks = $this->checkFolder("TargetsLink", $prnt);
+                $this->show($tglinks);
                 $this->linkCompleteDummy($this->searchObjectByName("Targets"), $this->searchObjectByName("TargetsLink"));
 
             } 

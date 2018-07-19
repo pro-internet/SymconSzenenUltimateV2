@@ -592,6 +592,10 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function show ($id) {
+        IPS_SetHidden($id, false);
+    }
+
     protected function varTypeByName ($name) {
 
         $name = (string) $name;
