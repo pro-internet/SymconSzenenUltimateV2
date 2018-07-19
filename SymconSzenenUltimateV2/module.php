@@ -171,6 +171,7 @@
 
                         $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, "", "|AFTER|" . $this->searchObjectByname($sceneVar), 10);
                         $this->setIcon($checkTimer, "Clock");
+                        $this->setProfile($checkTimer, $this->prefix . "SceneTimerVar");
                         $this->addSetValue($checkTimer);
 
                     }
