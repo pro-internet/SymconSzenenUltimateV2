@@ -260,6 +260,7 @@
                 $scene = new Scene();
 
                 $scene->Name = $senderObj['ObjectName'];
+                $scene->Status = array();
                 
                 if (count($targets['ChildrenIDs']) > 0) {
 
@@ -273,7 +274,7 @@
 
                             if ($this->doesExist($child['TargetID'])) {
 
-                                $newState = new Status();
+                                //$newState = new Status();
                                 //$newID = $child['TargetID'];
                                 //$newState->State = GetValue($child['TargetID']);
 
@@ -442,12 +443,6 @@
         ## OnChange Events ##
         ##                 ##
 
-        class Status {
-
-            public $Id;
-            public $State;
-        
-        }
 
         class Scene {
 
