@@ -285,7 +285,7 @@
 
                     }
 
-                    $sm->Scenes[$senderName] = $scene;
+                    $sm->Scenes[] = $scene;
 
                     SetValue($this->searchObjectByName("Scenes"), $sm->scenesToJson());
                     //print_r($sm->Scenes[0]->Status);
