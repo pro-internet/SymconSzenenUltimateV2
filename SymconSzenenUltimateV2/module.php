@@ -34,6 +34,8 @@
 
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Optionen"), "onOptionsChange", $this->searchObjectByName("Events"));
 
+            $this->updateSceneVarProfile();
+
         }
 
 
@@ -183,7 +185,36 @@
 
         }
 
-        
+    
+        protected function updateSceneVarProfile () {
+
+            $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+
+            $assocs = null;
+
+            $counter = 0;
+
+            if (count($scenes) > 0) {
+
+                foreach ($scenes as $scene) {
+
+                    $scene = IPS_GetObject($this->searchObjectByName($scene));
+
+                    $sceneName = $scene['ObjectName'];
+
+                    $assocs[$sceneName] = $counter;
+                    
+                    $counter = $counter + 1;
+
+                }
+
+                $this->createDynamicProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $assocs);
+
+            }
+
+            //$this->createDynamicProfile();
+
+        }
 
         ##                 ##
         ## OnChange Events ##

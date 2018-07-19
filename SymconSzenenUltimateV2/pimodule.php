@@ -1008,6 +1008,25 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function createDynamicProfile ($profileName, $elements) {
+
+        if ($profileName != null && count($elements) > 0 ) {
+
+            $min = 0;
+            $max = count($elements);
+
+            if (IPS_VariableProfileExists($profileName)) {
+
+                IPS_DeleteVariableProfile($profileName);
+
+            }
+
+            $this->checkVariableProfile($profileName, 1, $min, $max, 1, $elements);
+
+        }
+
+    }
+
 }
 
 
