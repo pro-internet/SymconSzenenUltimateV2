@@ -741,7 +741,7 @@ abstract class PISymconModule extends IPSModule {
 
         if ($this->doesExist($target)) {
 
-            if (!$this->doesExist($linkName)) {
+            if (!$this->doesExist($this->searchObjectByName($linkName))) {
 
                 $link = IPS_CreateLink();
                 IPS_SetName($link, $linkName);
