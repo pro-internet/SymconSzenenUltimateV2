@@ -148,6 +148,9 @@
                         $this->setIcon($newInt, "Rocket");
                         $this->addProfile($newInt, $this->prefix . ".SceneOptions");
 
+                        $this->easyCreateOnChangeFunctionEvent("onChange " . $newInt, $newInt, "onSceneVarChange", $this->searchObjectByName("Events"));
+
+
                     }
 
                 }
@@ -240,6 +243,72 @@
         ## OnChange Events ##
         ##                 ##
         
+        public function onSceneVarChange () {
+
+            $senderVar = $_IPS['VARIABLE'];
+            $senderObj = IPS_GetObject($senderVar);
+            $senderVal = GetValue($senderVar);
+            $json = GetValue($this->searchObjectByName("Scenes"));
+            $targets = IPS_GetObject($this->searchObjectByName("Targets"));
+
+            // Wenn Speichern
+            if ($senderVal == 0) {
+
+                $sm = new SceneManager($json);
+
+                $scene = new Scene();
+
+                $scene->ID = $senderVal;
+                $scene->Name = $senderObj['ObjectName'];
+                
+                if (count($targets['ChildrenIDs']) > 0) {
+
+                    foreach ($targets['ChildrenIDs'] as $child) {
+
+                        $child = IPS_GetObject($child);
+
+                        if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                            $child = IPS_GetLink($child['ObjectID']);
+
+                            if ($this->doesExist($child['TargetID'])) {
+
+                                $newState = new Status();
+                                $newState->ID = $child['TargetID'];
+                                $newState->State = GetValue($child['TargetID']);
+
+                                $scene->addState($newState);
+
+                            }
+
+                        }
+
+                    }
+
+                    if (count($sm->scenes) > 0) {
+
+                        foreach ($sm->scenes as $subScene) {
+
+                            if ($subScene->ID == $scene->ID) {
+
+                                $sm->scenes[] = $scene;
+                                //$sm->deleteSceneById();
+
+                            }
+
+                        }
+
+                    }
+
+                    print_r($sm);
+
+                }
+
+
+            }
+
+        }
+
         public function onOptionsChange ($sender = null) {
 
             $optionsVal = GetValue($this->searchObjectByName("Optionen"));
@@ -344,4 +413,84 @@
 
  
     }
+
+
+
+        ##                 ##
+        ## OnChange Events ##
+        ##                 ##
+
+        class Status {
+
+            public $Id;
+            public $State;
+        
+        }
+
+        class Scene {
+
+            public $ID;
+            public $Name;
+            public $Status; 
+
+            public function addState ($state) {
+
+                $status[] = $state
+
+            }
+
+        }
+
+        class SceneManager {
+
+            public $Scenes;
+
+            public function __construct($jsonText) {
+
+                if ($jsonText != null && $jsonText != "") {
+
+                    $this->loadScenes($jsonText);
+
+                }
+
+            }
+
+            public function deleteSceneById ($sceneId) {
+
+                
+
+            }
+
+            public function getSceneById ($id) {
+
+                if (count($this->Scenes) > 0) {
+
+                    $toReturn = null;
+
+                    foreach ($this->Scenes as $scene) {
+
+                        if ($scene->ID == $id) {
+
+                            $toReturn = $scene;
+
+                        }
+
+                    }
+
+                    return $toReturn;
+
+                }
+
+            }
+
+            protected function loadScenes ($text) {
+
+                $this->Scenes = json_encode($text);
+
+            }
+
+
+        }
+
+
 ?>
