@@ -226,7 +226,7 @@
         ## OnChange Events ##
         ##                 ##
         
-        public function onOptionsChange () {
+        public function onOptionsChange ($sender = null) {
 
             $optionsVal = GetValue($this->searchObjectByName("Optionen"));
             $prnt = IPS_GetParent($this->InstanceID);
@@ -234,7 +234,7 @@
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
             $timers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
 
-            print_r($_IPS['SENDER']);
+            print_r($_IPS);
             return;
 
             if ($_IPS['SENDER'] != "WebFront") {
