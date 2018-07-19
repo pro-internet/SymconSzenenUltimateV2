@@ -1072,31 +1072,60 @@ abstract class PISymconModule extends IPSModule {
 
             if ($changeAssoc != null) {
 
-                foreach ($changeAssoc as $oldName => $newName) {
+                // foreach ($changeAssoc as $oldName => $newName) {
 
-                    // echo "OLDNAME: " . $oldName . "  NewName: " . $newName . " \\n";
-                   // if ($this->profileHasAssociation($profileName, $oldName)) {
+                //     // echo "OLDNAME: " . $oldName . "  NewName: " . $newName . " \\n";
+                //    // if ($this->profileHasAssociation($profileName, $oldName)) {
 
-                        foreach ($actualAssocs as $actualAssoc) {
+                //         foreach ($actualAssocs as $actualAssoc) {
 
-                            //print($actualAssoc);
+                //             //print($actualAssoc);
 
-                            if ($actualAssoc['Name'] == $oldName && !in_array($actualAssoc['Name'], $blockIt)) {
+                //             if ($actualAssoc['Name'] == $oldName && !in_array($actualAssoc['Name'], $blockIt)) {
 
-                                //IPS_SetVariableProfileAssociation($profileName, intval($actualAssoc['Value']), $newName, $actualAssoc['Icon'], hexdec($actualAssoc['Color']));
-                                $blockIt[] = $actualAssoc['Name']; 
-                                $newAssocs[$newName] = intval($actualAssoc['Value']);
+                //                 //IPS_SetVariableProfileAssociation($profileName, intval($actualAssoc['Value']), $newName, $actualAssoc['Icon'], hexdec($actualAssoc['Color']));
+                //                 $blockIt[] = $actualAssoc['Name']; 
+                //                 $newAssocs[$newName] = intval($actualAssoc['Value']);
 
-                            } else {
+                //             } else {
 
-                                $aname = $actualAssoc['Name'];
-                                $newAssocs[$aname] = intval($actualAssoc['Value']);
+                //                 $aname = $actualAssoc['Name'];
+                //                 $newAssocs[$aname] = intval($actualAssoc['Value']);
 
-                            }
+                //             }
 
+                //         }
+
+                //     //}
+
+                // }
+
+                foreach ($actualAssocs as $actualAssoc) {
+
+                    $toReplace = false;
+
+                    $nname = null;
+                    $nvalue = null;
+
+                    foreach ($changeAssoc as $oldName => $newName) {
+
+                        if ($oldName == $actualAssoc['Name']) {
+                            $toReplace = true;
+                            $nname = $newName;
                         }
 
-                    //}
+                    }
+
+                    if ($toReplace) {
+
+                        $newAssocs[$nname] = $actualAssoc['Value']; 
+
+                    } else {
+
+                        $nme = $actualAssoc['Name'];
+                        $newAssocs[$nme] = $actualAssoc['Value'];
+
+                    }
 
                 }
 
