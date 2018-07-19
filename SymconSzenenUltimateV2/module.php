@@ -495,7 +495,7 @@
 
             protected function loadScenes ($text) {
 
-                $this->Scenes = json_encode($text);
+                $this->Scenes = json_decode($text);
 
             }
 
