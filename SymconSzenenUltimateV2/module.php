@@ -286,24 +286,7 @@
 
                     }
 
-                    if (count($sm->Scenes) > 0) {
-
-                        foreach ($sm->Scenes as $ssceneID => $sscene) {
-
-                            // if ($ssceneID == $scene) {
-
-                            //     //$sm->deleteSceneById($senderName);
-                            //     $sm->Scenes[$senderName] = $scene;
-
-                            // }
-
-                        }
-
-                    } else {
-
-                        $sm->Scenes[$senderName] = $scene;
-
-                    }
+                    $sm->Scenes[$senderName] = $scene;
 
                     SetValue($this->searchObjectByName("Scenes"), $sm->scenesToJson());
                     //print_r($sm->Scenes[0]->Status);
