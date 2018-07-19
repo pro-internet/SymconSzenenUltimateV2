@@ -302,9 +302,9 @@
 
                     $actualScene = $sm->getSceneById($senderName);
 
-                    foreach ($actualScene->Status as $Status) {
+                    foreach ($actualScene->Status as $StatusId => $StatusVal) {
 
-                        $this->setDevice($Status->Id, $Status->State);
+                        $this->setDevice($StatusId, $StatusVal);
 
                     }
 
