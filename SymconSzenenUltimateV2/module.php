@@ -148,7 +148,7 @@
                         $this->setIcon($newInt, "Rocket");
                         $this->addProfile($newInt, $this->prefix . ".SceneOptions");
 
-                        $this->easyCreateOnChangeFunctionEvent("onChange " . $newInt, $newInt, "onSceneVarChange", $this->searchObjectByName("Events"));
+                        $this->easyCreateOnChangeFunctionEvent("onChange " . $newInt, $newInt, "", $this->searchObjectByName("Events"));
 
 
                     }
@@ -243,7 +243,7 @@
         ## OnChange Events ##
         ##                 ##
         
-        public function onSceneVarChange () {
+        public function  () {
 
             $senderVar = $_IPS['VARIABLE'];
             $senderObj = IPS_GetObject($senderVar);
@@ -273,7 +273,7 @@
                             if ($this->doesExist($child['TargetID'])) {
 
                                 $newState = new Status();
-                                $newState->ID = $child['TargetID'];
+                                $newState->Id = $child['TargetID'];
                                 $newState->State = GetValue($child['TargetID']);
 
                                 $scene->Status[] = $newState;
@@ -303,6 +303,7 @@
 
                     }
 
+                    SetValue($this->searchObjectByName("Scenes"), $sm->scenesToJson());
                     print_r($sm->Scenes[0]->Status);
 
                 }
@@ -482,6 +483,13 @@
             protected function loadScenes ($text) {
 
                 $this->Scenes = json_encode($text);
+
+            }
+
+            public function scenesToJson () {
+
+                $js = json_encode($this->Scenes);
+                return $js;
 
             }
 
