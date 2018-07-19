@@ -147,7 +147,7 @@
 
                     $doesExist = false;
 
-                    $sceneVarObj = IPS_GetObject($sceneVar);
+                    $sceneVarObj = IPS_GetObject($this->searchObjectByName($sceneVar));
 
                     if (count($allTimerVars) > 0) {
 
