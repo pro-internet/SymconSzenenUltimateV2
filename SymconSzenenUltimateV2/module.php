@@ -248,6 +248,7 @@
             $senderVar = $_IPS['VARIABLE'];
             $senderObj = IPS_GetObject($senderVar);
             $senderVal = GetValue($senderVar);
+            $senderName = $senderObj['ObjectName'];
             $json = GetValue($this->searchObjectByName("Scenes"));
             $targets = IPS_GetObject($this->searchObjectByName("Targets"));
 
@@ -290,8 +291,8 @@
 
                             if ($ssceneID == $scene->ID) {
 
-                                $sm->deleteSceneById($senderVal);
-                                $sm->Scenes[$senderVal] = $scene;
+                                $sm->deleteSceneById($senderName);
+                                $sm->Scenes[$senderName] = $scene;
 
                             }
 
@@ -299,7 +300,7 @@
 
                     } else {
 
-                        $sm->Scenes[$senderVal] = $scene;
+                        $sm->Scenes[$senderName] = $scene;
 
                     }
 
@@ -308,6 +309,23 @@
 
                 }
 
+
+            } else if ($senderVal == 1) {
+
+                // Wenn Ausführen
+                $sm = new SceneManager($json);
+
+                if (count($sm->Scenes) > 0) {
+
+                    $actualScene = $sm->getSceneById($senderName);
+
+                    foreach ($actualScene->Status as $Status) {
+
+                        $this->setDevice($Status->Id, $Status->State);
+
+                    }
+
+                }
 
             }
 
