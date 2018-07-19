@@ -1068,6 +1068,7 @@ abstract class PISymconModule extends IPSModule {
             //$name, $type, $min = 0, $max = 100, $steps = 1, $associations = null
 
             $newAssocs = null;
+            $blockIt = array();
 
             if ($changeAssoc != null) {
 
@@ -1080,13 +1081,14 @@ abstract class PISymconModule extends IPSModule {
 
                             //print($actualAssoc);
 
-                            if ($actualAssoc['Name'] == $oldName) {
+                            if ($actualAssoc['Name'] == $oldName && !in_array($actualAssoc['Name'], $blockIt)) {
 
                                 //IPS_SetVariableProfileAssociation($profileName, intval($actualAssoc['Value']), $newName, $actualAssoc['Icon'], hexdec($actualAssoc['Color']));
-
                                 $newAssocs[$newName] = intval($actualAssoc['Value']);
+                                $blockIt[] = $actualAssoc['Name']; 
 
                             } else {
+
                                 $aname = $actualAssoc['Name'];
                                 $newAssocs[$aname] = intval($actualAssoc['Value']);
 
@@ -1100,9 +1102,9 @@ abstract class PISymconModule extends IPSModule {
 
             }
 
-            print_r($newAssocs);
-            //IPS_DeleteVariableProfile($profileName);
-            //$this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs);
+            //print_r($newAssocs);
+            IPS_DeleteVariableProfile($profileName);
+            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs);
 
         }
 
