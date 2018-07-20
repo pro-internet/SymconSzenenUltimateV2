@@ -148,7 +148,7 @@
 
         public function nextElement () {
 
-            $allScenes = $this->getAllSceneNames();
+            $allScenes = $this->getAllScenesSorted();
 
             $lastScene = GetValue($this->searchObjectByName("LastScene"));
 
@@ -163,10 +163,12 @@
 
                 $nextElement = $this->getElementAfterInArray($lastScene, $allScenes);
 
+                echo $nextElement;
+
                 if ($nextElement != "last") {
 
-                    SetValue($this->searchObjectByName($nextElement), 1);
                     SetValue($this->searchObjectByName("LastScene"), $nextElement);
+                    SetValue($this->searchObjectByName($nextElement), 1);
 
                     IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($nextElement));
 
@@ -179,7 +181,7 @@
         public function getAllScenesSorted () {
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
-            print_r($scenes);
+            return $scenes;
 
         }
 

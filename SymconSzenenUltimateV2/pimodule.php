@@ -1433,6 +1433,7 @@ abstract class PISymconModule extends IPSModule {
 
             if ($elementFound) {
                 $elem = $element;
+                break;
             }
 
             if ($element == $search) {
