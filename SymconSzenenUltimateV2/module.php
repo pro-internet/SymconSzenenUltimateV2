@@ -388,7 +388,6 @@
 
                         }
 
-                        SetValue($sceneDataVar, "");
                         SetValue($sceneDataVar, json_encode($states));
 
                     }
@@ -406,8 +405,6 @@
                 if ($sceneDataVal != null && $sceneDataVal != "") {
 
                     $json = json_decode($sceneDataVal);
-
-                    print_r($json);
 
                     foreach ($json as $id => $val) {
 
@@ -500,6 +497,7 @@
 
                         foreach ($scenes as $scene) {
     
+                            print_r($scene);
                             $this->hide($this->searchObjectByName($scene));
                             $this->hide($this->searchObjectByName($scene . " Timer"));
     
