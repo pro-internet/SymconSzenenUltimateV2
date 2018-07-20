@@ -304,7 +304,6 @@
 
         }
 
-    
         protected function updateSceneVarProfile () {
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
@@ -356,6 +355,20 @@
                 $scene = new Scene();
 
                 $scene->Name = $senderObj['ObjectName'];
+
+                if ($sm->hasScene($senderObj['ObjectName'])) {
+
+                    foreach ($sm->Scenes as $scene) {
+
+                        if ($scene->Name == $senderObj['ObjectName']) {
+
+                            $sm->deleteScene($senderObj['ObjectName']);
+
+                        }
+
+                    }
+
+                }
                 
                 if (count($targets['ChildrenIDs']) > 0) {
 
@@ -512,13 +525,12 @@
 
         }
 
- 
     }
 
 
 
         ##                 ##
-        ## OnChange Events ##
+        ## Externe Klassem ##
         ##                 ##
 
 
@@ -581,6 +593,59 @@
 
                 $js = json_encode($this->Scenes);
                 return $js;
+
+            }
+
+            public function hasScene ($nme) {
+
+                $doesExist = false;
+
+                if ($this->Scenes != null) {
+
+                    if (count($this->Scenes) > 0) {
+
+                        foreach ($this->Scenes as $scene) {
+
+                            if ($scene->Name == $nme) {
+
+                                $doesExist = true;
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                return $doesExist;
+
+            }
+
+            public function deleteScene ($name) {
+
+                if ($this->hasScene($name)) {
+
+                    $counter = 0;
+                    $found = false;
+
+                    foreach ($this->Scenes as $Scene) {
+
+                        if ($Scene->Name == $name) {
+
+                            $found = true;
+
+                        }
+
+                        if (!$found) {
+                            $counter++;
+                        }
+
+                    }
+
+                    unset($this->Scenes[$counter]);
+
+                }
 
             }
 
