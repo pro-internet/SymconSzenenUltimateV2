@@ -318,6 +318,8 @@
 
             $nms = $this->getOrderedEntries();
 
+            print_r($nms);
+
             if ($nms != null && $nms != "") {
 
                 $newNms = new stdClass();
