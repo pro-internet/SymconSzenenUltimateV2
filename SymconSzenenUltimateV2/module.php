@@ -390,7 +390,7 @@
                 
                 SetValue($this->searchObjectByName("Scenes"), "[" . $sm->scenesToJson() . "]");
 
-            }
+            
 
                 
 
