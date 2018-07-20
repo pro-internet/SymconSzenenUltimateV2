@@ -102,6 +102,7 @@
             $this->RegisterPropertyString("Names", "");
             $this->RegisterPropertyBoolean("ModeTime", false);
             $this->RegisterPropertyBoolean("Loop", false);
+            $this->RegisterPropertyInteger("Sensor", null);
     
         }
     
