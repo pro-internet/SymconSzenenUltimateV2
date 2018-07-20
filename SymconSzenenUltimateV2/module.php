@@ -42,8 +42,6 @@
 
             $this->deleteUnusedVars();
 
-            $this->setIDs();
-
         }
 
         public function Destroy () {
