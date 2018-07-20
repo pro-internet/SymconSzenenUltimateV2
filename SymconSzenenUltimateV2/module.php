@@ -40,8 +40,6 @@
 
             $this->deleteUnusedVars();
 
-            $this->setIDs();
-
         }
 
         public function Destroy () {
@@ -64,6 +62,7 @@
 
             $targets = $this->checkFolder("Targets", null, 4);
             $events = $this->checkFolder("Events", null, 5);
+            $sceneData = $this->checkFolder("SceneData", null, 6);
 
             //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null, $istAbstand = false
             //$this->checkString("", false, $this->InstanceID, "|AFTER|" . $sceneVar, null, true);
@@ -148,6 +147,7 @@
 
                         $newPos = $this->getHighestPosition() + 1;
                         $newInt = $this->checkInteger($scene->Name, false, $this->InstanceID, $newPos, -1);
+                        $newSceneData = $this->checkString($scene->Name . " SceneData", false, $this->searchObjectByName("SceneData"), 0, "");
                         $this->addSetValue($newInt);
                         $this->setIcon($newInt, "Rocket");
                         $this->addProfile($newInt, $this->prefix . ".SceneOptions");
@@ -249,6 +249,13 @@
 
                     }
 
+                    // Delete SceneData if existing
+                    if ($this->doesExist($this->searchObjectByName($eScene . " SceneData", $this->searchObjectByName("SceneData")))) {
+
+                        $this->deleteObject($this->searchObjectByName($eScene . " SceneData", $this->searchObjectByName("SceneData")));
+
+                    }
+
                 }
 
             }
@@ -303,61 +310,6 @@
             }
 
             return $ary;
-
-        }
-
-        protected function getSceneIDByName ($name) {
-
-            
-
-        }
-
-        protected function setIDs () {
-
-            $nms = $this->getOrderedEntries();
-
-            if ($nms != null && $nms != "") {
-
-                $newProp = array();
-
-                $counter = 0;
-
-                foreach ($nms as $name) {
-
-                    $newNms = new stdClass();
-                    $newNms->Name = $name->Name;
-                    $newNms->Position = $name->Position;
-                    $newNms->ID = $counter;
-                    $newProp[] = $newNms;
-                    $counter++; 
-
-                }
-
-                //print_r($newProp);
-                //echo json_encode($newProp);
-                $success = IPS_SetProperty ($this->InstanceID, "Names", json_encode($newProp));
-
-            }
-
-        }
-
-
-        protected function getOrderedEntries () {
-
-            $nms = $this->ReadPropertyString("Names");
-
-            if ($nms != null && $nms != "") {
-
-                $nms = json_decode($nms);
-
-                usort($nms, function($a, $b)
-                {
-                    return $a->Position > $b->Position;
-                });
-
-                return $nms;
-
-            }
 
         }
 
@@ -605,131 +557,6 @@
         }
 
     }
-
-
-
-        ##                 ##
-        ## Externe Klassem ##
-        ##                 ##
-
-
-        class Scene {
-
-            public $Name;
-            public $Status; 
-
-        }
-
-        class SceneManager {
-
-            public $Scenes = array();
-
-            public function __construct($jsonText) {
-
-                if ($jsonText != null && $jsonText != "") {
-
-                    $this->loadScenes($jsonText);
-
-                }
-
-            }
-
-            public function deleteSceneById ($sceneId) {
-
-                unset($this->Scenes[$sceneId]);
-
-            }
-
-            public function getSceneById ($id) {
-
-                if (count($this->Scenes) > 0) {
-
-                    $toReturn = null;
-
-                    foreach ($this->Scenes as $sceneId => $scene) {
-
-                        if ($sceneId == $id) {
-
-                            $toReturn = $scene;
-
-                        }
-
-                    }
-
-                    return $toReturn;
-
-                }
-
-            }
-
-            protected function loadScenes ($text) {
-
-                $this->Scenes = json_decode($text);
-
-            }
-
-            public function scenesToJson () {
-
-                $js = json_encode($this->Scenes);
-                return $js;
-
-            }
-
-            public function hasScene ($nme) {
-
-                $doesExist = false;
-
-                if ($this->Scenes != null) {
-
-                    if (count($this->Scenes) > 0) {
-
-                        foreach ($this->Scenes as $scene) {
-
-                            if ($scene['Name'] == $nme) {
-
-                                $doesExist = true;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                return $doesExist;
-
-            }
-
-            public function deleteScene ($name) {
-
-                if ($this->hasScene($name)) {
-
-                    $counter = 0;
-                    $found = false;
-
-                    foreach ($this->Scenes as $Scene) {
-
-                        if ($Scene->Name == $name) {
-
-                            $found = true;
-
-                        }
-
-                        if (!$found) {
-                            $counter++;
-                        }
-
-                    }
-
-                    unset($this->Scenes[$counter]);
-
-                }
-
-            }
-
-
-        }
 
 
 ?>

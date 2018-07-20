@@ -17,15 +17,6 @@
 		  "edit": {
 		  	  "type": "ValidationTextBox"
 		  }
-		}, {
-		 "label": "Position",
-		 "name": "Position",
-		 "width": "50px",
-		 "add": 0,
-		 "visible": true,
-		 "edit": {
-		  	  "type": "ValidationTextBox"
-		  }
 		},
 		{
 		 "label": "ID",
