@@ -260,7 +260,7 @@
 
                         foreach ($allTimerVars as $timerVar) {
 
-                            $timerVarObj = IPS_GetObject($timerVar);
+                            $timerVarObj = IPS_GetObject($this->searchObjectByName($timerVar));
 
                             if ($timerVarObj['ObjectName'] == $sceneVarObj['ObjectName'] . " Timer") {
 
