@@ -361,7 +361,7 @@
                 $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
                 $sceneDataVal = GetValue($sceneDataVar);
                 
-                if ($sceneDataVal != null && $sceneDataVal != "") {
+                //if ($sceneDataVal != null && $sceneDataVal != "") {
 
                     $states = array();
 
@@ -387,7 +387,7 @@
 
                     }
 
-                }
+                //}
 
 
             } else if ($senderVal == 1) {
