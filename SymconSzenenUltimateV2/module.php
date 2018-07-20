@@ -176,6 +176,13 @@
 
         }
 
+        public function getAllScenesSorted () {
+
+            $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+            print_r($scenes);
+
+        }
+
         protected function getTimerLengthBySceneName ($sceneName) {
 
             $timer = GetValue($this->searchObjectByName($sceneName . " Timer"));
