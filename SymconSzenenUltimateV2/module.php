@@ -402,6 +402,8 @@
                 $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
                 $sceneDataVal = GetValue($sceneDataVar);
                 
+                echo "Execute " . $sceneDataName;
+
                 if ($sceneDataVal != null && $sceneDataVal != "") {
 
                     $json = json_decode($sceneDataVal);
