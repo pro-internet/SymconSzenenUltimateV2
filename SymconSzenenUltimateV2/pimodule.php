@@ -1262,10 +1262,7 @@ abstract class PISymconModule extends IPSModule {
 
         if ($this->SperreVar != null){
 
-            echo $this->SperreVar;
-
             $sperre = GetValue($this->SperreVar);
-
 
             if ($sperre) {
 
