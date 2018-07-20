@@ -943,6 +943,8 @@ abstract class PISymconModule extends IPSModule {
 
         $on = usort($own['ChildrenIDs'], array("PISymconModule", "cmp"));
 
+        print_r($on);
+
         $ary = null;
 
         foreach ($on as $child) {
