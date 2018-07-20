@@ -320,22 +320,24 @@
 
             if ($nms != null && $nms != "") {
 
-                $newNms = new stdClass();
+                $newProp = array();
 
                 $counter = 0;
 
                 foreach ($nms as $name) {
 
+                    $newNms = new stdClass();
                     $newNms->Name = $name->Name;
                     $newNms->Position = $name->Position;
                     $newNms->ID = $counter;
+                    $newProp[] = $newNms;
                     $counter++; 
 
                 }
 
                 print_r($nms);
 
-                IPS_SetProperty ($this->InstanceID, "Names", json_encode($newNms));
+                IPS_SetProperty ($this->InstanceID, "Names", json_encode($newProp));
 
             }
 
