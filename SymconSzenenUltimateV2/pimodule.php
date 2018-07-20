@@ -941,21 +941,6 @@ abstract class PISymconModule extends IPSModule {
 
         $own = IPS_GetObject($in);
 
-        $on = usort($own['ChildrenIDs'], function($a, $b) {
-
-            $obj1 = IPS_GetObject($a);
-            $obj2 = IPS_GetObject($b);
-
-            if ($obj1['ObjectPosition'] > $obj2['ObjectPosition']) {
-                return $obj1['ObjectName'];
-            } else{
-                return $obj2['ObjectName'];
-            }
-
-            //return $obj1['ObjectPosition'] > $obj2['ObjectPosition'];
-
-        });
-
         print_r($on);
 
         $ary = null;

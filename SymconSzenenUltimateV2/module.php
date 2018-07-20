@@ -148,7 +148,7 @@
 
         public function nextElement () {
 
-            $allScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+            $allScenes = $this->getAllSceneNames();
 
             $lastScene = GetValue($this->searchObjectByName("LastScene"));
 
