@@ -358,7 +358,7 @@
             
 
                 $sceneDataName = $senderName . " SceneData";
-                $sceneDataVar = $this->searchObjectByName($senderDataName, $this->searchObjectByName("SceneData"));
+                $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
                 $sceneDataVal = GetValue($sceneDataVar);
                 
                 if ($sceneDataVal != null && $sceneDataVal != "") {
@@ -394,7 +394,7 @@
 
                 // Wenn Ausführen
                 $sceneDataName = $senderName . " SceneData";
-                $sceneDataVar = $this->searchObjectByName($senderDataName, $this->searchObjectByName("SceneData"));
+                $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
                 $sceneDataVal = GetValue($sceneDataVar);
                 
                 if ($sceneDataVal != null && $sceneDataVal != "") {
