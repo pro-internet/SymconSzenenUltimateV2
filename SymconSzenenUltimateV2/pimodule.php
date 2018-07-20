@@ -1465,13 +1465,11 @@ abstract class PISymconModule extends IPSModule {
 
         $linkListObj = IPS_GetObject($linkListId);
 
-        if (count($linkListId['ChildrenIDs']) > 0) {
+        if (count($linkListObj['ChildrenIDs']) > 0) {
 
-            foreach ($linkListId['ChildrenIDs'] as $child) {
+            foreach ($linkListObj['ChildrenIDs'] as $child) {
 
                 $child = IPS_GetObject($child);
-
-                echo $child;
 
                 if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
 
