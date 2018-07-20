@@ -172,6 +172,21 @@
 
                     IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($nextElement));
 
+                } else {
+
+                    if ($this->ReadPropertyBoolean("Loop")) {
+
+                        SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
+                        SetValue($this->searchObjectByName($allScenes[0]), 1);
+
+                        IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
+
+                    } else {
+
+                        SetValue($this->searchObjectByName("LastScene"), null);
+
+                    }
+
                 }
 
             }
