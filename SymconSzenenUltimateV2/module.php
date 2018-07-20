@@ -28,6 +28,8 @@
 
             //$onChangeEventName, $targetId, $function, $parent = null
 
+            $this->CheckScripts();
+
             $this->CheckVariables();
 
             $this->checkSceneVars();
