@@ -1040,6 +1040,11 @@ abstract class PISymconModule extends IPSModule {
         } else if ($obj['ObjectType'] == $this->objectTypeByName("Link")) {
             IPS_DeleteLink($id);
         } else if ($obj['ObjectType'] == $this->objectTypeByName("Script")) {
+            if (IPS_HasChildren($id)) {
+                foreach ($obj['ChildrenIDs'] as $child) {
+                    $this->deleteObject($child);
+                }
+            }
             IPS_DeleteScript($id, true);
         } else if ($obj['ObjectType'] == $this->objectTypeByName("Kategorie")) {
             if (IPS_HasChildren($id)) {
