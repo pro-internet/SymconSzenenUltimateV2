@@ -227,7 +227,7 @@
                 return;
             }
 
-            if (!$timerIsEnabled) {
+            if ($timerIsEnabled != true) {
 
                 if ($existingSceneTimers != null) {
 
