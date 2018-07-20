@@ -350,7 +350,7 @@
 
                 usort($nms, function($a, $b)
                 {
-                    return $a->Position < $b->Position;
+                    return $a->Position > $b->Position;
                 });
 
                 return $nms;
