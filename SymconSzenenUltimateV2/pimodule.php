@@ -941,20 +941,20 @@ abstract class PISymconModule extends IPSModule {
 
         $own = IPS_GetObject($in);
 
-        $on = usort($own['ChildrenIDs'], function($a, $b) {
+        // $on = usort($own['ChildrenIDs'], function($a, $b) {
 
-            $obj1 = IPS_GetObject($a);
-            $obj2 = IPS_GetObject($b);
+        //     $obj1 = IPS_GetObject($a);
+        //     $obj2 = IPS_GetObject($b);
 
-            return strcmp($obj1['ObjectPosition'], $obj2['ObjectPosition']);
+        //     return strcmp($obj1['ObjectPosition'], $obj2['ObjectPosition']);
 
-        });
+        // });
 
-        print_r($on);
+        //print_r($on);
 
         $ary = null;
 
-        foreach ($on as $child) {
+        foreach ($own['ChildrenIDs'] as $child) {
 
             $obj = IPS_GetObject($child);
 
