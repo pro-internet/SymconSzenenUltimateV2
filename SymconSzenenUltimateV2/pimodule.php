@@ -32,6 +32,19 @@ abstract class PISymconModule extends IPSModule {
         $moduleJson = json_decode(file_get_contents($moduleJsonPath));
 
         $this->prefix = $moduleJson->prefix;
+
+        if ($this->doesExist($this->searchObjectByName("Automatik"))) {
+
+            $this->AutomatikVar = $this->searchObjectByName("Automatik");
+
+        }
+
+        if ($this->doesExist($this->searchObjectByName("Sperre"))) {
+
+            $this->SperreVar = $this->searchObjectByName("Sperre");
+
+        }
+
         
     }
 
@@ -55,18 +68,6 @@ abstract class PISymconModule extends IPSModule {
     public function ApplyChanges() {
 
         parent::ApplyChanges(); 
-
-        if ($this->doesExist($this->searchObjectByName("Automatik"))) {
-
-            $this->AutomatikVar = $this->searchObjectByName("Automatik");
-
-        }
-
-        if ($this->doesExist($this->searchObjectByName("Sperre"))) {
-
-            $this->SperreVar = $this->searchObjectByName("Sperre");
-
-        }
 
         $this->CheckProfiles();
 
@@ -1268,10 +1269,6 @@ abstract class PISymconModule extends IPSModule {
                 return true;
 
             }
-
-        } else {
-
-            echo "No Sperre";
 
         }
 
