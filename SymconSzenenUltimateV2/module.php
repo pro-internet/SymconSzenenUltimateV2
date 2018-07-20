@@ -353,6 +353,10 @@
             $senderName = $senderObj['ObjectName'];
             $targets = IPS_GetObject($this->searchObjectByName("Targets"));
 
+            if ($_IPS['OLDVALUE'] == $senderVal) {
+                return;
+            }
+
             // Wenn Speichern
             if ($senderVal == 0) {
             
