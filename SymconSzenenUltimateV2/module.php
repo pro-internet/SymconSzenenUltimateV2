@@ -240,7 +240,7 @@
 
         protected function getAllSceneNames () {
 
-            $scenes = json_encode($this->ReadPropertyString("Names"));
+            $scenes = json_decode($this->ReadPropertyString("Names"));
 
             $ary = null;
 
