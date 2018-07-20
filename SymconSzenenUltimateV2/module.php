@@ -292,7 +292,7 @@
                 }
 
             }
-
+            print_r($existingSceneTimers);
             if (!$timerIsEnabled) {
 
                 print_r($existingSceneTimers);
