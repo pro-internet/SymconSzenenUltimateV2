@@ -946,7 +946,13 @@ abstract class PISymconModule extends IPSModule {
             $obj1 = IPS_GetObject($a);
             $obj2 = IPS_GetObject($b);
 
-            return $obj1['ObjectPosition'] > $obj2['ObjectPosition'];
+            if ($obj1['ObjectPosition'] > $obj2['ObjectPosition']) {
+                return $obj1['ObjectName'];
+            } else{
+                return $obj2['ObjectName'];
+            }
+
+            //return $obj1['ObjectPosition'] > $obj2['ObjectPosition'];
 
         });
 
