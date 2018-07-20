@@ -187,6 +187,8 @@
                         SetValue($this->searchObjectByName("LastScene"), null);
                         $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
 
+                        IPS_SetScriptTimer($this->searchObjectByName("nextElement"), 0);
+
                     }
 
                 }
