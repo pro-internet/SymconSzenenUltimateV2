@@ -352,11 +352,12 @@
 
                 $sm = new SceneManager($json);
 
-                $scene = new Scene();
+                $sceneName = $senderObj['ObjectName'];
+                $scene['Status'] = array();
 
-                $scene->Name = $senderObj['ObjectName'];
+                $stati = array();
 
-                if ($sm->hasScene($senderObj['ObjectName'])) {
+                /*if ($sm->hasScene($senderObj['ObjectName'])) {
 
                     foreach ($sm->Scenes as $scene) {
 
@@ -368,7 +369,7 @@
 
                     }
 
-                }
+                }*/
                 
                 if (count($targets['ChildrenIDs']) > 0) {
 
@@ -386,7 +387,7 @@
                                 $newID = $child['TargetID'];
                                 //$newState->State = GetValue($child['TargetID']);
 
-                                $scene->Status[$newID] = GetValue($child['TargetID']);
+                                $stati[$newID] = GetValue($child['TargetID']);
 
                             }
 
@@ -395,13 +396,7 @@
                     }
                     //print_r($sm->Scenes[0]->Status);
 
-                    $indx = count($sm->Scenes) + 1;
-
-                    if (count($sm->Scenes) == 0) {
-                        $indx = 0;
-                    }
-
-                    $sm->Scenes[$indx] = $scene;
+                    $sm->Scenes[$sceneName] = $stati;
 
                     SetValue($this->searchObjectByName("Scenes"), $sm->scenesToJson());
 
@@ -614,7 +609,7 @@
 
                         foreach ($this->Scenes as $scene) {
 
-                            if ($scene->Name == $nme) {
+                            if ($scene['Name'] == $nme) {
 
                                 $doesExist = true;
 
