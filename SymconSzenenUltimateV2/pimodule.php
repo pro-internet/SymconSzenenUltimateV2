@@ -1028,7 +1028,7 @@ abstract class PISymconModule extends IPSModule {
         }
 
         if (!$this->doesExist($id)) {
-            return null;
+            return null; 
         }
 
         $obj = IPS_GetObject($id);
