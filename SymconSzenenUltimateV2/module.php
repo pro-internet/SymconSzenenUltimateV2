@@ -28,6 +28,8 @@
 
             //$onChangeEventName, $targetId, $function, $parent = null
 
+            $this->CheckVariables();
+
             $this->checkSceneVars();
 
             $this->checkSceneTimerVars();
@@ -41,6 +43,7 @@
             $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
 
             $this->deleteUnusedVars();
+
 
         }
 
