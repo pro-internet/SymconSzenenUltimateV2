@@ -337,12 +337,6 @@
                 //echo json_encode($newProp);
                 $success = IPS_SetProperty ($this->InstanceID, "Names", json_encode($newProp));
 
-                if (!$success) {
-                    echo "FAILED";
-                } else {
-                    echo "SUCCESS";
-                }
-
             }
 
         }
