@@ -1258,6 +1258,7 @@ abstract class PISymconModule extends IPSModule {
 
     protected function setDevice ($deviceID, $wert){
 
+
         if ($this->SperreVar != null){
 
             $sperre = GetValue($this->SperreVar);
@@ -1267,6 +1268,10 @@ abstract class PISymconModule extends IPSModule {
                 return true;
 
             }
+
+        } else {
+
+            echo "No Sperre";
 
         }
 
