@@ -1461,6 +1461,31 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function setAllInLinkList ($linkListId, $value) {
+
+        $linkListObj = IPS_GetObject($linkListId);
+
+        if (count($linkListId['ChildrenIDs']) > 0) {
+
+            foreach ($linkListId['ChildrenIDs'] as $child) {
+
+                $child = IPS_GetObject($child);
+
+                if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                    $child = IPS_GetLink($child['ObjectID']);
+                    $tg = $child['TargetID'];
+
+                    $this->setDevice($tg, $value);
+
+                }
+
+            }
+
+        }
+
+    }
+
 
 }
 
