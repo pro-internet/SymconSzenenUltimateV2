@@ -402,11 +402,11 @@
                 $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
                 $sceneDataVal = GetValue($sceneDataVar);
                 
-                echo $sceneDataVar;
-
                 if ($sceneDataVal != null && $sceneDataVal != "") {
 
                     $json = json_decode($sceneDataVal);
+
+                    print_r($json);
 
                     foreach ($json as $id => $val) {
 
