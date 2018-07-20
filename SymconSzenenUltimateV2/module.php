@@ -38,6 +38,12 @@
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Optionen"), "onOptionsChange", $this->searchObjectByName("Events"));
             $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
 
+            if ($this->ReadPropertyInteger("Sensor") != null && $this->ReadPropertyBoolean("ModeDaySet")) {
+
+                $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
+
+            }
+
             $this->updateSceneVarProfile();
 
             $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
@@ -232,13 +238,13 @@
             $timerIsEnabled = $this->ReadPropertyBoolean("ModeTime");
             $daysetActivated = $this->ReadPropertyBoolean("ModeDaySet");
 
-
             $sceneNames = $this->getAllSceneNames();
 
             if (!$daysetActivated) {
 
                 $this->deleteObject($this->AutomatikVar);
                 $this->deleteObject($this->SperreVar);
+                $this->deleteObject($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
 
             }
 
@@ -387,6 +393,22 @@
         ## OnChange Events ##
         ##                 ##
         
+        public function onSensorChange () {
+
+            $senderVar = $_IPS['VARIABLE'];
+            $senderVal = GetValue($senderVar);
+            $automatik = GetValue($this->AutomatikVar);
+            $sperre = GetValue($this->SperreVar);
+
+            if ($automatik && !$sperre) {
+
+                SetValue($this->searchObjectByName("Szenen"), $senderVal);
+
+            }
+            
+
+        }
+
         public function onAutomatikChange () {
 
             $automatik = GetValue($this->AutomatikVar);
