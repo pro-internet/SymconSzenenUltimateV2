@@ -163,7 +163,7 @@
 
                 $nextElement = $this->getElementAfterInArray($lastScene, $allScenes);
 
-                echo $nextElement;
+                //echo $nextElement;
 
                 if ($nextElement != "last") {
 
@@ -183,7 +183,7 @@
 
                     } else {
 
-                        echo "No Loop, end";
+                        //echo "No Loop, end";
                         SetValue($this->searchObjectByName("LastScene"), null);
                         $this->setAllInLinkList($this->searchObjectByName("Targets"), 0);
 
