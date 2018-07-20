@@ -224,7 +224,7 @@
 
                         $this->deleteObject($this->searchObjectByName($eScene));
 
-                        if ($this->doesExist($this->searchObjectName($eScene . " Timer"))) {
+                        if ($this->doesExist($this->searchObjectByName($eScene . " Timer"))) {
 
                             $this->deleteObject($this->searchObjectName($eScene . " Timer"));
 
