@@ -183,6 +183,7 @@
 
                     } else {
 
+                        echo "No Loop, end";
                         SetValue($this->searchObjectByName("LastScene"), null);
                         $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
 
