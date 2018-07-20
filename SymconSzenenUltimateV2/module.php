@@ -496,8 +496,7 @@
                     if (count($scenes) > 0) {
 
                         foreach ($scenes as $scene) {
-    
-                            print_r($scene);
+                            echo $this->searchObjectByName($scene);
                             $this->hide($this->searchObjectByName($scene));
                             $this->hide($this->searchObjectByName($scene . " Timer"));
     
