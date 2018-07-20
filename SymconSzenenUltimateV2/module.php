@@ -220,6 +220,33 @@
                 return;
             }
 
+            if ($sceneNames == null || $sceneNames == "") {
+
+                foreach ($existingScenes as $eScene) {
+
+                    $eSceneVarId = $this->searchObjectByName($eScene);
+
+                    // Delete Object
+                    $this->deleteObject($this->searchObjectByName($eScene));
+
+                    // Delete Timer if existing
+                    if ($this->doesExist($this->searchObjectByName($eScene . " Timer"))) {
+
+                        $this->deleteObject($this->searchObjectByName($eScene . " Timer"));
+
+                    }
+
+                    // Delete Event if existing
+                    if ($this->doesExist($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")))) {
+
+                        $this->deleteObject($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")));
+
+                    }
+
+                }
+
+            }
+
             foreach ($existingScenes as $eScene) {
 
                 if (!in_array($eScene, $sceneNames)) {
