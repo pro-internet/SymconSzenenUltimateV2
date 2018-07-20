@@ -68,7 +68,7 @@
 
             if ($timeIsActivated) {
 
-                $lastScene = checkString("LastScene", false, $this->InstanceID, 5, null);
+                $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
                 $this->hide($lastScene);
 
             }
