@@ -231,8 +231,6 @@
 
                 if ($existingSceneTimers != null) {
 
-                    echo "Timer not enabled";
-
                     if (count($existingSceneTimers) > 0) {
 
                         foreach ($existingSceneTimers as $timerVar) {
