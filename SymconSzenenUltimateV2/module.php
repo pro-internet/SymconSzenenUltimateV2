@@ -172,6 +172,10 @@
 
                 //print_r($allSceneVars);
 
+                if ($allSceneVars == null) {
+                    return;
+                }
+
                 foreach ($allSceneVars as $sceneVar) {
 
                     $doesExist = false;
