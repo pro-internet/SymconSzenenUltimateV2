@@ -411,6 +411,8 @@
 
             }
 
+            SetValue($senderVar, -1);
+
         }
 
         public function onOptionsChange ($sender = null) {
