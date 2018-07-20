@@ -350,57 +350,47 @@
             // Wenn Speichern
             if ($senderVal == 0) {
 
-                $sm = new SceneManager($json);
 
-                $sceneName = $senderObj['ObjectName'];
-                $scene['Status'] = array();
+                if ($json != null && $json != "") {
 
-                $stati = array();
 
-                /*if ($sm->hasScene($senderObj['ObjectName'])) {
 
-                    foreach ($sm->Scenes as $scene) {
+                } else {
 
-                        if ($scene->Name == $senderObj['ObjectName']) {
+                    $scenes = array();
 
-                            $sm->deleteScene($senderObj['ObjectName']);
+                    $sceneName = $senderObj["ObjectName"];
 
-                        }
+                    $status = array();
 
-                    }
+                    if (IPS_HasChildren($targets['ObjectID'])) {
 
-                }*/
-                
-                if (count($targets['ChildrenIDs']) > 0) {
+                        foreach ($targets['ChildrenIDs'] as $child) {
 
-                    foreach ($targets['ChildrenIDs'] as $child) {
+                            $child = IPS_GetObject($child);
 
-                        $child = IPS_GetObject($child);
+                            if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
 
-                        if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
-
-                            $child = IPS_GetLink($child['ObjectID']);
-
-                            if ($this->doesExist($child['TargetID'])) {
-
-                                //$newState = new Status();
-                                $newID = $child['TargetID'];
-                                //$newState->State = GetValue($child['TargetID']);
-
-                                $stati[$newID] = GetValue($child['TargetID']);
+                                $child = IPS_GetLink($child['ObjectID']);
+                                $tg = $tg['TargetID'];
+                                $status[$tg] = GetValue($tg);
 
                             }
 
                         }
 
+                        $scenes[$sceneName] = $status;
+
+                        SetValue($this->searchObjectByName("Scenes"), $scenes);
+
                     }
-                    //print_r($sm->Scenes[0]->Status);
-
-                    $sm->Scenes[$sceneName] = $stati;
-
-                    SetValue($this->searchObjectByName("Scenes"), "[" . $sm->scenesToJson() . "]");
 
                 }
+
+                
+                SetValue($this->searchObjectByName("Scenes"), "[" . $sm->scenesToJson() . "]");
+
+            }
 
                 
 
