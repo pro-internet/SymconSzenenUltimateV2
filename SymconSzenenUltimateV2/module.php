@@ -234,7 +234,7 @@
                         // Delete Timer if existing
                         if ($this->doesExist($this->searchObjectByName($eScene . " Timer"))) {
 
-                            $this->deleteObject($this->searchObjectName($eScene . " Timer"));
+                            $this->deleteObject($this->searchObjectByName($eScene . " Timer"));
 
                         }
 
