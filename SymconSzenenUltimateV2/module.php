@@ -38,6 +38,8 @@
 
             $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
 
+            $this->deleteUnusedVars();
+
         }
 
         public function Destroy () {
@@ -205,6 +207,54 @@
                 
 
             }
+
+        }
+
+        protected function deleteUnusedVars () {
+
+            $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+
+            $sceneNames = $this->getAllSceneNames();
+
+            foreach ($existingScenes as $eScene) {
+
+                if (!in_array($eScene, $sceneNames)) {
+
+                    if ($this->doesExist($this->searchObjectByName($eScene))) {
+
+                        $this->deleteObject($this->searchObjectByName($eScene));
+
+                        if ($this->doesExist($this->searchObjectName($eScene . " Timer"))) {
+
+                            $this->deleteObject($this->searchObjectName($eScene . " Timer"));
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        protected function getAllSceneNames () {
+
+            $scenes = json_encode($this->ReadPropertyString("Names"));
+
+            $ary = null;
+
+            if (count($scenes) > 0) {
+
+                foreach ($scenes as $scene) {
+
+                    $ary[] = $scene->Name;
+
+                }
+
+            }
+
+            return $ary;
 
         }
 
