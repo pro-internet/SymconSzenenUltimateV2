@@ -1445,7 +1445,7 @@ abstract class PISymconModule extends IPSModule {
                 $elementFound = true;
             }
 
-            if ($counter == count($array)) {
+            if ($counter == count($array) - 1) {
                 return "last";
             }
             
