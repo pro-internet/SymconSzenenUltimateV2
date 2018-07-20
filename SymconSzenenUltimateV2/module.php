@@ -303,6 +303,8 @@
 
                             $timerVar = $this->searchObjectByName($timerVar);
 
+                            echo $timerVar;
+
                             $this->deleteObject($timerVar);
 
                         }
