@@ -33,6 +33,7 @@
             $this->checkSceneTimerVars();
 
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Optionen"), "onOptionsChange", $this->searchObjectByName("Events"));
+            $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
 
             $this->updateSceneVarProfile();
 
@@ -416,6 +417,22 @@
             }
 
             SetValue($senderVar, -1);
+
+        }
+
+        public function onSzenenChange() {
+
+            $sender = $_IPS['VARIABLE'];
+            $senderVal = GetValue($sender);
+
+            if ($_IPS['OLDVALUE'] == $senderVal) {
+                return;
+            }
+
+            $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $senderVal);
+
+            echo $sceneName;
+
 
         }
 

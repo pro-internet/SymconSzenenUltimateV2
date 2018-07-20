@@ -1142,6 +1142,48 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getValueByAssociationText ($profileName, $text) {
+
+        if ($this->profileHasAssociation($profileName, $text)) {
+
+            $profile = IPS_GetProfile($profileName);
+
+            foreach ($profile['Associations'] as $assoc) {
+
+                if ($assoc['Name'] == $text) {
+
+                    return $assoc['Value'];
+
+                }
+
+            }
+
+
+        }
+
+    }
+
+    protected function getAssociationTextByValue ($profileName, $value) {
+
+        if ($this->profileHasAssociationValue($profileName, $value)) {
+
+            $profile = IPS_GetProfile($profileName);
+
+            foreach ($profile['Associations'] as $assoc) {
+
+                if ($assoc['Value'] == $value) {
+
+                    return $assoc['Name'];
+
+                }
+
+            }
+
+
+        }
+
+    }
+
     protected function profileHasAssociation ($profileName, $searchedAssoc) {
 
         if (IPS_VariableProfileExists($profileName)) {
@@ -1155,6 +1197,36 @@ abstract class PISymconModule extends IPSModule {
                 foreach ($profile['Associations'] as $assoc) {
 
                     if ($assoc['Name'] == $searchedAssoc) {
+                        $found = true;
+                    }
+
+                }
+
+                return $found;
+
+            } else {
+
+                return false;
+
+            }
+
+        }
+
+    }
+
+    protected function profileHasAssociationValue ($profileName, $searchedValue) {
+
+        if (IPS_VariableProfileExists($profileName)) {
+
+            $profile = IPS_GetVariableProfile($profileName);
+
+            if (count($profile['Associations']) > 0) {
+
+                $found = false;
+
+                foreach ($profile['Associations'] as $assoc) {
+
+                    if ($assoc['Value'] == $searchedValue) {
                         $found = true;
                     }
 
