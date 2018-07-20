@@ -446,7 +446,7 @@
 
         }
 
-        public function onOptionsChange ($sender = null) {
+        public function onOptionsChange () {
 
             $optionsVal = GetValue($this->searchObjectByName("Optionen"));
             $prnt = IPS_GetParent($this->InstanceID);
