@@ -372,7 +372,7 @@
                             if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
 
                                 $child = IPS_GetLink($child['ObjectID']);
-                                $tg = $tg['TargetID'];
+                                $tg = $child['TargetID'];
                                 $status[$tg] = GetValue($tg);
 
                             }
