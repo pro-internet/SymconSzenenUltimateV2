@@ -393,13 +393,21 @@
                         }
 
                     }
-
-                    $sm->Scenes[] = $scene;
-
-                    SetValue($this->searchObjectByName("Scenes"), $sm->scenesToJson());
                     //print_r($sm->Scenes[0]->Status);
 
+                    $indx = count($sm->Scenes) + 1;
+
+                    if (count($sm->Scenes) == 0) {
+                        $indx = 0;
+                    }
+
+                    $sm->Scenes[$indx] = $scene;
+
+                    SetValue($this->searchObjectByName("Scenes"), $sm->scenesToJson());
+
                 }
+
+                
 
 
             } else if ($senderVal == 1) {
