@@ -465,7 +465,7 @@
 
             } 
 
-            // Verstecke Targets
+            // Verstecke / Zeige Targets
             if ($optionsVal == 0) {
 
                 $ergebnis = $this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Targets");
@@ -488,7 +488,7 @@
 
             }
 
-            // Modul verkleinern
+            // Modul verkleinern / Vergrößern
             if ($optionsVal == 1) {
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul verkleinern")) {
@@ -529,21 +529,6 @@
 
             }
 
-            // // Modul vergrößern
-            // if ($optionsVal == 3) {
-
-            //     if (count($scenes) > 0) {
-
-            //         foreach ($scenes as $scene) {
-
-            //             $this->show($this->searchObjectByName($scene));
-            //             $this->show($this->searchObjectByName($scene . " Timer"));
-
-            //         }
-
-            //     }
-
-            // }
 
             SetValue($this->searchObjectByName("Optionen"), -1);
 
