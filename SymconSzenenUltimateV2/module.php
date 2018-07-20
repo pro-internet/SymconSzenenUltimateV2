@@ -320,7 +320,7 @@
 
             if ($nms != null && $nms != "") {
 
-                $newNms = null;
+                $newNms = new Object();
 
                 $counter = 0;
 
