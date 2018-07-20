@@ -28,6 +28,8 @@
 
             //$onChangeEventName, $targetId, $function, $parent = null
 
+            $this->setIDs();
+
             $this->checkSceneVars();
 
             $this->checkSceneTimerVars();
@@ -39,6 +41,8 @@
             $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
 
             $this->deleteUnusedVars();
+
+            $this->setIDs();
 
         }
 
@@ -304,6 +308,58 @@
 
         }
 
+        protected function getSceneIDByName ($name) {
+
+            
+
+        }
+
+        protected function setIDs () {
+
+            $nms = $this->getOrderedEntries();
+
+            if ($nms != null && $nms != "") {
+
+                $nms = json_decode($nms);
+
+                $newNms = null;
+
+                $counter = 0;
+
+                foreach ($nms as $name) {
+
+                    $newNms->Name = $name->Name;
+                    $newNms->Position = $name->Position;
+                    $newNms->ID = $counter;
+                    $counter++; 
+
+                }
+
+                IPS_SetProperty ($this->InstanceID, "Names", json_encode($newNms));
+
+            }
+
+        }
+
+        protected function getOrderedEntries () {
+
+            $nms = $this->ReadPropertyInteger("Names");
+
+            if ($nms != null && $nms != "") {
+
+                $nms = json_decode($nms);
+
+                usort($nms, function($a, $b)
+                {
+                    return strcmp($a->Position, $b->Position);
+                });
+
+                return $nms;
+
+            }
+
+        }
+
         protected function updateSceneVarProfile () {
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
@@ -405,6 +461,8 @@
                             }
 
                         }
+
+
 
                         $scenes[0] = $status;
 
