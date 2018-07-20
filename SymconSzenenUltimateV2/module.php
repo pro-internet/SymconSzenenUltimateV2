@@ -388,6 +388,7 @@
 
                         }
 
+                        SetValue($sceneDataVar, "");
                         SetValue($sceneDataVar, json_encode($states));
 
                     }
