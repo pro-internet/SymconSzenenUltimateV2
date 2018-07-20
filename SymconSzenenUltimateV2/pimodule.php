@@ -1471,6 +1471,8 @@ abstract class PISymconModule extends IPSModule {
 
                 $child = IPS_GetObject($child);
 
+                echo $child;
+
                 if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
 
                     $child = IPS_GetLink($child['ObjectID']);
