@@ -353,7 +353,34 @@
 
                 if ($json != null && $json != "") {
 
+                    $scenes = json_decode($json);
 
+                    $sceneName = $senderObj["ObjectName"];
+
+                    $status = array();
+
+                    if (IPS_HasChildren($targets['ObjectID'])) {
+
+                        foreach ($targets['ChildrenIDs'] as $child) {
+
+                            $child = IPS_GetObject($child);
+
+                            if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                                $child = IPS_GetLink($child['ObjectID']);
+                                $tg = $child['TargetID'];
+                                $status[$tg] = GetValue($tg);
+
+                            }
+
+                        }
+
+                        $scenes[$sceneName] = $status;
+
+                        SetValue($this->searchObjectByName("Scenes"), json_encode($scenes));
+
+                    }
+                    
 
                 } else {
 
