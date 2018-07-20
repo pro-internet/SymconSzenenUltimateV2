@@ -381,7 +381,7 @@
 
                         $scenes[$sceneName] = $status;
 
-                        SetValue($this->searchObjectByName("Scenes"), $scenes);
+                        SetValue($this->searchObjectByName("Scenes"), json_encode($scenes));
 
                     }
 
