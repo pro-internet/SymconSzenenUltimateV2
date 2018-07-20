@@ -185,7 +185,7 @@
 
                         echo "No Loop, end";
                         SetValue($this->searchObjectByName("LastScene"), null);
-                        $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
+                        $this->setAllInLinkList($this->searchObjectByName("Targets"), 0);
 
                         IPS_SetScriptTimer($this->searchObjectByName("nextElement"), 0);
 
