@@ -320,8 +320,6 @@
 
             if ($nms != null && $nms != "") {
 
-                $nms = json_decode($nms);
-
                 $newNms = null;
 
                 $counter = 0;
