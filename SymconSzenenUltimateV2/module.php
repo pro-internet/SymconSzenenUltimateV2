@@ -32,6 +32,7 @@
 
             $this->checkSceneTimerVars();
 
+            $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Optionen"), "onOptionsChange", $this->searchObjectByName("Events"));
             $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
 
@@ -54,11 +55,19 @@
 
         public function CheckVariables () {
 
-            $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
+            $daysetActivated = $this->ReadPropertyBoolean("ModeDaySet");
+
+            if ($daysetActivated) {
+
+                $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
+
+                $this->setIcon($switches[0], "Power");
+                $this->setIcon($switches[1], "Power");
+
+            }
 
             $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
             $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
-
 
             $targets = $this->checkFolder("Targets", null, 4);
             $events = $this->checkFolder("Events", null, 5);
@@ -71,8 +80,6 @@
             $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
 
             $this->setIcon($optionen, "Database");
-            $this->setIcon($switches[0], "Power");
-            $this->setIcon($switches[1], "Power");
             $this->setIcon($sceneVar, "Rocket");
 
             $this->addSetValue($optionen);
@@ -82,7 +89,7 @@
     
         public function RegisterProperties () {
     
-            $this->RegisterPropertyBoolean("ModeDaySet", false);
+            $this->RegisterPropertyBoolean("ModeDaySet", true);
             $this->RegisterPropertyString("Names", "");
             $this->RegisterPropertyBoolean("ModeTime", false);
             $this->RegisterPropertyBoolean("Loop", false);
@@ -220,8 +227,17 @@
             $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
             $existingSceneTimers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
             $timerIsEnabled = $this->ReadPropertyBoolean("ModeTime");
+            $daysetActivated = $this->ReadPropertyBoolean("ModeDaySet");
+
 
             $sceneNames = $this->getAllSceneNames();
+
+            if (!$daysetActivated) {
+
+                $this->deleteObject($this->AutomatikVar);
+                $this->deleteObject($this->SperreVar);
+
+            }
 
             if ($existingScenes == null) {
                 return;
@@ -368,6 +384,23 @@
         ## OnChange Events ##
         ##                 ##
         
+        public function onAutomatikChange () {
+
+            $automatik = GetValue($this->AutomatikVar);
+
+            // Wenn Automatik auf true
+            if ($automatik) {
+
+
+
+            } else {
+            // Wenn Automatik auf false
+
+
+            }
+
+        }
+
         public function onSceneVarChange () {
 
             $senderVar = $_IPS['VARIABLE'];

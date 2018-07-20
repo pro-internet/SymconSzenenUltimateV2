@@ -7,6 +7,10 @@ abstract class PISymconModule extends IPSModule {
     public $prefix = null;
     public $instanceName = null;
 
+    // Vordefinierte Variablen (müssen nicht beschrieben werden)
+    public $AutomatikVar = null;
+    public $SperreVar = null;
+
     public function __construct($InstanceID) {
         // Diese Zeile nicht löschen
         parent::__construct($InstanceID);
@@ -51,6 +55,18 @@ abstract class PISymconModule extends IPSModule {
     public function ApplyChanges() {
 
         parent::ApplyChanges(); 
+
+        if ($this->doesExist($this->searchObjectByName("Automatik"))) {
+
+            $this->AutomatikVar = $this->searchObjectByName("Automatik");
+
+        }
+
+        if ($this->doesExist($this->searchObjectByName("Sperre"))) {
+
+            $this->SperreVar = $this->searchObjectByName("Sperre");
+
+        }
 
         $this->CheckProfiles();
 
@@ -1049,10 +1065,6 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    //
-    //  "AlterName" => "NeuerName"
-    //
-
     protected function changeAssociations ($profileName, $changeAssoc) {
 
         if (IPS_VariableProfileExists($profileName)) {
@@ -1245,6 +1257,18 @@ abstract class PISymconModule extends IPSModule {
     }
 
     protected function setDevice ($deviceID, $wert){
+
+        if ($this->SperreVar != null){
+
+            $sperre = GetValue($this->SperreVar);
+
+            if ($sperre) {
+
+                return true;
+
+            }
+
+        }
 
         $device = IPS_GetObject($deviceID);
     
