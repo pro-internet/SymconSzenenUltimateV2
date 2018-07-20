@@ -218,6 +218,9 @@
         protected function deleteUnusedVars () {
 
             $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+            $existingSceneTimers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
+            $timerIsEnabled = $this->ReadPropertyBoolean("ModeTime");
+
 
             $sceneNames = $this->getAllSceneNames();
 
@@ -281,6 +284,26 @@
                         if ($this->doesExist($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")))) {
 
                             $this->deleteObject($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")));
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            if (!$timerIsEnabled) {
+
+                if ($existingSceneTimers != null) {
+
+                    if (count($existingSceneTimers) > 0) {
+
+                        foreach ($existingSceneTimers as $timerVar) {
+
+                            $timerVar = $this->searchObjectByName($timerVar);
+
+                            $this->deleteObject($timerVar);
 
                         }
 
