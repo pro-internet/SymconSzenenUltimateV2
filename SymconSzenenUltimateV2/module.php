@@ -221,11 +221,30 @@
             $existingSceneTimers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
             $timerIsEnabled = $this->ReadPropertyBoolean("ModeTime");
 
-
             $sceneNames = $this->getAllSceneNames();
 
             if ($existingScenes == null) {
                 return;
+            }
+
+            if (!$timerIsEnabled) {
+
+                if ($existingSceneTimers != null) {
+
+                    if (count($existingSceneTimers) > 0) {
+
+                        foreach ($existingSceneTimers as $timerVar) {
+
+                            $timerVar = $this->searchObjectByName($timerVar);
+
+                            $this->deleteObject($timerVar);
+
+                        }
+
+                    }
+
+                }
+
             }
 
             if ($sceneNames == null || $sceneNames == "") {
@@ -284,26 +303,6 @@
                         if ($this->doesExist($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")))) {
 
                             $this->deleteObject($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")));
-
-                        }
-
-                    }
-
-                }
-
-            }
-            
-            if (!$timerIsEnabled) {
-
-                if ($existingSceneTimers != null) {
-
-                    if (count($existingSceneTimers) > 0) {
-
-                        foreach ($existingSceneTimers as $timerVar) {
-
-                            $timerVar = $this->searchObjectByName($timerVar);
-
-                            $this->deleteObject($timerVar);
 
                         }
 
