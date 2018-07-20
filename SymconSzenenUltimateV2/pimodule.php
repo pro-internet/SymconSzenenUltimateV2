@@ -1424,7 +1424,7 @@ abstract class PISymconModule extends IPSModule {
             }
 
             if ($element == $search) {
-                $elementFound
+                $elementFound = true;
             }
 
             if ($counter == count($array)) {
