@@ -1146,7 +1146,7 @@ abstract class PISymconModule extends IPSModule {
 
         if ($this->profileHasAssociation($profileName, $text)) {
 
-            $profile = IPS_GetProfile($profileName);
+            $profile = IPS_GetVariableProfile($profileName);
 
             foreach ($profile['Associations'] as $assoc) {
 
@@ -1167,7 +1167,7 @@ abstract class PISymconModule extends IPSModule {
 
         if ($this->profileHasAssociationValue($profileName, $value)) {
 
-            $profile = IPS_GetProfile($profileName);
+            $profile = IPS_GetVariableProfile($profileName);
 
             foreach ($profile['Associations'] as $assoc) {
 
