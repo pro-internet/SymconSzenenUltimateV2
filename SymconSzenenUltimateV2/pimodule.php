@@ -941,7 +941,7 @@ abstract class PISymconModule extends IPSModule {
 
         $own = IPS_GetObject($in);
 
-        print_r($on);
+        //print_r($on);
 
         $ary = null;
 
