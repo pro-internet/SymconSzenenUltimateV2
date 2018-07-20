@@ -50,7 +50,6 @@
 
             $this->deleteUnusedVars();
 
-
         }
 
         public function Destroy () {
@@ -65,6 +64,14 @@
         public function CheckVariables () {
 
             $daysetActivated = $this->ReadPropertyBoolean("ModeDaySet");
+            $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
+
+            if ($timeIsActivated) {
+
+                $lastScene = checkString("LastScene", false, $this->InstanceID, 5, null);
+                $this->hide($lastScene);
+
+            }
 
             if ($daysetActivated) {
 
@@ -109,13 +116,25 @@
         public function CheckScripts () {
     
             // Hier werden alle nötigen Scripts erstellt (SetValue wird automatisch erstellt)
+            $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
+
+            if ($timeIsActivated) {
+
+                $nextElement = $this->checkScript("nextElement", $this->prefix . "_nextElement"); 
+                $this->hide($nextElement);
+
+            } else {
+
+                $this->deleteObject($this->searchObjectByName("nextElement"));
+
+            }
     
         }
 
         public function CheckProfiles () {
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
-            $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Targets" => 0, "Modul verkleinern" => 1));
+            $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Targets" => 0, "Modul verkleinern" => 1, "Start" => 2));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null);
 
@@ -124,6 +143,43 @@
         #                            #
         #   Modulspez. Funktionen    #
         #                            #
+
+        public function nextElement () {
+
+            $allScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+
+            $lastScene = GetValue($this->searchObjectByName("LastScene"));
+
+            if ($lastScene == null) {
+
+                SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
+                SetValue($this->searchObjectByName($allScenes[0]), 1);
+
+                IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
+
+            } else {
+
+                $nextElement = $this->getElementAfterInArray($lastScene, $allScenes);
+
+                if ($nextElement != "last") {
+
+                    SetValue($this->searchObjectByName($nextElement), 1);
+                    SetValue($this->searchObjectByName("LastScene"), $nextElement);
+
+                    IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($nextElement));
+
+                }
+
+            }
+
+        }
+
+        protected function getTimerLengthBySceneName ($sceneName) {
+
+            $timer = GetValue($this->searchObjectByName($sceneName . " Timer"));
+            return $timer;
+
+        }
 
         protected function checkSceneVars () {
 
@@ -615,6 +671,19 @@
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul vergrößern" => "Modul verkleinern"));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+
+                }
+
+            }
+
+            // Start / Stop Zeitschaltung
+            if ($optionsVal == 2) {
+
+                $this->nextElement();
+
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start")) {
+
+
 
                 }
 

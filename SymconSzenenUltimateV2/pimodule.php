@@ -1409,6 +1409,40 @@ abstract class PISymconModule extends IPSModule {
         
     }
     
+    protected function getElementAfterInArray ($search, $array) {
+
+        $elementFound = false;
+        $elem = "";
+        $counter = 0;
+        $isLast = 0;
+
+
+        foreach ($array as $element) {
+
+            if ($elementFound) {
+                $elem = $element;
+            }
+
+            if ($element == $search) {
+                $elementFound
+            }
+
+            if ($counter == count($array)) {
+                return "last";
+            }
+            
+            $counter++;
+
+        }
+
+        if ($elem == "") {
+            return null
+        }else{
+            return $elem;
+        }
+
+    }
+
 
 }
 
