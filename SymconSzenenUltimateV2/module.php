@@ -343,7 +343,7 @@
 
         protected function getOrderedEntries () {
 
-            $nms = $this->ReadPropertyInteger("Names");
+            $nms = $this->ReadPropertyString("Names");
 
             if ($nms != null && $nms != "") {
 
