@@ -222,11 +222,22 @@
 
                     if ($this->doesExist($this->searchObjectByName($eScene))) {
 
+                        $eSceneVarId = $this->searchObjectByName($eScene);
+
+                        // Delete Object
                         $this->deleteObject($this->searchObjectByName($eScene));
 
+                        // Delete Timer if existing
                         if ($this->doesExist($this->searchObjectByName($eScene . " Timer"))) {
 
                             $this->deleteObject($this->searchObjectName($eScene . " Timer"));
+
+                        }
+
+                        // Delete Event if existing
+                        if ($this->doesExist($this->searchObjectByName($eSceneVarId . " onChange", $this->searchObjectByName("Events")))) {
+
+                            $this->deleteObject($this->searchObjectByName($eSceneVarId . " onChange", $this->searchObjectByName("Events")));
 
                         }
 
