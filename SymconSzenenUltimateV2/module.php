@@ -351,53 +351,21 @@
             $senderObj = IPS_GetObject($senderVar);
             $senderVal = GetValue($senderVar);
             $senderName = $senderObj['ObjectName'];
-            $json = GetValue($this->searchObjectByName("Scenes"));
             $targets = IPS_GetObject($this->searchObjectByName("Targets"));
 
             // Wenn Speichern
             if ($senderVal == 0) {
+            
 
+                $sceneDataName = $senderName . " SceneData";
+                $sceneDataVar = $this->searchObjectByName($senderDataName, $this->searchObjectByName("SceneData"));
+                $sceneDataVal = GetValue($sceneDataVar);
+                
+                if ($sceneDataVal != null && $sceneDataVal != "") {
 
-                if ($json != null && $json != "") {
+                    $states = array();
 
-                    $scenes = json_decode($json);
-
-                    $sceneName = $senderObj["ObjectName"];
-
-                    $status = array();
-
-                    if (IPS_HasChildren($targets['ObjectID'])) {
-
-                        foreach ($targets['ChildrenIDs'] as $child) {
-
-                            $child = IPS_GetObject($child);
-
-                            if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
-
-                                $child = IPS_GetLink($child['ObjectID']);
-                                $tg = $child['TargetID'];
-                                $status[$tg] = GetValue($tg);
-
-                            }
-
-                        }
-
-                        $scenes[1] = $status;
-
-                        SetValue($this->searchObjectByName("Scenes"), json_encode($scenes));
-
-                    }
-                    
-
-                } else {
-
-                    $scenes = array();
-
-                    $sceneName = $senderObj["ObjectName"];
-
-                    $status = array();
-
-                    if (IPS_HasChildren($targets['ObjectID'])) {
+                    if (count($targets['ChildrenIDs']) > 0)  {
 
                         foreach ($targets['ChildrenIDs'] as $child) {
 
@@ -406,43 +374,36 @@
                             if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
 
                                 $child = IPS_GetLink($child['ObjectID']);
+
                                 $tg = $child['TargetID'];
-                                $status[$tg] = GetValue($tg);
+
+                                $states[$tg] = GetValue($tg);
 
                             }
 
                         }
 
-
-
-                        $scenes[0] = $status;
-
-                        SetValue($this->searchObjectByName("Scenes"), json_encode($scenes));
+                        SetValue($sceneDataVar, json_encode($states));
 
                     }
 
                 }
 
-                
-                SetValue($this->searchObjectByName("Scenes"), "[" . $sm->scenesToJson() . "]");
-
-            
-
-                
-
 
             } else if ($senderVal == 1) {
 
                 // Wenn Ausführen
-                $sm = new SceneManager($json);
+                $sceneDataName = $senderName . " SceneData";
+                $sceneDataVar = $this->searchObjectByName($senderDataName, $this->searchObjectByName("SceneData"));
+                $sceneDataVal = GetValue($sceneDataVar);
+                
+                if ($sceneDataVal != null && $sceneDataVal != "") {
 
-                if (count($sm->Scenes) > 0) {
+                    $json = json_decode($sceneDataVal);
 
-                    $actualScene = $sm->getSceneById($senderName);
+                    foreach ($json as $id => $val) {
 
-                    foreach ($actualScene->Status as $StatusId => $StatusVal) {
-
-                        $this->setDevice($StatusId, $StatusVal);
+                        $this->setDevice($id, $val);
 
                     }
 
