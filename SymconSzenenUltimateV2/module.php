@@ -335,7 +335,7 @@
 
                 }
 
-                print_r($nms);
+                print_r($newProp);
 
                 IPS_SetProperty ($this->InstanceID, "Names", json_encode($newProp));
 
