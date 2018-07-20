@@ -229,6 +229,8 @@
 
             if ($timerIsEnabled != true) {
 
+                echo "Timer not enabled";
+
                 if ($existingSceneTimers != null) {
 
                     if (count($existingSceneTimers) > 0) {
