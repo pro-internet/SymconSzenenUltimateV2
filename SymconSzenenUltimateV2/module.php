@@ -430,9 +430,19 @@
             }
 
             $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $senderVal);
+            $sceneDataVal = $this->searchObjectByName($sceneName . " SceneData" . $this->searchObjectByName("SceneData"));
+            
+            if ($sceneDataVal != null && $sceneDataVal != "") {
 
-            echo $sceneName;
+                $sceneData = json_decode($sceneDataVal);
 
+                foreach ($sceneData as $devId => $devVal) {
+
+                    $this->setDevice($devId, $devVal);
+
+                }
+
+            }
 
         }
 
@@ -473,6 +483,7 @@
                     $this->deleteObject($this->searchObjectByRealName("TargetsLink", $prnt));
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Verstecke Targets" => "Zeige Targets"));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+
                 }
 
             }
