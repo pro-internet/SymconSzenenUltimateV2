@@ -295,6 +295,8 @@
 
             if (!$timerIsEnabled) {
 
+                print_r($existingSceneTimers);
+
                 if ($existingSceneTimers != null) {
 
                     if (count($existingSceneTimers) > 0) {
@@ -302,8 +304,6 @@
                         foreach ($existingSceneTimers as $timerVar) {
 
                             $timerVar = $this->searchObjectByName($timerVar);
-
-                            echo $timerVar;
 
                             $this->deleteObject($timerVar);
 
