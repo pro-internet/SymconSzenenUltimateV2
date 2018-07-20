@@ -339,6 +339,7 @@
 
         }
 
+
         protected function getOrderedEntries () {
 
             $nms = $this->ReadPropertyString("Names");
@@ -349,7 +350,7 @@
 
                 usort($nms, function($a, $b)
                 {
-                    return strcmp($a->Position, $b->Position);
+                    return $a->Position < $b->Position;
                 });
 
                 return $nms;
