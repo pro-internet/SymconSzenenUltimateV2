@@ -239,9 +239,9 @@
                         }
 
                         // Delete Event if existing
-                        if ($this->doesExist($this->searchObjectByName($eSceneVarId . " onChange", $this->searchObjectByName("Events")))) {
+                        if ($this->doesExist($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")))) {
 
-                            $this->deleteObject($this->searchObjectByName($eSceneVarId . " onChange", $this->searchObjectByName("Events")));
+                            $this->deleteObject($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")));
 
                         }
 
