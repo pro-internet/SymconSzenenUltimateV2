@@ -430,7 +430,7 @@
             }
 
             $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $senderVal);
-            $sceneDataVal = $this->searchObjectByName($sceneName . " SceneData" . $this->searchObjectByName("SceneData"));
+            $sceneDataVal = GetValue($this->searchObjectByName($sceneName . " SceneData" . $this->searchObjectByName("SceneData")));
             
             if ($sceneDataVal != null && $sceneDataVal != "") {
 
