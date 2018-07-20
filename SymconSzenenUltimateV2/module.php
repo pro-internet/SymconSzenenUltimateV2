@@ -402,7 +402,7 @@
                 $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
                 $sceneDataVal = GetValue($sceneDataVar);
                 
-                echo "Execute " . $sceneDataName;
+                echo $sceneDataVar;
 
                 if ($sceneDataVal != null && $sceneDataVal != "") {
 
