@@ -318,8 +318,6 @@
 
             $nms = $this->getOrderedEntries();
 
-            print_r($nms);
-
             if ($nms != null && $nms != "") {
 
                 $newNms = new stdClass();
@@ -334,6 +332,8 @@
                     $counter++; 
 
                 }
+
+                print_r($nms);
 
                 IPS_SetProperty ($this->InstanceID, "Names", json_encode($newNms));
 
