@@ -1436,7 +1436,7 @@ abstract class PISymconModule extends IPSModule {
         }
 
         if ($elem == "") {
-            return null
+            return null;
         }else{
             return $elem;
         }
