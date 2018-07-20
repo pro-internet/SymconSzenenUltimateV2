@@ -216,6 +216,10 @@
 
             $sceneNames = $this->getAllSceneNames();
 
+            if ($existingScenes == null) {
+                return;
+            }
+
             foreach ($existingScenes as $eScene) {
 
                 if (!in_array($eScene, $sceneNames)) {
