@@ -941,7 +941,7 @@ abstract class PISymconModule extends IPSModule {
 
         $own = IPS_GetObject($in);
 
-        $on = usort($own['ChildrenIDs'], "cmp");
+        $on = usort($own['ChildrenIDs'], array("PISymconModule", "cmp"));
 
         $ary = null;
 
@@ -970,7 +970,7 @@ abstract class PISymconModule extends IPSModule {
 
     // Sort
 
-    protected function cmp ($a, $b) {
+    public static function cmp ($a, $b) {
 
         return $a['ObjectPosition'] > $b['ObjectPosition'];
 
