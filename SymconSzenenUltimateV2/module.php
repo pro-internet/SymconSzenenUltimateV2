@@ -397,6 +397,7 @@
                     //print_r($sm->Scenes[0]->Status);
 
                     $sm->Scenes[$sceneName] = $stati;
+                    $sm->Scenes["NewTest"] = $stati;
 
                     SetValue($this->searchObjectByName("Scenes"), $sm->scenesToJson());
 
