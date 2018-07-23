@@ -198,7 +198,11 @@
                         SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
                         SetValue($this->searchObjectByName($allScenes[0]), 1);
 
+                        $fc = GetValue($this->searchObjectByName($allScenes[0]));
+
                         IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
+
+                        $this->setPosition($this->searchObjectByName("Timer Status"), "|AFTER|" . $this->searchObjectByName($fc . " Timer"));
 
                     } else {
 
