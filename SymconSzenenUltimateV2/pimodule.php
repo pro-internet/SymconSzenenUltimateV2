@@ -552,7 +552,7 @@ abstract class PISymconModule extends IPSModule {
                                 if ($cld['ObjectID'] == $afterThisElement) {
 
                                     $subElem = true;
-                                    $lastPos = $cld['ObjectPosition']
+                                    $lastPos = $cld['ObjectPosition'];
 
                                 }
 
