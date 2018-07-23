@@ -715,9 +715,9 @@
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start")) {
 
-                    $this->nextElement();
-
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
+
+                    $this->nextElement();
 
                     SetValue($this->searchObjectByName("Optionen"), -1);
                     return;
