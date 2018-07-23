@@ -806,7 +806,11 @@
             // DaySets verstecken
             if ($optionsVal == 3) {
 
+                echo "Option 3 \n";
+
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen")) {
+
+                    echo "DaySets anzeigen";
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => "DaySets verstecken"));
 
