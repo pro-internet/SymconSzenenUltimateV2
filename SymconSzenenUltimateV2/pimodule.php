@@ -438,8 +438,6 @@ abstract class PISymconModule extends IPSModule {
                 $this->addSetValue($id);
             
             }
-        } else {
-            echo "PROFILE DOES NOT EXIST";
         }
     }
 

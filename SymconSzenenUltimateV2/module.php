@@ -26,15 +26,15 @@
            
             parent::ApplyChanges();
 
-            $this->updateSceneVarProfile();
-
             //$onChangeEventName, $targetId, $function, $parent = null
 
             $this->CheckScripts();
 
-            $this->CheckVariables();
-
             $this->checkSceneVars();
+
+            $this->updateSceneVarProfile();
+
+            $this->CheckVariables();
 
             $this->checkSceneTimerVars();
 
