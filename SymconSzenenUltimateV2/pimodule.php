@@ -1234,14 +1234,15 @@ abstract class PISymconModule extends IPSModule {
             $prefix = $profile['Prefix'];
             $actualAssocs = $profile['Associations'];
 
-            $newAssocs = null;
+            $newAssocs = array();
             $blockIt = array();
 
             if ($addAssocs != null) {
 
-                foreach ($actualAssocs as $actualAssocName => $actualAssocValue) {
+                foreach ($actualAssocs as $actualAssoc) {
 
-                    $newAssocs[$actualAssocName] = $actualAssocValue;
+                    $nme = $actualAssoc['Name'];
+                    $newAssocs[$nme] = $actualAssoc['Value'];
 
                 }
 
@@ -1254,7 +1255,7 @@ abstract class PISymconModule extends IPSModule {
             }
 
             IPS_DeleteVariableProfile($profileName);
-            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs);
+            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs, $prefix, $suffix);
 
         }
 
