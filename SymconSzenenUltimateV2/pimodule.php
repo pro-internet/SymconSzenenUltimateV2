@@ -520,7 +520,7 @@ abstract class PISymconModule extends IPSModule {
 
                 } else if (strpos($position, "|AFTER|") !== false) {
 
-                    echo "Set " . $position;
+                    echo "Set " . $id .  " to ". $position;
 
                     $own = IPS_GetObject($this->InstanceID);
 
