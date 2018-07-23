@@ -103,17 +103,17 @@
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
 
-                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen");
-                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken");
-
-            } else {
-
                 if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken")) {
 
                     $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => 2));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
+
+            } else {
+
+                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen");
+                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken");
 
             }
 
