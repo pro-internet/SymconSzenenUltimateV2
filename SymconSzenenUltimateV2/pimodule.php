@@ -572,6 +572,8 @@ abstract class PISymconModule extends IPSModule {
 
                     $ownChildren = $own['ChildrenIDs'];
 
+                    // Sortiert Children nach Position
+
                     usort($ownChildren, function($a, $b) {
 
                         $go1 = IPS_GetObject($a);

@@ -83,7 +83,7 @@
 
                 if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
 
-                    $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => 1));
+                    $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => 2));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
