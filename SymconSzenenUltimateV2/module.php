@@ -65,6 +65,15 @@
 
         public function CheckVariables () {
 
+
+            $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
+            $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
+
+            $targets = $this->checkFolder("Targets", null, 4);
+            $events = $this->checkFolder("Events", null, 5);
+            $sceneData = $this->checkFolder("SceneData", null, 6);
+
+
             $daysetActivated = $this->ReadPropertyBoolean("ModeDaySet");
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
@@ -73,21 +82,12 @@
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
                 $this->hide($lastScene);
 
-            }
-
-            if ($daysetActivated) {
-
-                $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
-
                 if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
 
                     $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => 1));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
-
-                $this->setIcon($switches[0], "Power");
-                $this->setIcon($switches[1], "Power");
 
             } else {
 
@@ -97,12 +97,14 @@
 
             }
 
-            $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
-            $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
+            if ($daysetActivated) {
 
-            $targets = $this->checkFolder("Targets", null, 4);
-            $events = $this->checkFolder("Events", null, 5);
-            $sceneData = $this->checkFolder("SceneData", null, 6);
+                $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
+
+                $this->setIcon($switches[0], "Power");
+                $this->setIcon($switches[1], "Power");
+
+            }
 
             //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null, $istAbstand = false
             //$this->checkString("", false, $this->InstanceID, "|AFTER|" . $sceneVar, null, true);
