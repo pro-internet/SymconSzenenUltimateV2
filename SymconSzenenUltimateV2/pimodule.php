@@ -851,7 +851,7 @@ abstract class PISymconModule extends IPSModule {
 
             $newProfile = IPS_CreateVariableProfile($name, $type);
             IPS_SetVariableProfileValues ($name, $min, $max, $steps);
-            IPS_SetText($name, $prefix, $suffix);
+            IPS_SetVariableProfileText($name, $prefix, $suffix);
             
             if ($associations != null) {
 
