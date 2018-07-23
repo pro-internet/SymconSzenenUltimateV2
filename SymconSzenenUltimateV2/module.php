@@ -665,7 +665,7 @@
 
                         foreach ($scenes as $scene) {
 
-                            IPS_SetHidden($this->searchObjectByName($scene));
+                            IPS_SetHidden($this->searchObjectByName($scene), true);
 
                             $this->hide($this->searchObjectByName($scene));
 
