@@ -661,10 +661,7 @@
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul verkleinern")) {
                     
-                    if (count($scenes) > 0) {
-
-                        echo "Modul verkleinern";
-                        return;
+                    if ($scenes != null) {
 
                         foreach ($scenes as $scene) {
 
