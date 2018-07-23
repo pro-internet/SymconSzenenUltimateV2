@@ -100,6 +100,15 @@
 
                 $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
 
+                $daysets = $this->checkFolder("DaySets", null, 7);
+
+                $frueh = $this->checkInteger("Früh", false, $this->searchObjectByName("DaySets"), 2, 0);
+                $morgen = $this->checkInteger("Morgen", false, $this->searchObjectByName("DaySets"), 2, 0);
+                $tag = $this->checkInteger("Tag", false, $this->searchObjectByName("DaySets"), 2, 0);
+                $daemmerung = $this->checkInteger("Daemmerung", false, $this->searchObjectByName("DaySets"), 2, 0);
+                $abend = $this->checkInteger("Abend", false, $this->searchObjectByName("DaySets"), 2, 0);
+                $nacht = $this->checkInteger("Nacht", false, $this->searchObjectByName("DaySets"), 2, 0);
+
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
 
@@ -111,6 +120,8 @@
                 }
 
             } else {
+
+                $this->deleteObject($this->searchObjectByName("DaySets"));
 
                 $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen");
                 $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken");
