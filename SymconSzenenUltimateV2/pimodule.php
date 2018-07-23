@@ -1196,29 +1196,15 @@ abstract class PISymconModule extends IPSModule {
             //$name, $type, $min = 0, $max = 100, $steps = 1, $associations = null
 
             $newAssocs = null; 
-            $blockIt = array();
+            
+            if ($actualAssocs != null) {
 
-            if ($association != null) {
+                foreach ($actualAssocs as $assoc) {
 
-                foreach ($actualAssocs as $actualAssoc) {
+                    if ($assoc['Name'] != $association) {
 
-                    $toReplace = false;
-
-                    $nname = null;
-                    $nvalue = null;
-
-                    if ($association == $actualAssoc['Name']) {
-                        $toReplace = true;
-                        //$nname = $newName;
-                    }
-                    if ($toReplace) {
-
-                        
-
-                    } else {
-
-                        $nme = $actualAssoc['Name'];
-                        $newAssocs[$nme] = $actualAssoc['Value'];
+                        $assocName = $assoc['Name'];
+                        $newAssocs[$assocName] = $assoc['Value'];
 
                     }
 
