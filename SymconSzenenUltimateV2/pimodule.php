@@ -557,11 +557,11 @@ abstract class PISymconModule extends IPSModule {
 
                             if ($elementFound) {
 
-                                $this->setPosition($child, $obj['ObjectPosition'] + 1);
+                                $this->setPosition($child, $obj['ObjectPosition']);
 
                             } else {
 
-                                $this->setPosition($child, $obj['ObjectPosition']);
+                                //$this->setPosition($child, $obj['ObjectPosition']);
 
                             }
 
