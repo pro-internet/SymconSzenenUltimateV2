@@ -445,7 +445,6 @@
 
                     }
 
-                    echo $this->searchObjectByName($eScene . " SceneData", $this->searchObjectByName("SceneData")) . " does not exist!";
 
                     // Delete SceneData if existing
                     if ($this->doesExist($this->searchObjectByName($eScene . " SceneData", $this->searchObjectByName("SceneData")))) {
@@ -480,6 +479,13 @@
                         if ($this->doesExist($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")))) {
 
                             $this->deleteObject($this->searchObjectByName("onChange " . $eSceneVarId, $this->searchObjectByName("Events")));
+
+                        }
+
+                        // Delete SceneData if existing
+                        if ($this->doesExist($this->searchObjectByName($eScene . " SceneData", $this->searchObjectByName("SceneData")))) {
+
+                            $this->deleteObject($this->searchObjectByName($eScene . " SceneData", $this->searchObjectByName("SceneData")));
 
                         }
 
