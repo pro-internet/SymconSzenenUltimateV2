@@ -109,13 +109,15 @@
                 $abend = $this->checkInteger("Abend", false, $this->searchObjectByName("DaySets"), 5, 0);
                 $nacht = $this->checkInteger("Nacht", false, $this->searchObjectByName("DaySets"), 6, 0);
 
+                echo "FRÜH: " . $frueh;
+
                 $this->addProfile($frueh, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
                 $this->addProfile($morgen, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
                 $this->addProfile($tag, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
                 $this->addProfile($daemmerung, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
                 $this->addProfile($abend, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
                 $this->addProfile($nacht, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
-                
+
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
 
