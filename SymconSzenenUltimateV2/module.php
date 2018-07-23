@@ -660,10 +660,12 @@
             if ($optionsVal == 1) {
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul verkleinern")) {
-                    echo "Check if is null....";
+
                     if ($scenes != null) {
-                        echo "is not Null :)";
+
                         foreach ($scenes as $scene) {
+
+                            echo "Hiding ... " . $scene . "\\n";
 
                             $this->hide($this->searchObjectByName($scene));
 
