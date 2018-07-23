@@ -73,21 +73,12 @@
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
                 $this->hide($lastScene);
 
-            }
-
-            if ($daysetActivated) {
-
-                $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
-
                 if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
 
                     $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => 1));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
-
-                $this->setIcon($switches[0], "Power");
-                $this->setIcon($switches[1], "Power");
 
             } else {
 
@@ -96,6 +87,15 @@
                 $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
             }
+
+            if ($daysetActivated) {
+
+                $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
+
+                $this->setIcon($switches[0], "Power");
+                $this->setIcon($switches[1], "Power");
+
+            } 
 
             $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
             $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
