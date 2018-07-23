@@ -183,7 +183,7 @@
 
                 if ($nextElement != "last") {
 
-                    $this->deleteObject($this->searchObjectByName("Timer"));
+                    IPS_DeleteLink($this->searchObjectByName("Timer"));
 
                     SetValue($this->searchObjectByName("LastScene"), $nextElement);
                     SetValue($this->searchObjectByName($nextElement), 1);
@@ -204,7 +204,7 @@
 
                     } else {
 
-                        $this->deleteObject($this->searchObjectByName("Timer"));
+                        IPS_DeleteLink($this->searchObjectByName("Timer"));
 
                         SetValue($this->searchObjectByName("LastScene"), null);
                         $this->setAllInLinkList($this->searchObjectByName("Targets"), 0);
