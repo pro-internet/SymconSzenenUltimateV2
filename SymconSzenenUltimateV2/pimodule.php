@@ -162,7 +162,7 @@ abstract class PISymconModule extends IPSModule {
 
     protected function checkVar  ($var, $type = 1, $profile = false , $position = "", $index = 0, $defaultValue = null) {
 
-        if ($this->searchObjectByName($var) == 0) {
+        if (!$this->doesExist($this->searchObjectByName($var))) {
             
             $type = $this->varTypeByName($type);
 
