@@ -109,6 +109,8 @@
                 $abend = $this->checkInteger("Abend", false, $this->searchObjectByName("DaySets"), 5, 0);
                 $nacht = $this->checkInteger("Nacht", false, $this->searchObjectByName("DaySets"), 6, 0);
 
+                echo "Frueh: " . $frueh;
+
                 $this->addProfile($frueh, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
                 $this->addProfile($morgen, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
                 $this->addProfile($tag, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
