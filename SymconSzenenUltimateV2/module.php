@@ -732,6 +732,7 @@
                     SetValue($this->searchObjectByName("LastScene"), "");
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
+                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
