@@ -812,7 +812,7 @@
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => "DaySets verstecken"));
 
-                    $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt);
+                    $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, 0, true);
 
                     SetValue($this->searchObjectByName("Optionen"), -1);
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
