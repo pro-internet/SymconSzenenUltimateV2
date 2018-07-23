@@ -823,9 +823,6 @@
 
                     $this->deleteObject($this->searchElementByName("DaySets-Auswahl"));
 
-                    SetValue($this->searchObjectByName("Optionen"), -1);
-                    return;
-
                 }
 
             }
