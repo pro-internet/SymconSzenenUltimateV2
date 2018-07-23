@@ -136,7 +136,7 @@
 
             if ($timeIsActivated) {
 
-                $nextElement = $this->checkScript("nextElement", $this->prefix . "_nextElement"); 
+                $nextElement = $this->checkScript("nextElement", $this->prefix . "_nextElement", 1001); 
                 $this->hide($nextElement);
 
             } else {

@@ -435,7 +435,7 @@ abstract class PISymconModule extends IPSModule {
         }
     }
 
-    protected function checkScript ($name, $script, $function = true, $hide = true) {
+    protected function checkScript ($name, $script, $function = true, $hide = true, $position = 1000) {
 
         if (!$this->doesExist($this->searchObjectByName($name))) {
             
@@ -446,6 +446,8 @@ abstract class PISymconModule extends IPSModule {
                 $this->hide($script);
 
             }
+
+            $this->setPosition($script, $position);
 
             return $script;
         
