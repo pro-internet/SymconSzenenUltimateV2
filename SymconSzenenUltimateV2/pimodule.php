@@ -160,7 +160,7 @@ abstract class PISymconModule extends IPSModule {
         return $newScript;
     }
 
-    protected function checkVar  ($var, $type = 1, $profile = false , $position = "", $index = 0, $defaultValue = null) {
+    protected function checkVar ($var, $type = 1, $profile = false , $position = "", $index = 0, $defaultValue = null) {
 
         if (!$this->doesExist($this->searchObjectByName($var))) {
             
