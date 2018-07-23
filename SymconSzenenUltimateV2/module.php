@@ -679,6 +679,8 @@
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul verkleinern" => "Modul vergrößern"));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
+                    SetValue($this->searchObjectByName("Optionen"), -1);
+
                     return;
 
                 }
