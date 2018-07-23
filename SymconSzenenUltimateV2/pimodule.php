@@ -1239,15 +1239,15 @@ abstract class PISymconModule extends IPSModule {
 
             if ($addAssocs != null) {
 
-                foreach ($actualAssocs as $actualAssoc) {
+                foreach ($actualAssocs as $actualAssocName => $actualAssocValue) {
 
-                    $newAssocs[] = $actualAssoc;
+                    $newAssocs[$actualAssocName] = $actualAssocValue;
 
                 }
 
-                foreach ($addAssocs as $aa) {
+                foreach ($addAssocs as $aa => $bb) {
 
-                    $newAssocs[] = $aa;
+                    $newAssocs[$aa] = $bb;
 
                 }
 
