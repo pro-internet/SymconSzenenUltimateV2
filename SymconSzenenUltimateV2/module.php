@@ -611,7 +611,6 @@
             // Wenn Speichern
             if ($senderVal == 0) {
             
-
                 $sceneDataName = $senderName . " SceneData";
                 $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
                 $sceneDataVal = GetValue($sceneDataVar);
