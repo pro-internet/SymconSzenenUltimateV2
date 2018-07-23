@@ -1195,7 +1195,7 @@ abstract class PISymconModule extends IPSModule {
 
             //$name, $type, $min = 0, $max = 100, $steps = 1, $associations = null
 
-            $newAssocs = null;
+            $newAssocs = null; 
             $blockIt = array();
 
             if ($association != null) {
