@@ -717,7 +717,7 @@
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
-                    
+
                     $this->nextElement();
 
                     SetValue($this->searchObjectByName("Optionen"), -1);
@@ -727,7 +727,7 @@
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
 
-                    $this->deleteObject($this->getFirstChildrenFrom($this->searchObjectByName("nextElement")));
+                    $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
 
                     SetValue($this->searchObjectByName("LastScene"), "");
 
