@@ -803,6 +803,33 @@
 
             }
 
+            // DaySets verstecken
+            if ($optionsVal == 3) {
+
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen")) {
+
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => "DaySets verstecken"));
+
+                    $this->linkVar("DaySets-Auswahl", $this->searchObjectByName("DaySets"));
+
+                    SetValue($this->searchObjectByName("Optionen"), -1);
+                    return;
+
+                }
+
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken")) {
+
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets verstecken" => "DaySets anzeigen"));
+
+                    $this->deleteObject($this->searchElementByName("DaySets-Auswahl"));
+
+                    SetValue($this->searchObjectByName("Optionen"), -1);
+                    return;
+
+                }
+
+            }
+
             SetValue($this->searchObjectByName("Optionen"), -1);
 
         }
