@@ -26,6 +26,8 @@
            
             parent::ApplyChanges();
 
+            $this->updateSceneVarProfile();
+
             //$onChangeEventName, $targetId, $function, $parent = null
 
             $this->CheckScripts();
@@ -45,8 +47,6 @@
                 $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
 
             }
-
-            $this->updateSceneVarProfile();
 
             $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
 
@@ -108,8 +108,6 @@
                 $daemmerung = $this->checkInteger("Daemmerung", false, $this->searchObjectByName("DaySets"), 4, 0);
                 $abend = $this->checkInteger("Abend", false, $this->searchObjectByName("DaySets"), 5, 0);
                 $nacht = $this->checkInteger("Nacht", false, $this->searchObjectByName("DaySets"), 6, 0);
-
-                echo "FRÜH: " . $frueh;
 
                 $this->addProfile($frueh, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
                 $this->addProfile($morgen, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
