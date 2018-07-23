@@ -1209,7 +1209,7 @@ abstract class PISymconModule extends IPSModule {
 
                     if ($association == $actualAssoc['Name']) {
                         $toReplace = true;
-                        $nname = $newName;
+                        //$nname = $newName;
                     }
                     if ($toReplace) {
 
