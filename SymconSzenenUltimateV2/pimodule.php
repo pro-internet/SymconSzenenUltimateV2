@@ -440,7 +440,7 @@ abstract class PISymconModule extends IPSModule {
             }
         } else {
 
-            echo $profile . " does not exist!";
+            //echo $profile . " does not exist!";
 
         }
     }
