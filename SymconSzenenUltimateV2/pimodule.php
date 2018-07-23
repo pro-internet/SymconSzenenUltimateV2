@@ -1266,7 +1266,7 @@ abstract class PISymconModule extends IPSModule {
 
                 foreach ($addAssocs as $aa) {
 
-                    $newAssocs[] = $aa
+                    $newAssocs[] = $aa;
 
                 }
 
