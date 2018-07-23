@@ -204,6 +204,8 @@
 
                     } else {
 
+                        $this->deleteObject($this->searchObjectByName("Timer"));
+
                         SetValue($this->searchObjectByName("LastScene"), null);
                         $this->setAllInLinkList($this->searchObjectByName("Targets"), 0);
 
