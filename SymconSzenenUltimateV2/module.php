@@ -116,6 +116,13 @@
                 $this->addProfile($abend, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
                 $this->addProfile($nacht, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
 
+                $this->addSetValue($frueh);
+                $this->addSetValue($morgen);
+                $this->addSetValue($tag);
+                $this->addSetValue($daemmerung);
+                $this->addSetValue($abend);
+                $this->addSetValue($nacht);
+
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
 
@@ -805,8 +812,6 @@
 
             // DaySets verstecken
             if ($optionsVal == 3) {
-
-                echo "Option 3 \n";
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen")) {
 
