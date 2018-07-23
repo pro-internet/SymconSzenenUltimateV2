@@ -109,20 +109,13 @@
                 $abend = $this->checkInteger("Abend", false, $this->searchObjectByName("DaySets"), 5, 0);
                 $nacht = $this->checkInteger("Nacht", false, $this->searchObjectByName("DaySets"), 6, 0);
 
-                $this->addProfile($frueh, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
-                $this->addProfile($morgen, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
-                $this->addProfile($tag, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
-                $this->addProfile($daemmerung, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
-                $this->addProfile($abend, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
-                $this->addProfile($nacht, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
-
-                $this->addSetValue($frueh);
-                $this->addSetValue($morgen);
-                $this->addSetValue($tag);
-                $this->addSetValue($daemmerung);
-                $this->addSetValue($abend);
-                $this->addSetValue($nacht);
-
+                $this->addProfile($frueh, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+                $this->addProfile($morgen, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+                $this->addProfile($tag, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+                $this->addProfile($daemmerung, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+                $this->addProfile($abend, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+                $this->addProfile($nacht, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+                
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
 
