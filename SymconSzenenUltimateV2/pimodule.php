@@ -876,7 +876,7 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function linkVar ($target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0) {
+    protected function linkVar ($target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0, $ident = false) {
 
         if ($parent == null) {
             $parent = $this->InstanceID;
@@ -888,7 +888,13 @@ abstract class PISymconModule extends IPSModule {
 
                 $link = IPS_CreateLink();
                 IPS_SetName($link, $linkName);
-                //IPS_SetIdent($link, $this->nameToIdent($linkName));
+
+                if ($ident == true) {
+
+                    IPS_SetIdent($link, $this->nameToIdent($linkName));
+
+                }
+
                 IPS_SetParent($link, $parent);
                 IPS_SetLinkTargetID($link, $target);
                 IPS_SetHidden($link, false);
