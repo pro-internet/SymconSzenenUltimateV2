@@ -171,7 +171,11 @@
                 SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
                 SetValue($this->searchObjectByName($allScenes[0]), 1);
 
+                $lc = GetValue($this->searchObjectByName("LastScene"));
+
                 IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
+                //$target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0
+                $this->linkVar($this->getFirstChildFrom($this->searchObjectByName("nextElement")), "Timer", $this->InstanceID, "|AFTER|" . $this->searchObjectByName($lc . " Timer"));
 
             } else {
 
@@ -179,10 +183,15 @@
 
                 if ($nextElement != "last") {
 
+                    $this->deleteObject($this->searchObjectByName("Timer"));
+
                     SetValue($this->searchObjectByName("LastScene"), $nextElement);
                     SetValue($this->searchObjectByName($nextElement), 1);
 
+                    $lc = GetValue($this->searchObjectByName("LastScene"));
+
                     IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($nextElement));
+                    $this->linkVar($this->getFirstChildFrom($this->searchObjectByName("nextElement")), "Timer", $this->InstanceID, "|AFTER|" . $this->searchObjectByName($lc . " Timer"));
 
                 } else {
 
