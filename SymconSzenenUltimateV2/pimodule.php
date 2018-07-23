@@ -190,7 +190,7 @@ abstract class PISymconModule extends IPSModule {
 
         } else {
 
-            return $this->searchObjectByName($var);
+            return $this->searchObjectByName($var, $position);
         
         }
     }
