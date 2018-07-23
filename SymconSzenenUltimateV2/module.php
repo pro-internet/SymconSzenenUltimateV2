@@ -79,8 +79,17 @@
 
                 $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
 
+                $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => 1));
+                $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
+
+            } else {
+
+                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "Start");
+                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop");
+                $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
             }
 

@@ -1173,6 +1173,111 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function removeAssociation ($profileName, $association) {
+
+        if (IPS_VariableProfileExists($profileName)) {
+
+            if (!$this->profileHasAssociation($profileName, $association)) {
+                return;
+            }
+
+            $profile = IPS_GetVariableProfile($profileName);
+
+            $name = $profileName;
+            $type = $profile['ProfileType'];
+            $maxVal = $profile['MaxValue'];
+            $minVal = $profile['MinValue'];
+            $stepSize = $profile['StepSize'];
+            $digits = $profile['Digits'];
+            $suffix = $profile['Suffix'];
+            $prefix = $profile['Prefix'];
+            $actualAssocs = $profile['Associations'];
+
+            //$name, $type, $min = 0, $max = 100, $steps = 1, $associations = null
+
+            $newAssocs = null;
+            $blockIt = array();
+
+            if ($association != null) {
+
+                foreach ($actualAssocs as $actualAssoc) {
+
+                    $toReplace = false;
+
+                    $nname = null;
+                    $nvalue = null;
+
+                    foreach ($changeAssoc as $name) {
+
+                        if ($name == $actualAssoc['Name']) {
+                            $toReplace = true;
+                            $nname = $newName;
+                        }
+
+                    }
+
+                    if ($toReplace) {
+
+                        
+
+                    } else {
+
+                        $nme = $actualAssoc['Name'];
+                        $newAssocs[$nme] = $actualAssoc['Value'];
+
+                    }
+
+                }
+
+            }
+
+            IPS_DeleteVariableProfile($profileName);
+            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs);
+
+    }
+
+    protected function addAssociations ($profileName, $addAssocs) {
+
+        if (IPS_VariableProfileExists($profileName)) {
+
+            $profile = IPS_GetVariableProfile($profileName);
+
+            $name = $profileName;
+            $type = $profile['ProfileType'];
+            $maxVal = $profile['MaxValue'];
+            $minVal = $profile['MinValue'];
+            $stepSize = $profile['StepSize'];
+            $digits = $profile['Digits'];
+            $suffix = $profile['Suffix'];
+            $prefix = $profile['Prefix'];
+            $actualAssocs = $profile['Associations'];
+
+            $newAssocs = null;
+            $blockIt = array();
+
+            if ($addAssocs != null) {
+
+                foreach ($actualAssocs as $actualAssoc) {
+
+                    $newAssocs[] = $actualAssoc;
+
+                }
+
+                foreach ($addAssocs as $aa) {
+
+                    $newAssocs[] = $aa
+
+                }
+
+            }
+
+            IPS_DeleteVariableProfile($profileName);
+            $this->checkVariableProfile($profileName, $type, $minVal, $maxVal, $stepSize, $newAssocs);
+
+        }
+
+    }
+
     protected function getValueByAssociationText ($profileName, $text) {
 
         if ($this->profileHasAssociation($profileName, $text)) {
