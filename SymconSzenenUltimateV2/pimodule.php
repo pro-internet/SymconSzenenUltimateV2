@@ -520,8 +520,6 @@ abstract class PISymconModule extends IPSModule {
 
                 } else if (strpos($position, "|AFTER|") !== false) {
 
-                    echo "Set " . $id .  " to ". $position;
-
                     $own = IPS_GetObject($this->InstanceID);
 
                     $expString = explode("|AFTER|", $position);
@@ -557,11 +555,11 @@ abstract class PISymconModule extends IPSModule {
 
                             if ($elementFound) {
 
-                                $this->setPosition($child, $obj['ObjectPosition']);
+                                $this->setPosition($child, $obj['ObjectPosition'] + 1);
 
                             } else {
 
-                                //$this->setPosition($child, $obj['ObjectPosition']);
+                                $this->setPosition($child, $obj['ObjectPosition']);
 
                             }
 
