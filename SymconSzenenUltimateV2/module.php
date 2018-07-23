@@ -65,7 +65,6 @@
 
         public function CheckVariables () {
 
-
             $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
             $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
 
