@@ -821,7 +821,7 @@
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets verstecken" => "DaySets anzeigen"));
 
-                    $this->deleteObject($this->searchElementByName("DaySets-Auswahl"));
+                    $this->deleteObject($this->searchObjectByName("DaySets-Auswahl"));
 
                 }
 
