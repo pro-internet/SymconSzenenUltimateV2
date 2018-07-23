@@ -463,7 +463,7 @@ abstract class PISymconModule extends IPSModule {
     }
 
     // Ausbaufähig (---> Fehler, )
-    public function setPosition ($id, $position, $in = null) {
+    protected function setPosition ($id, $position, $in = null) {
 
         if ($in == null) {
             $in = $this->InstanceID;
