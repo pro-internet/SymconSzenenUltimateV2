@@ -810,13 +810,12 @@
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen")) {
 
-                    echo "DaySets anzeigen";
-
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => "DaySets verstecken"));
 
-                    $this->linkVar("DaySets-Auswahl", $this->searchObjectByName("DaySets"));
+                    $this->linkVar("DaySets-Auswahl", $this->searchObjectByName("DaySets"), $prnt);
 
                     SetValue($this->searchObjectByName("Optionen"), -1);
+                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
                     return;
 
                 }
@@ -826,6 +825,8 @@
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets verstecken" => "DaySets anzeigen"));
 
                     $this->deleteObject($this->searchObjectByName("DaySets-Auswahl"));
+
+                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
