@@ -107,7 +107,7 @@
                 $frueh = $this->checkInteger("Früh", false, $this->searchObjectByName("DaySets"), 1, 0);
                 $morgen = $this->checkInteger("Morgen", false, $this->searchObjectByName("DaySets"), 2, 0);
                 $tag = $this->checkInteger("Tag", false, $this->searchObjectByName("DaySets"), 3, 0);
-                $daemmerung = $this->checkInteger("Daemmerung", false, $this->searchObjectByName("DaySets"), 4, 0);
+                $daemmerung = $this->checkInteger("Dämmerung", false, $this->searchObjectByName("DaySets"), 4, 0);
                 $abend = $this->checkInteger("Abend", false, $this->searchObjectByName("DaySets"), 5, 0);
                 $nacht = $this->checkInteger("Nacht", false, $this->searchObjectByName("DaySets"), 6, 0);
 
@@ -552,7 +552,26 @@
 
             if ($automatik && !$sperre) {
 
-                SetValue($this->searchObjectByName("Szenen"), $senderVal);
+                // Wenn früh
+                if ($senderVal == 0) {
+                    $sceneVal = GetValue($this->searchObjectByName("Früh", $this->searchObjectByName("DaySets")));
+                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
+                } else if ($senderVal == 1) {
+                    $sceneVal = GetValue($this->searchObjectByName("Morgen", $this->searchObjectByName("DaySets")));
+                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
+                } else if ($senderVal == 2) {
+                    $sceneVal = GetValue($this->searchObjectByName("Tag", $this->searchObjectByName("DaySets")));
+                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
+                } else if ($senderVal == 3) {
+                    $sceneVal = GetValue($this->searchObjectByName("Dämmerung", $this->searchObjectByName("DaySets")));
+                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
+                } else if ($senderVal == 4) {
+                    $sceneVal = GetValue($this->searchObjectByName("Abend", $this->searchObjectByName("DaySets")));
+                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
+                } else if ($senderVal == 5) {
+                    $sceneVal = GetValue($this->searchObjectByName("Nacht", $this->searchObjectByName("DaySets")));
+                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
+                }
 
             }
             
