@@ -665,7 +665,7 @@
 
                         foreach ($scenes as $scene) {
 
-                            echo "Hiding ... " . $scene . "\\n";
+                            echo "Hiding " . $this->searchObjectByName($scene) . "\\n";
 
                             $this->hide($this->searchObjectByName($scene));
 
