@@ -163,8 +163,6 @@
 
                 $nextElement = $this->getElementAfterInArray($lastScene, $allScenes);
 
-                //echo $nextElement;
-
                 if ($nextElement != "last") {
 
                     SetValue($this->searchObjectByName("LastScene"), $nextElement);
@@ -183,7 +181,6 @@
 
                     } else {
 
-                        //echo "No Loop, end";
                         SetValue($this->searchObjectByName("LastScene"), null);
                         $this->setAllInLinkList($this->searchObjectByName("Targets"), 0);
 
@@ -682,6 +679,8 @@
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul verkleinern" => "Modul vergrößern"));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
+                    return;
+
                 }
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul vergrößern")) {
@@ -721,7 +720,6 @@
                 }
 
             }
-
 
             SetValue($this->searchObjectByName("Optionen"), -1);
 
