@@ -445,6 +445,8 @@
 
                     }
 
+                    echo $this->searchObjectByName($eScene . " SceneData", $this->searchObjectByName("SceneData"))) . " does not exist!";
+
                     // Delete SceneData if existing
                     if ($this->doesExist($this->searchObjectByName($eScene . " SceneData", $this->searchObjectByName("SceneData")))) {
 
