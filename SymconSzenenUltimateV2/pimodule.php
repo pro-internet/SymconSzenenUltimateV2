@@ -530,85 +530,96 @@ abstract class PISymconModule extends IPSModule {
 
                     $elementFound = false;
 
-                    foreach ($own['ChildrenIDs'] as $child) {
-                        
-                        $childObj = IPS_GetObject($child);
-
-                        if ($child == $afterThisElement) {
-
-                            $subElem = false;
-                            $lastPos = null;
-
-                            foreach ($own['ChildrenIDs'] as $cld) {
-
-                                $cld = IPS_GetObject($cld);
-
-                                if (!$subElem) {
-                                    $this->setPosition($cld['ObjectID'], $cld['ObjectPosition'] - 1);
-                                } else {
-                                    $this->setPosition($cld['ObjectID'], $lastPos + 1);
-                                }
-
-                                if ($cld['ObjectID'] == $afterThisElement) {
-
-                                    $subElem = true;
-                                    $lastPos = $cld['ObjectPosition'];
-
-                                }
-
-                            }
-
-                            $elementFound = true;
-
-                        }
-
-                        if (!$elementFound) {
-
-                            $this->setPosition($child, $childObj['ObjectPosition'] + 1);
-
-                        } 
-
-                    }
-
                     // foreach ($own['ChildrenIDs'] as $child) {
-
-                    //     $obj = IPS_GetObject($child);
+                        
+                    //     $childObj = IPS_GetObject($child);
 
                     //     if ($child == $afterThisElement) {
 
-                    //         $elementFound = true;
-                    //         $subElementFound = false;
+                    //         $subElem = false;
+                    //         $lastPos = null;
 
-                    //         foreach ($own['ChildrenIDs'] as $subChild) {
+                    //         foreach ($own['ChildrenIDs'] as $cld) {
 
-                    //             $oo = IPS_GetObject($subChild);
-                    //             if ($subChild == $child) {
-                    //                 $subElementFound = true;
+                    //             $cld = IPS_GetObject($cld);
+
+                    //             if (!$subElem) {
+                    //                 $this->setPosition($cld['ObjectID'], $cld['ObjectPosition'] - 1);
                     //             } else {
-                    //                 if (!$subElementFound) {
-                    //                     $this->setPosition($child, $oo['ObjectPosition'] - 1);
-                    //                 }
+                    //                 $this->setPosition($cld['ObjectID'], $lastPos + 1);
+                    //             }
+
+                    //             if ($cld['ObjectID'] == $afterThisElement) {
+
+                    //                 $subElem = true;
+                    //                 $lastPos = $cld['ObjectPosition'];
+
                     //             }
 
                     //         }
-                    //         $this->setPosition($child, $obj['ObjectPosition']);
-                    //         $this->setPosition($id, $obj['ObjectPosition'] + 1);
 
-                    //     } else {
-
-                    //         if ($elementFound) {
-
-                    //             $this->setPosition($child, $obj['ObjectPosition'] + 1);
-
-                    //         } else {
-
-                    //             $this->setPosition($child, $obj['ObjectPosition']);
-
-                    //         }
+                    //         $elementFound = true;
 
                     //     }
 
+                    //     if (!$elementFound) {
+
+                    //         $this->setPosition($child, $childObj['ObjectPosition'] + 1);
+
+                    //     } 
+
                     // }
+
+                    $ownChildren = $own['ChildrenIDs'];
+
+                    usort($ownChildren, function($a, $b) {
+
+                        $go1 = IPS_GetObject($a);
+                        $go2 = IPS_GetObject($b);
+                        
+                        return $go1['ObjectPosition'] > $go2['ObjectPosition'];
+                    
+                    });
+
+                    foreach ($ownChildren as $child) {
+
+                        $obj = IPS_GetObject($child);
+
+                        if ($child == $afterThisElement) {
+
+                            $elementFound = true;
+                            $subElementFound = false;
+
+                            foreach ($ownChildren as $subChild) {
+
+                                $oo = IPS_GetObject($subChild);
+                                if ($subChild == $child) {
+                                    $subElementFound = true;
+                                } else {
+                                    if (!$subElementFound) {
+                                        $this->setPosition($child, $oo['ObjectPosition'] - 1);
+                                    }
+                                }
+
+                            }
+                            $this->setPosition($child, $obj['ObjectPosition']);
+                            $this->setPosition($id, $obj['ObjectPosition'] + 1);
+
+                        } else {
+
+                            if ($elementFound) {
+
+                                $this->setPosition($child, $obj['ObjectPosition'] + 1);
+
+                            } else {
+
+                                $this->setPosition($child, $obj['ObjectPosition']);
+
+                            }
+
+                        }
+
+                    }
 
                 }
 
