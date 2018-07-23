@@ -206,7 +206,7 @@ abstract class PISymconModule extends IPSModule {
 
     protected function checkInteger ($name, $setProfile = false, $position = "", $index = 0, $defaultValue = null) {
 
-        if ($name != null && !$this->doesExist($this->searchObjectByName($name))) {
+        if ($name != null) {
 
             return $this->checkVar($name, 1, $setProfile, $position, $index, $defaultValue);
 
