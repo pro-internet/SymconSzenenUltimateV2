@@ -102,7 +102,7 @@
 
                 $daysets = $this->checkFolder("DaySets", null, 7);
 
-                $frueh = $this->checkInteger("Frueh", false, $this->searchObjectByName("DaySets"), null, 0);
+                //$frueh = $this->checkInteger("Frueh", false, $this->searchObjectByName("DaySets"), null, 0);
                 // $morgen = $this->checkInteger("Morgen", false, $this->searchObjectByName("DaySets"), 2, 0);
                 // $tag = $this->checkInteger("Tag", false, $this->searchObjectByName("DaySets"), 2, 0);
                 // $daemmerung = $this->checkInteger("Daemmerung", false, $this->searchObjectByName("DaySets"), 2, 0);
