@@ -102,6 +102,8 @@
 
                 $daysets = $this->checkFolder("DaySets", null, 7);
 
+                $this->updateSceneVarProfile();
+
                 $frueh = $this->checkInteger("Früh", false, $this->searchObjectByName("DaySets"), 1, 0);
                 $morgen = $this->checkInteger("Morgen", false, $this->searchObjectByName("DaySets"), 2, 0);
                 $tag = $this->checkInteger("Tag", false, $this->searchObjectByName("DaySets"), 3, 0);
