@@ -184,6 +184,13 @@
                         SetValue($this->searchObjectByName("LastScene"), null);
                         $this->setAllInLinkList($this->searchObjectByName("Targets"), 0);
 
+                        if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
+
+                            $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
+                            $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+
+                        }
+
                         IPS_SetScriptTimer($this->searchObjectByName("nextElement"), 0);
 
                     }
