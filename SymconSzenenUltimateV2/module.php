@@ -506,8 +506,9 @@
 
 
             } else {
-            // Wenn Automatik auf false
+            // Wenn Automatik auf false, Timer Löschen (Funktion prüft autom. ob Element existiert)!
 
+                $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
 
             }
 
@@ -659,7 +660,8 @@
             if ($optionsVal == 1) {
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul verkleinern")) {
-
+                    echo "Modul verkleinern";
+                    return;
                     if (count($scenes) > 0) {
 
                         foreach ($scenes as $scene) {

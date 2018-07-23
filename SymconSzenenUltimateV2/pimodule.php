@@ -1486,6 +1486,35 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getFirstChildFrom ($id) {
+
+        if ($this->doesExist($id)) {
+
+            $ipsObj = IPS_GetObject($id);
+
+            if (IPS_HasChildren($id)) {
+
+                foreach ($ipsObj['ChildrenIDs'] as $child) {
+
+                    return $child;
+                    break;
+
+                }
+
+            } else {
+                
+                return null;
+
+            }
+
+        } else {
+
+            return false;
+
+        }
+
+    }
+
 
 }
 
