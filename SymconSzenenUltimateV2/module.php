@@ -713,13 +713,27 @@
             // Start / Stop Zeitschaltung
             if ($optionsVal == 2) {
 
-                $this->nextElement();
-
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start")) {
 
+                    $this->nextElement();
 
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
+
+                    SetValue($this->searchObjectByName("Optionen"), -1);
+                    return;
 
                 }
+
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
+
+                    $this->deleteObject($this->getFirstChildrenFrom($this->searchObjectByName("nextElement")));
+
+                    SetValue($this->searchObjectByName("LastScene"), "");
+
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
+
+                }
+
 
             }
 
