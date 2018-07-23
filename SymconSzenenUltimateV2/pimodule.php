@@ -538,6 +538,7 @@ abstract class PISymconModule extends IPSModule {
 
                             $elementFound = true;
                             $subElementFound = false;
+
                             foreach ($own['ChildrenIDs'] as $subChild) {
 
                                 $oo = IPS_GetObject($subChild);
@@ -557,11 +558,11 @@ abstract class PISymconModule extends IPSModule {
 
                             if ($elementFound) {
 
-                                $this->setPosition($child, $obj['ObjectPosition']);
+                                $this->setPosition($child, $obj['ObjectPosition'] + 1);
 
                             } else {
 
-                                //$this->setPosition($child, $obj['ObjectPosition']);
+                                $this->setPosition($child, $obj['ObjectPosition']);
 
                             }
 
