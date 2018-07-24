@@ -1003,7 +1003,7 @@
 
                                 if ($kval == md5(json_encode($states))) {
 
-                                    SetValue($this->searchObjectByName($kkey), 999);
+                                    SetValue($this->searchObjectByName("Szenen"), $kkey);
 
                                 }
 
