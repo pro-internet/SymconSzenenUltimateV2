@@ -862,6 +862,57 @@
 
         }
 
+        public function Start () {
+
+            $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
+
+            if ($timeIsActivated) {
+
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start")) {
+
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
+                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+
+                    $this->nextElement();
+
+                    SetValue($this->searchObjectByName("Optionen"), -1);
+                    return;
+
+                } else {
+
+                    echo "Ist bereits gestartet!";
+
+                }
+
+            }
+
+        }
+
+        public function Stop () {
+
+            $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
+
+            if ($timeIsActivated) {
+
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
+
+                    $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
+
+                    SetValue($this->searchObjectByName("LastScene"), "");
+
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
+                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+
+                } else {
+
+                    echo "Läuft nicht!";
+
+                }
+
+            }
+
+        }
+
     }
 
 
