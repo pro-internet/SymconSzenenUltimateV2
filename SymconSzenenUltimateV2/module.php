@@ -234,9 +234,9 @@
 
             if (IPS_HasChildren($events)) {
 
-                $children = $this->getAllObjectsContainsString("onChangeSensor");
+                $children = $this->getAllObjectsContainsString("onChangeSensor", $this->searchObjectByName("Events"));
 
-                print_r($children);
+               // print_r($children);
 
                 foreach ($children as $child) {
 
