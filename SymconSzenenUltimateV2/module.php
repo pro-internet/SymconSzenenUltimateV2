@@ -967,10 +967,6 @@
         }
 
         public function targetSensorChange () {
-
-            $sceneDataName = $senderName . " SceneData";
-            $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
-            $sceneDataVal = GetValue($sceneDataVar);
                 
                 //if ($sceneDataVal != null && $sceneDataVal != "") {
 
