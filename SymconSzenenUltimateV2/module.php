@@ -202,6 +202,8 @@
 
             if (IPS_HasChildren($targets)) {
 
+                $targets = IPS_GetObject($targets);
+
                 foreach ($targets['ChildrenIDs'] as $child) {
 
                     if ($this->isLink($child)) {
