@@ -715,8 +715,6 @@
                 return;
             }
 
-            // Wenn Speichern
-            if ($senderVal == 0) {
             
                 $sceneDataName = $senderName . " SceneData";
                 $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
@@ -753,30 +751,6 @@
                     }
 
                 //}
-
-
-            } else if ($senderVal == 1) {
-
-                // Wenn Ausführen
-                $sceneDataName = $senderName . " SceneData";
-                $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
-                $sceneDataVal = GetValue($sceneDataVar);
-                
-                if ($sceneDataVal != null && $sceneDataVal != "") {
-
-                    $json = json_decode($sceneDataVal);
-
-                    foreach ($json as $id => $val) {
-
-                        $this->setDevice($id, $val);
-
-                    }
-
-                }
-
-            }
-
-            SetValue($senderVar, -1);
 
         }
 
