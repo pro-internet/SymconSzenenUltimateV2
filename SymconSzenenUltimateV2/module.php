@@ -971,6 +971,7 @@
                 //if ($sceneDataVal != null && $sceneDataVal != "") {
 
                 $states = array();
+                $targets = IPS_GetObject($this->searchObjectByName("Targets"));
 
                 if (count($targets['ChildrenIDs']) > 0)  {
 
