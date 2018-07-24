@@ -715,6 +715,8 @@
                 return;
             }
 
+            // Wenn Speichern
+            if ($senderVal == 0) {
             
                 $sceneDataName = $senderName . " SceneData";
                 $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
@@ -742,15 +744,35 @@
 
                         }
 
-                        if (!in_array(md5($states), $this->getSceneHashList())) {
-
-                            SetValue($this->searchObjectByName("Szenen"), 999);
-
-                        }
+                        SetValue($sceneDataVar, json_encode($states));
 
                     }
 
                 //}
+
+
+            } else if ($senderVal == 1) {
+
+                // Wenn Ausführen
+                $sceneDataName = $senderName . " SceneData";
+                $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
+                $sceneDataVal = GetValue($sceneDataVar);
+                
+                if ($sceneDataVal != null && $sceneDataVal != "") {
+
+                    $json = json_decode($sceneDataVal);
+
+                    foreach ($json as $id => $val) {
+
+                        $this->setDevice($id, $val);
+
+                    }
+
+                }
+
+            }
+
+            SetValue($senderVar, -1);
 
         }
 
@@ -958,7 +980,7 @@
 
                     foreach ($targets['ChildrenIDs'] as $child) {
 
-                        $child = IPS_GetObject($child);
+                            $child = IPS_GetObject($child);
 
                             if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
 
@@ -972,7 +994,11 @@
 
                         }
 
-                        SetValue($sceneDataVar, json_encode($states));
+                        if (in_array(md5($states), $this->getSceneHashList())) {
+
+                            SetValue($this->searchObjectByName("Szenen"), 999);
+
+                        }
 
                     }
 
