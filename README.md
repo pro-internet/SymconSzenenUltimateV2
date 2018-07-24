@@ -6,4 +6,4 @@ SymconSzenenUltimate gibt die Möglichkeit zu 3 verschiedenen Modi:
 * Man kann beliebig viele Szenen erstellen und für jede Szene einen Timer stellen. Drückt man nun auf Start werden die Szenen nach der Reihe so lange wie ihr Timer ausgeführt.
 * Ist "Zeitschaltung loopen" deaktiviert werden am Ende der Schlange alle Werte der Targets auf false gesetzt
 ## Als Szenen Modul
-* Aktiviert man keiner der Haken, so kann das Modul als normales SzenenModul verwendet werden
+* Aktiviert man keinen der Haken, so kann das Modul als normales SzenenModul verwendet werden
