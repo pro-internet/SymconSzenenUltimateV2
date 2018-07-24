@@ -236,6 +236,8 @@
 
                 $children = $this->getAllObjectsContainsString("onChangeSensor");
 
+                print_r($children);
+
                 foreach ($children as $child) {
 
                     $child = IPS_GetEvent($child);
