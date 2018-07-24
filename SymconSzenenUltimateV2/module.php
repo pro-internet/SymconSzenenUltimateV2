@@ -991,7 +991,7 @@
 
                         }
 
-                        if (in_array(json_encode($states)), $this->getSceneHashList())) {
+                        if (in_array(json_encode($states)), $this->getSceneHashList()) {
 
                             SetValue($this->searchObjectByName("Szenen"), 999);
 
