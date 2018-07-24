@@ -236,8 +236,6 @@
 
                 $children = $this->getAllObjectsContainsString("onChangeSensor", $this->searchObjectByName("Events"));
 
-                print_r($children);
-
                 foreach ($children as $child) {
 
                     $child = IPS_GetEvent($child);
@@ -261,6 +259,7 @@
 
                     if (!$isUsed) {
 
+                        echo "delete " . $child;
                         $this->deleteObject($child);
 
                     }
