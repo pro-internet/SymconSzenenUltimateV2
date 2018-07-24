@@ -637,7 +637,7 @@
                 foreach ($sceneData['ChildrenIDs'] as $child) {
 
                     $childVal = GetValue($child);
-                    $childVal = md5($childVal);
+                    //$childVal = md5($childVal);
                     $ary[] = $childVal;
 
                 }
@@ -991,7 +991,7 @@
 
                         }
 
-                        if (in_array(md5($states), $this->getSceneHashList())) {
+                        if (in_array(json_encode($states)), $this->getSceneHashList())) {
 
                             SetValue($this->searchObjectByName("Szenen"), 999);
 
