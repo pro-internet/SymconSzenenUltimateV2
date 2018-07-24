@@ -974,6 +974,13 @@
 
                 $states = array();
                 $targets = IPS_GetObject($this->searchObjectByName("Targets"));
+                $send = $_IPS['VARIABLE'];
+                $send = GetValue($send);
+
+
+                if ($_IPS['OLDVALUE'] == $send) {
+
+                }
 
                 if (count($targets['ChildrenIDs']) > 0)  {
 
