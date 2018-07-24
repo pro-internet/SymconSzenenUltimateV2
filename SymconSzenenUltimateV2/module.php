@@ -259,7 +259,7 @@
 
                     if (!$isUsed) {
 
-                        $this->deleteObject($child['ObjectID']);
+                        $this->deleteObject($child['EventID']);
 
                     }
 
