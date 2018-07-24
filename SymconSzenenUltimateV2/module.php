@@ -625,6 +625,27 @@
 
         }
 
+        protected function getSceneHashList () {
+
+            $sceneData = $this->searchObjectByName("SceneData");
+            $sceneData = IPS_GetObject($sceneData);
+
+            $ary = array();
+
+            if (IPS_HasChildren($sceneData['ObjectID'])) {
+
+                foreach ($sceneData['ChildrenIDs'] as $child) {
+
+                    $childVal = GetValue($child);
+                    $childVal = md5($childVal);
+                    $ary[] = $childVal;
+
+                }
+
+            }
+
+        }
+
         ##                 ##
         ## OnChange Events ##
         ##                 ##
@@ -723,7 +744,11 @@
 
                         }
 
-                        SetValue($sceneDataVar, json_encode($states));
+                        if (!in_array(md5($states), $this->getSceneHashList())) {
+
+                            SetValue($this->searchObjectByName("Szenen"), 999);
+
+                        }
 
                     }
 
@@ -947,7 +972,37 @@
 
         public function targetSensorChange () {
 
-            echo "YAAA";
+            $sceneDataName = $senderName . " SceneData";
+            $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
+            $sceneDataVal = GetValue($sceneDataVar);
+                
+                //if ($sceneDataVal != null && $sceneDataVal != "") {
+
+                $states = array();
+
+                if (count($targets['ChildrenIDs']) > 0)  {
+
+                    foreach ($targets['ChildrenIDs'] as $child) {
+
+                        $child = IPS_GetObject($child);
+
+                            if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                                $child = IPS_GetLink($child['ObjectID']);
+
+                                $tg = $child['TargetID'];
+
+                                $states[$tg] = GetValue($tg);
+
+                            }
+
+                        }
+
+                        SetValue($sceneDataVar, json_encode($states));
+
+                    }
+
+                //}
 
         }
 
