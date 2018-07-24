@@ -259,8 +259,7 @@
 
                     if (!$isUsed) {
 
-                        echo "delete " . $child;
-                        $this->deleteObject($child);
+                        $this->deleteObject($child['ObjectID']);
 
                     }
 
