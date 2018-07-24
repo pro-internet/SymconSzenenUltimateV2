@@ -534,6 +534,10 @@
 
             }
 
+            if ($sceneNames == null) {
+                $sceneNames = array();
+            }
+
             foreach ($existingScenes as $eScene) {
 
                 if (!in_array($eScene, $sceneNames)) {
