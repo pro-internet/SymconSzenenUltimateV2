@@ -230,7 +230,7 @@
                         SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
                         SetValue($this->searchObjectByName($allScenes[0]), 1);
 
-                        $fc = GetValue($this->searchObjectByName($allScenes[0] . " Timer"));
+                        $fc = $this->searchObjectByName($allScenes[0] . " Timer");
 
                         IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
 
@@ -862,6 +862,10 @@
             SetValue($this->searchObjectByName("Optionen"), -1);
 
         }
+
+
+        //  Öffentliche Funktionen
+
 
         public function Start () {
 
