@@ -1676,6 +1676,60 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getAllObjectsContainsString ($string, $searchIn = null) {
+
+        if ($searchIn == null) {
+
+            $searchIn = $this->InstanceID;
+
+        }
+
+        if (IPS_HasChildren($searchIn)) {
+
+            $children = IPS_GetChildren($searchIn);
+
+            $newArray = array();
+
+            foreach ($children as $child) {
+
+                $child = IPS_GetObject($child);
+
+                if (strpos($child['ObjectName'], $string) !== false) {
+
+                    $newArray[] = $child['ObjectID'];
+
+                }
+
+            }
+
+            return $newArray;
+
+        } else {
+            return null;
+        }
+
+    }
+
+    // "is" Funktionen
+
+    protected function isLink ($id) {
+
+        if ($id != 0 && $id != null) {
+
+            $obj = IPS_GetObject($id);
+
+            if ($obj['ObjectType'] == 6) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+
+    }
+
 
 }
 

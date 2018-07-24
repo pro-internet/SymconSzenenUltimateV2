@@ -52,6 +52,10 @@
 
             $this->deleteUnusedVars();
 
+            $this->setTargetsOnChangeEvent();
+
+            $this->deleteUnusedTargetOnChangeEvents();
+
         }
 
         public function Destroy () {
@@ -191,6 +195,77 @@
         #                            #
         #   Modulspez. Funktionen    #
         #                            #
+
+        protected function setTargetsOnChangeEvent () {
+
+            $targets = $this->searchObjectByName("Targets");
+
+            if (IPS_HasChildren($targets)) {
+
+                foreach ($targets['ChildrenIDs'] as $child) {
+
+                    if ($this->isLink($child)) {
+
+                        $child = IPS_GetLink($child);
+                        $childTarget = $child['TargetID'];
+
+                        if (!$this->doesExist($this->searchObjectByName("onChangeSensor " . $childTarget . " " . $this->InstanceID))) {
+
+                            $this->easyCreateOnChangeFunctionEvent("onChangeSensor " . $childTarget . " " . $this->InstanceID, $childTarget, "<?php " . $this->prefix . "_targetSensorChange(" . $this->InstanceID . ");" . " ?>", $this->searchObjectByName("Events"), false);
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        protected function deleteUnusedTargetOnChangeEvents () {
+
+            $events = $this->searchObjectByName("Events");
+            $targets = $this->searchObjectByName("Targets");
+
+            $targets = IPS_GetObject($targets);
+
+            if (IPS_HasChildren($events)) {
+
+                $children = $this->getAllObjectsContainsString("onChangeSensor");
+
+                foreach ($children as $child) {
+
+                    $child = IPS_GetEvent($child);
+                    $isUsed = false;
+
+                    foreach ($targets['ChildrenIDs'] as $target) {
+
+                        if ($this->isLink($target)) {
+
+                            $target = IPS_GetLink($target);
+
+                            if ($target['TargetID'] == $child['TriggerVariableID']) {
+
+                                $isUsed = true;
+
+                            }
+
+                        }
+
+                    }
+
+                    if (!$isUsed) {
+
+                        $this->deleteObject($child);
+
+                    }
+
+                }
+
+            }
+
+        }
 
         public function nextElement () {
 
@@ -687,6 +762,10 @@
                 return;
             }
 
+            if ($senderVal == 999) {
+                return;
+            }
+
             $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $senderVal);
             $sceneDataVal = GetValue($this->searchObjectByName($sceneName . " SceneData", $this->searchObjectByName("SceneData")));
             
@@ -861,6 +940,12 @@
             }
 
             SetValue($this->searchObjectByName("Optionen"), -1);
+
+        }
+
+        public function targetSensorChange () {
+
+            echo "YAAA";
 
         }
 
