@@ -534,13 +534,16 @@
 
             }
 
+            $completeDelete = false;
+
             if ($sceneNames == null) {
+                $completeDelete = true
                 $sceneNames = array();
             }
 
             foreach ($existingScenes as $eScene) {
 
-                if (!in_array($eScene, $sceneNames)) {
+                if (!in_array($eScene, $sceneNames) || $completeDelete) {
 
                     if ($this->doesExist($this->searchObjectByName($eScene))) {
 
