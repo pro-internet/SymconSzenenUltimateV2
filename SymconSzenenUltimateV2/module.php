@@ -537,7 +537,7 @@
             $completeDelete = false;
 
             if ($sceneNames == null) {
-                $completeDelete = true
+                $completeDelete = true;
                 $sceneNames = array();
             }
 
