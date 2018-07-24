@@ -236,7 +236,7 @@
 
                 $children = $this->getAllObjectsContainsString("onChangeSensor", $this->searchObjectByName("Events"));
 
-               // print_r($children);
+                print_r($children);
 
                 foreach ($children as $child) {
 
