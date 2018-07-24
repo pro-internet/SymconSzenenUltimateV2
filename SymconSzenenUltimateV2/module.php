@@ -638,7 +638,7 @@
 
                     $childVal = GetValue($child);
                     //$childVal = md5($childVal);
-                    $ary[] = $childVal;
+                    $ary[] = md5($childVal);
 
                 }
 
@@ -993,11 +993,14 @@
 
                         }
 
-                        if (in_array(json_encode($states), $this->getSceneHashList())) {
+                        if (in_array(md5(json_encode($states)), $this->getSceneHashList())) {
 
                             SetValue($this->searchObjectByName("Szenen"), 999);
 
                         }
+
+                        print_r($this->getSceneHashList());
+                        echo md5(json_encode($states));
 
                     }
 
