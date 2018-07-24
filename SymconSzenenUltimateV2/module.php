@@ -997,9 +997,19 @@
 
                             SetValue($this->searchObjectByName("Szenen"), 999);
 
-                        }
+                        } else {
 
-                        print_r($states);
+                            foreach ($this->getSceneHashList() as $kkey => $kval) {
+
+                                if ($kval == md5(json_encode($states)) {
+
+                                    SetValue($this->searchObjectByName($kkey), 999);
+
+                                }
+
+                            }
+
+                        }
                         //echo md5(json_encode($states));
 
                     }
