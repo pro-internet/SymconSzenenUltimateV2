@@ -819,6 +819,7 @@
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
 
+                    $this->deleteObject($this->searchObjectByName("Timer Status"));
                     $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
 
                     SetValue($this->searchObjectByName("LastScene"), "");
@@ -896,6 +897,7 @@
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
 
+                    $this->deleteObject($this->searchObjectByName("Timer Status"));
                     $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
 
                     SetValue($this->searchObjectByName("LastScene"), "");
