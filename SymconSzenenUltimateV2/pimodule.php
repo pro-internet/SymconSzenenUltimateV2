@@ -8,6 +8,7 @@ abstract class PISymconModule extends IPSModule {
     public $libraryID = null;
     public $prefix = null;
     public $instanceName = null;
+    public $parentID = null;
 
     // Vordefinierte Variablen (müssen nicht beschrieben werden)
     public $AutomatikVar = null;
@@ -55,6 +56,8 @@ abstract class PISymconModule extends IPSModule {
 
         parent::Create();
 
+        $this->parentID = IPS_GetParent($this->InstanceID);
+
         $this->RegisterProperties();
 
         $this->CheckProfiles();
@@ -72,6 +75,10 @@ abstract class PISymconModule extends IPSModule {
         parent::ApplyChanges(); 
 
         $this->CheckProfiles();
+
+        $this->CheckVariables();
+
+        $this->CheckScripts();
 
     }
 
@@ -1299,7 +1306,8 @@ abstract class PISymconModule extends IPSModule {
 
     } 
 
-    // $varNames Beispiel: array("Name||true")
+    // $varNames Beispiel: array("Element 1|false|1", "Element 2|true|2")
+    //                     array("Name|DefaultVal|Index")
     protected function createSwitches ($varNames, $position = null) {
 
         if ($position == null) {
@@ -1809,7 +1817,7 @@ abstract class PISymconModule extends IPSModule {
     
     // Kern Instanzen bekommen
 
-    protected function getArchiveControlInstance () {
+    protected function getCoreInstanceBase ($instanceName) {
 
         $all = IPS_GetObject(0);
 
@@ -1823,7 +1831,7 @@ abstract class PISymconModule extends IPSModule {
 
                     $child = IPS_GetInstance($child);
 
-                    if ($child['ModuleInfo']['ModuleName'] == "Archive Control") {
+                    if ($child['ModuleInfo']['ModuleName'] == $instanceName) {
 
                         $found = true;
                         return $child['InstanceID'];
@@ -1844,6 +1852,32 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getArchiveControlInstance () {
+
+        return $this->getCoreInstanceBase("Archive Control");
+
+    }
+
+    protected function getWebfrontInstance () {
+
+        return $this->getCoreInstanceBase("WebFront Configurator");
+
+    }
+
+    protected function getNotificationControlInstance () {
+
+        return $this->getCoreInstanceBase("Location Control");
+
+    }
+
+    protected function getWebhookControlInstance () {
+
+        return $this->getCoreInstanceBase("WebHook Control");
+
+    }
+
+
+
     protected function activateVariableLogging ($id) {
 
         if ($id == 0 || $id == null) {
@@ -1860,6 +1894,69 @@ abstract class PISymconModule extends IPSModule {
         }
 
     }
+
+
+
+    // Starke vereinfachungen
+
+
+    // Erstellt Automatik und SperrVariable sowie Automatik onChange Event (FunktionName: onAutomatikChange()) 
+    protected function createBasePIModuleElements ($parent = null) {
+
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+
+        $elements = array();
+
+        $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
+
+        $elements[0] = $switches[0];
+        $elements[1] = $switches[1];
+
+        //($onChangeEventName, $targetId, $function, $parent = null, $autoFunctionToText = true)
+        $elements[2] = $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $elements[0], "onAutomatikChange", $parent);
+
+        return $elements;
+
+    }
+
+    // array("TargetID|Function")
+    protected function createOnChangeEvents ($ary, $parent = null) {
+
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+
+        $newEvents = array();
+
+        if ($ary != null) {
+
+            if (count($ary) > 0) {
+
+                foreach ($ary as $funcString) {
+
+                    if (strpos($funcString, "|") !== false) {
+
+                        $funcAry = explode("|", $funcString);
+                        $targetID = $funcAry[0];
+                        $function = $funcAry[1];
+
+                        $newName = IPS_GetName($targetID);
+                        $newName = "onChange " . $newName;
+
+                        $newEvents[] = $this->easyCreateOnChangeFunctionEvent($newName, $targetID, $function, $parent);
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
 
 
 }
