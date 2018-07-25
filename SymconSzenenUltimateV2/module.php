@@ -125,7 +125,7 @@
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
 
-                $this->setSwitch($switches[0]);
+                $this->addSwitch($switches[0]);
 
                 if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken")) {
 
