@@ -296,7 +296,7 @@ abstract class PISymconModule extends IPSModule {
             $parent = $this->InstanceID;
         }
 
-        if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $this->searchObjectByName("Events")))) {
+        if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $parent))) {
 
             $eid = IPS_CreateEvent(0);
             IPS_SetEventTrigger($eid, 0, $targetId);
@@ -326,6 +326,7 @@ abstract class PISymconModule extends IPSModule {
         
         }
         
+
         $childs = IPS_GetChildrenIDs($searchIn);
 
         if (!IPS_HasChildren($searchIn)) {
@@ -1145,8 +1146,12 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function checkFolder ($name, $parent ,$index = 100000) {
+    protected function checkFolder ($name, $parent = null ,$index = 100000) {
         
+        if ($parent == null || $parent == 0) {
+            $parent = $this->InstanceID;
+        }
+
         if ($this->doesExist($this->searchObjectByName($name, $parent)) == false) {
             
             $targets = $this->createFolder($name);
@@ -1306,7 +1311,7 @@ abstract class PISymconModule extends IPSModule {
 
     } 
 
-    // $varNames Beispiel: array("Element 1|false|1", "Element 2|true|2")
+    // $varNames Beispiel: array("Element 1|false|1>onElement1Change", "Element 2|true|2")
     //                     array("Name|DefaultVal|Index")
     protected function createSwitches ($varNames, $position = null) {
 
@@ -1315,7 +1320,7 @@ abstract class PISymconModule extends IPSModule {
             $position = $this->InstanceID;
 
         } else {
-            $position = "";
+            $position = $position->InstanceID;
         }
 
         $index;
@@ -1324,6 +1329,9 @@ abstract class PISymconModule extends IPSModule {
 
         foreach ($varNames as $varName) {
 
+            $vrnme = "";
+            $completeStr = $varName;
+
             if (strpos($varName, '|') !== false) {
 
                 $completeName = $varName;
@@ -1331,6 +1339,7 @@ abstract class PISymconModule extends IPSModule {
                 $expl = explode("|", $varName);
                 $defaultValue = $expl[1];
                 $varName = $expl[0];
+                $vrnme = $varName;
 
                 if ($defaultValue == "true") {
                     $defaultValue = true;
@@ -1353,7 +1362,21 @@ abstract class PISymconModule extends IPSModule {
                 $index = 0;
             }
 
-            $IDs[] = $this->checkBoolean($varName, true, $position, $index, $defaultValue);
+            $idd = $this->checkBoolean($varName, true, $position, $index, $defaultValue);
+
+            if (strpos($completeStr, '>') !== false) {
+
+                $functionName = explode(">", $completeStr)[1];
+
+                //echo $idd . "|" . $functionName;
+
+                $this->createOnChangeEvents(array($idd . "|" . $functionName), $position);                
+
+            }
+
+            $IDs[] = $idd;
+
+            $this->setIcon($idd, "Power");
 
         }
 
@@ -1939,7 +1962,7 @@ abstract class PISymconModule extends IPSModule {
                     if (strpos($funcString, "|") !== false) {
 
                         $funcAry = explode("|", $funcString);
-                        $targetID = $funcAry[0];
+                        $targetID = intval($funcAry[0]);
                         $function = $funcAry[1];
 
                         $newName = IPS_GetName($targetID);
