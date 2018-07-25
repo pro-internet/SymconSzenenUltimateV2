@@ -1844,6 +1844,22 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function activateVariableLogging ($id) {
+
+        if ($id == 0 || $id == null) {
+            return;
+        }
+
+        $archiveInstance = $this->getArchiveControlInstance();
+
+        if ($archiveInstance != null && $archiveInstance != 0) {
+
+            AC_SetLoggingStatus ($archiveInstance, $id, true);
+
+        }
+
+    }
+
 
 }
 
