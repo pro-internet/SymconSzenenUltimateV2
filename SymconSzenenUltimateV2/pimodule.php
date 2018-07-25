@@ -1,5 +1,7 @@
 <?php
 
+// PISymconModule v1.1
+
 abstract class PISymconModule extends IPSModule {
 
     public $moduleID = null;
@@ -101,62 +103,8 @@ abstract class PISymconModule extends IPSModule {
 
     // PI GRUNDFUNKTIONEN
 
-    protected function easyCreateVariable ($type = 1, $name = "Variable", $position = "", $index = 0, $defaultValue = null) {
 
-        if ($position == "") {
-
-            $position = $this->InstanceID;
-
-        }
-
-        $newVariable = IPS_CreateVariable($type);
-        IPS_SetName($newVariable, $name);
-        IPS_SetParent($newVariable, $position);
-        //IPS_SetPosition($newVariable, $index);
-        $this->setPosition($newVariable, $index);
-        IPS_SetIdent($newVariable, $this->nameToIdent($name));
-        
-        if ($defaultValue != null) {
-            SetValue($newVariable, $defaultValue);
-        }
-
-        return $newVariable;
-    }
-
-    protected function easyCreateScript ($name, $script, $function = true ,$parent = "", $onlywebfront = false) {
-
-        if ($parent == "") {
-
-            $parent = $this->InstanceID;
-        
-        }
-
-        $newScript = IPS_CreateScript(0);
-        
-        IPS_SetName($newScript, $name);
-        IPS_SetIdent($newScript, $this->nameToIdent($name));
-        
-        if ($function == true) {
-
-            if ($onlywebfront) {
-
-                IPS_SetScriptContent($newScript, "<?php if(\$\_IPS['SENDER'] == 'WebFront') { " . $script . "(" . $this->InstanceID . ");" . "} ?>");
-            
-            } else {
-
-                IPS_SetScriptContent($newScript, "<?php " . $script . "(" . $this->InstanceID . ");" . " ?>");
-            
-            }
-        } else {
-
-            IPS_SetScriptContent($newScript, $script);
-        
-        }
-        
-        IPS_SetParent($newScript, $parent);
-        
-        return $newScript;
-    }
+    // CheckVar Funktionen
 
     protected function checkVar ($var, $type = 1, $profile = false , $position = "", $index = 0, $defaultValue = null) {
 
@@ -253,6 +201,115 @@ abstract class PISymconModule extends IPSModule {
         }
 
     }
+
+    protected function easyCreateVariable ($type = 1, $name = "Variable", $position = "", $index = 0, $defaultValue = null) {
+
+        if ($position == "") {
+
+            $position = $this->InstanceID;
+
+        }
+
+        $newVariable = IPS_CreateVariable($type);
+        IPS_SetName($newVariable, $name);
+        IPS_SetParent($newVariable, $position);
+        //IPS_SetPosition($newVariable, $index);
+        $this->setPosition($newVariable, $index);
+        IPS_SetIdent($newVariable, $this->nameToIdent($name));
+        
+        if ($defaultValue != null) {
+            SetValue($newVariable, $defaultValue);
+        }
+
+        return $newVariable;
+    }
+
+    // Script Funktionen
+
+    protected function easyCreateScript ($name, $script, $function = true ,$parent = "", $onlywebfront = false) {
+
+        if ($parent == "") {
+
+            $parent = $this->InstanceID;
+        
+        }
+
+        $newScript = IPS_CreateScript(0);
+        
+        IPS_SetName($newScript, $name);
+        IPS_SetIdent($newScript, $this->nameToIdent($name));
+        
+        if ($function == true) {
+
+            if ($onlywebfront) {
+
+                IPS_SetScriptContent($newScript, "<?php if(\$\_IPS['SENDER'] == 'WebFront') { " . $script . "(" . $this->InstanceID . ");" . "} ?>");
+            
+            } else {
+
+                IPS_SetScriptContent($newScript, "<?php " . $script . "(" . $this->InstanceID . ");" . " ?>");
+            
+            }
+        } else {
+
+            IPS_SetScriptContent($newScript, $script);
+        
+        }
+        
+        IPS_SetParent($newScript, $parent);
+        
+        return $newScript;
+    }
+
+    protected function checkScript ($name, $script, $function = true, $hide = true, $position = 1000) {
+
+        if (!$this->doesExist($this->searchObjectByName($name))) {
+            
+            $script = $this->easyCreateScript($name, $script, $function);
+            
+            if ($hide) {
+
+                $this->hide($script);
+
+            }
+
+            $this->setPosition($script, $position);
+
+            return $script;
+        
+        } else {
+            return $this->searchObjectByName($name);
+        }
+    }
+
+    protected function easyCreateOnChangeFunctionEvent ($onChangeEventName, $targetId, $function, $parent = null, $autoFunctionToText = true) {
+
+        if ($parent == null) {
+
+            $parent = $this->InstanceID;
+        }
+
+        if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $this->searchObjectByName("Events")))) {
+
+            $eid = IPS_CreateEvent(0);
+            IPS_SetEventTrigger($eid, 0, $targetId);
+            IPS_SetParent($eid, $parent);
+            if ($autoFunctionToText) {
+                IPS_SetEventScript($eid, "<?php " . $this->prefix . "_" . $function . "(" . $this->InstanceID . "); ?>");
+            } else {
+                IPS_SetEventScript($eid, $function);
+            }
+            IPS_SetName($eid, $onChangeEventName);
+            IPS_SetEventActive($eid, true);
+            IPS_SetIdent($eid, $this->nameToIdent($onChangeEventName));
+
+            return $eid;
+
+        }
+
+    }
+
+    // Such Funktionen
 
     protected function searchObjectByName ($name, $searchIn = null, $objectType = null) {
 
@@ -354,62 +411,105 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function addSwitch ($vid) {
+    protected function getAllVarsByVariableCustomProfile ($name, $in = null) {
 
-        if(IPS_VariableProfileExists("Switch"))
-        {
-            IPS_SetVariableCustomProfile($vid,"Switch");
-            $this->addSetValue($vid);
+        if ($in == null) {
+
+            $in = $this->InstanceID;
+
+        }
+
+        $own = IPS_GetObject($in);
+
+        //print_r($on);
+
+        $ary = null;
+
+        foreach ($own['ChildrenIDs'] as $child) {
+
+            $obj = IPS_GetObject($child);
+
+            if ($obj['ObjectType'] == $this->objectTypeByName("variable")) {
+
+                $obj = IPS_GetVariable($obj['ObjectID']);
+
+                if ($obj['VariableCustomProfile'] == $name) {
+
+                    $obj = IPS_GetObject($obj['VariableID']);
+                    $ary[] = $obj['ObjectName'];
+
+                }
+
+            }
+
+        }
+
+        return $ary;
+
+    }
+
+    protected function getAllObjectsContainsString ($string, $searchIn = null) {
+
+        if ($searchIn == null) {
+
+            $searchIn = $this->InstanceID;
+
+        }
+
+        if (IPS_HasChildren($searchIn)) {
+
+            $children = IPS_GetObject($searchIn);
+            $children = $children['ChildrenIDs'];
+
+            $newArray = array();
+
+            foreach ($children as $child) {
+
+                $child = IPS_GetObject($child);
+
+                if (strpos($child['ObjectName'], $string) !== false) {
+
+                    $newArray[] = $child['ObjectID'];
+
+                }
+
+            }
+
+            return $newArray;
+
+        } else {
+            return null;
+        }
+
+    }
+
+    protected function getFirstChildFrom ($id) {
+
+        if ($this->doesExist($id)) {
+
+            $ipsObj = IPS_GetObject($id);
+
+            if (IPS_HasChildren($id)) {
+
+                foreach ($ipsObj['ChildrenIDs'] as $child) {
+
+                    return $child;
+                    break;
+
+                }
+
+            } else {
+                
+                return null;
+
+            }
+
         } else {
 
-            $this->checkVariableProfile("Switch", $this->varTypeByName("boolean"), 0.00, 1.00, 1.00, array("Aus" => false, "An" => "true|0x8000FF"));
-
-        }
-
-    }
-
-    protected function addSetValue ($id) { 
-
-        if (!$this->doesExist($this->searchObjectByName("SetValue"))) {
-
-            $setValueScript = $this->checkScript("SetValue", "<?php SetValue(\$IPS_VARIABLE, \$IPS_VALUE); ?>", false);
-            $this->hide($setValueScript);
-
-            IPS_SetVariableCustomAction($id, $this->searchObjectByName("SetValue"));
-
-        } else {
-
-            IPS_SetVariableCustomAction($id, $this->searchObjectByName("SetValue"));
-
-        }
-
-    }
-
-    protected function addTime ($vid) {
-
-        if (IPS_VariableProfileExists("~UnixTimestampTime")) {
-
-            IPS_SetVariableCustomProfile($vid, "~UnixTimestampTime");
-            IPS_SetVariableCustomAction($vid, $this->searchObjectByName("~UnixTimestampTime"));
-        
-        }
-    }
-
-    protected function doesExist ($id) {
-
-        if (gettype($id) != "integer") {
             return false;
+
         }
 
-        if (IPS_ObjectExists($id) && $id != 0) {
-            
-            return true;
-
-        } else {
-
-            return false;
-        
-        }
     }
 
     protected function nameToIdent ($name) {
@@ -427,495 +527,7 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function addProfile ($id, $profile, $useSetValue = true) {
-
-        if (IPS_VariableProfileExists($profile)) {
-
-            IPS_SetVariableCustomProfile($id, $profile);
-            
-            if ($useSetValue) {
-
-                $this->addSetValue($id);
-            
-            }
-        } else {
-
-            //echo $profile . " does not exist!";
-
-        }
-    }
-
-    protected function checkScript ($name, $script, $function = true, $hide = true, $position = 1000) {
-
-        if (!$this->doesExist($this->searchObjectByName($name))) {
-            
-            $script = $this->easyCreateScript($name, $script, $function);
-            
-            if ($hide) {
-
-                $this->hide($script);
-
-            }
-
-            $this->setPosition($script, $position);
-
-            return $script;
-        
-        } else {
-            return $this->searchObjectByName($name);
-        }
-    }
-
-    protected function hide ($id) {
-
-        IPS_SetHidden($id, true);
-
-    }
-
-    // Ausbaufähig (---> Fehler, )
-    protected function setPosition ($id, $position, $in = null) {
-
-        if ($in == null) {
-            $in = $this->InstanceID;
-        }
-
-        if ($this->doesExist($id)) {
-
-            if (gettype($position) == "string") {
-
-                if ($position == "last" || $position == "Last") {
-
-                    $own = IPS_GetObject($in);
-
-                    $lastChildPosition = 0;
-                    $highestChildPositon = 0;
-
-                    foreach ($own['ChildrenIDs'] as $child) {
-
-                        $chld = IPS_GetObject($child);
-
-                        if ($chld['ObjectPosition'] >= $highestChildPositon) {
-
-                            $highestChildPositon = $chld['ObjectPosition'];
-
-                        }
-
-                    }
-
-                    IPS_SetPosition($id, $highestChildPositon + 1);
-
-                } else if ($position == "first" || $position == "First") {
-
-                    $own = IPS_GetObject($in);
-
-                    IPS_SetPosition($id, 0);
-
-                    if (IPS_HasChildren($in)) {
-
-                        $isfirst = true;
-
-                        foreach ($own['ChildrenIDs'] as $child) {
-
-                            $child = IPS_GetObject($child);
-
-                            if ($child['ObjectPosition'] != "0" && $isfirst) {
-                                break;
-                            } else {
-                                $isfirst = false;
-                                IPS_SetPosition($child['ObjectID'], $child['ObjectPosition'] + 1);
-                            }
-
-                        }
-
-                    }
-
-
-                } else if (strpos($position, "|AFTER|") !== false) {
-
-                    $own = IPS_GetObject($this->InstanceID);
-
-                    $expString = explode("|AFTER|", $position);
-
-                    $afterThisElement = $expString[1];
-
-                    $elementFound = false;
-
-                    // foreach ($own['ChildrenIDs'] as $child) {
-                        
-                    //     $childObj = IPS_GetObject($child);
-
-                    //     if ($child == $afterThisElement) {
-
-                    //         $subElem = false;
-                    //         $lastPos = null;
-
-                    //         foreach ($own['ChildrenIDs'] as $cld) {
-
-                    //             $cld = IPS_GetObject($cld);
-
-                    //             if (!$subElem) {
-                    //                 $this->setPosition($cld['ObjectID'], $cld['ObjectPosition'] - 1);
-                    //             } else {
-                    //                 $this->setPosition($cld['ObjectID'], $lastPos + 1);
-                    //             }
-
-                    //             if ($cld['ObjectID'] == $afterThisElement) {
-
-                    //                 $subElem = true;
-                    //                 $lastPos = $cld['ObjectPosition'];
-
-                    //             }
-
-                    //         }
-
-                    //         $elementFound = true;
-
-                    //     }
-
-                    //     if (!$elementFound) {
-
-                    //         $this->setPosition($child, $childObj['ObjectPosition'] + 1);
-
-                    //     } 
-
-                    // }
-
-                    $ownChildren = $own['ChildrenIDs'];
-
-                    // Sortiert Children nach Position
-
-                    usort($ownChildren, function($a, $b) {
-
-                        $go1 = IPS_GetObject($a);
-                        $go2 = IPS_GetObject($b);
-                        
-                        return $go1['ObjectPosition'] > $go2['ObjectPosition'];
-                    
-                    });
-
-                    foreach ($ownChildren as $child) {
-
-                        $obj = IPS_GetObject($child);
-
-                        if ($child == $afterThisElement) {
-
-                            $elementFound = true;
-                            $subElementFound = false;
-
-                            foreach ($ownChildren as $subChild) {
-
-                                $oo = IPS_GetObject($subChild);
-                                if ($subChild == $child) {
-                                    $subElementFound = true;
-                                } else {
-                                    if (!$subElementFound) {
-                                        $this->setPosition($child, $oo['ObjectPosition'] - 1);
-                                    }
-                                }
-
-                            }
-                            $this->setPosition($child, $obj['ObjectPosition']);
-                            $this->setPosition($id, $obj['ObjectPosition'] + 1);
-
-                        } else {
-
-                            if ($elementFound) {
-
-                                $this->setPosition($child, $obj['ObjectPosition'] + 1);
-
-                            } else {
-
-                                $this->setPosition($child, $obj['ObjectPosition']);
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            } else {
-
-                IPS_SetPosition($id, $position);
-
-            }
-
-        }
-
-    }
-
-    protected function checkFolder ($name, $parent ,$index = 100000) {
-        
-        if ($this->doesExist($this->searchObjectByName($name, $parent)) == false) {
-            
-            $targets = $this->createFolder($name);
-            
-            $this->hide($targets);
-            
-            if ($index != null ) {
-                
-                IPS_SetPosition($targets, $index);
-            
-            }
-            
-            if ($parent != null) {
-                
-                IPS_SetParent($targets, $parent);
-            
-            }
-            
-            return $targets;
-
-        } else {
-
-            return $this->searchObjectByName($name, $parent);
-
-        }
-    }
-
-    protected function createFolder ($name) {
-
-        $units = IPS_CreateInstance($this->getModuleGuidByName());
-        IPS_SetName($units, $name);
-        IPS_SetIdent($units, $this->nameToIdent($name));
-        IPS_SetParent($units, $this->InstanceID);
-        return $units;
-
-    }
-
-    protected function getModuleGuidByName ($name = "Dummy Module") {
-        
-        $allModules = IPS_GetModuleList();
-        $GUID = ""; 
-        
-        foreach ($allModules as $module) {
-
-            if (IPS_GetModule($module)['ModuleName'] == $name) {
-                $GUID = $module;
-                break;
-            }
-
-        }
-
-        return $GUID;
-    } 
-
-    protected function easyCreateOnChangeFunctionEvent ($onChangeEventName, $targetId, $function, $parent = null, $autoFunctionToText = true) {
-
-        if ($parent == null) {
-
-            $parent = $this->InstanceID;
-        }
-
-        if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $this->searchObjectByName("Events")))) {
-
-            $eid = IPS_CreateEvent(0);
-            IPS_SetEventTrigger($eid, 0, $targetId);
-            IPS_SetParent($eid, $parent);
-            if ($autoFunctionToText) {
-                IPS_SetEventScript($eid, "<?php " . $this->prefix . "_" . $function . "(" . $this->InstanceID . "); ?>");
-            } else {
-                IPS_SetEventScript($eid, $function);
-            }
-            IPS_SetName($eid, $onChangeEventName);
-            IPS_SetEventActive($eid, true);
-            IPS_SetIdent($eid, $this->nameToIdent($onChangeEventName));
-
-            return $eid;
-
-        }
-
-    }
-
-    protected function setIcon ($objectId, $iconName) {
-
-        $object = IPS_GetObject($objectId);
-
-        if ($object['ObjectIcon'] != $iconName) {
-
-            $iconList = $this->getIconList();
-
-            if (in_array($iconName, $iconList)) {
-
-                IPS_SetIcon($objectId, $iconName);
-
-            } else {
-
-                echo "Icon existiert nicht!";
-
-            }
-
-        }
-
-    }
-
-    protected function getIconList () {
-
-        $ary =  array("Aircraft", "Alert", "ArrowRight", "Backspace", "Basement", "Bath", "Battery", "Bed", "Bike", "Book", "Bulb", "Calendar", "Camera", "Car", "Caret", "Cat", "Climate", "Clock", "Close", "CloseAll", "Cloud", "Cloudy", "Cocktail", "Cross", "Database", "Dining", "Distance", "DoctorBag", "Dog", "Dollar", "Door", "Download", "Drops", "Duck", "Edit", "Electricity", "EnergyProduction", "EnergySolar", "EnergyStorage", "ErlenmeyerFlask", "Euro", "Execute", "Eyes", "Factory", "Favorite", "Female", "Fitness", "Flag", "Flame", "FloorLamp", "Flower", "Fog", "Garage", "Gas", "Gauge", "Gear", "Graph", "GroundFloor", "Handicap", "Heart", "Help", "HollowArrowDown", "HollowArrowLeft", "HollowArrowRight", "HollowArrowUp", "HollowDoubleArrowDown", "HollowDoubleArrowLeft", "HollowDoubleArrowRight", "HollowDoubleArrowUp", "HollowLargeArrowDown", "HollowLargeArrowLeft", "HollowLargeArrowRight", "HollowLargeArrowUp", "Hourglass", "HouseRemote", "Image", "Information", "Intensity", "Internet", "IPS", "Jalousie", "Key", "Keyboard", "Kitchen", "Leaf", "Light", "Lightning", "Link", "Lock", "LockClosed", "LockOpen", "Macro", "Mail", "Male", "Melody", "Menu", "Minus", "Mobile", "Moon", "Motion", "Move", "Music", "Network", "Notebook", "Ok", "Pacifier", "Paintbrush", "Pants", "Party", "People", "Plug", "Plus", "Popcorn", "Power", "Presence", "Radiator", "Raffstore", "Rainfall", "Recycling", "Remote", "Repeat", "Return", "Robot", "Rocket", "Script", "Shift", "Shower", "Shuffle", "Shutter", "Sink", "Sleep", "Snow", "Snowflake", "Sofa", "Speaker", "Speedo", "Stars", "Sun", "Sunny", "Talk", "Tap", "Teddy", "Tee", "Telephone", "Temperature", "Thunder", "Title", "TopFloor", "Tree", "TurnLeft", "TurnRight", "TV", "Umbrella", "Unicorn", "Ventilation", "Warning", "Wave", "Wellness", "WindDirection", "WindSpeed", "Window", "WC", "XBMC");
-        return $ary;
-
-    }
-
-    protected function show ($id) {
-        IPS_SetHidden($id, false);
-    }
-
-    protected function varTypeByName ($name) {
-
-        $name = (string) $name;
-
-        $booleanAlias = array("Boolean", "boolean", "bool", "Bool", "b", "B");
-        $integerAlias = array("Integer", "integer", "Int", "int", "i", "I", 1);
-        $floatAlias = array("Float", "float", "fl", "Fl", 2);
-        $stringAlias = array("String", "string", "str", "Str", "s", "S", 3);
-
-        if (in_array($name, $booleanAlias)) {
-
-            return 0; 
-
-        } else if (in_array($name, $integerAlias)) {
-
-            return 1;
-
-        } else if (in_array($name, $floatAlias)) {
-
-            return 2;
-
-        } else if (in_array($name, $stringAlias)) {
-
-            return 3;
-
-        }
-
-    }
-
-    protected function objectTypeByName ($name) {
-
-        //0: Kategorie, 1: Instanz, 2: Variable, 3: Skript, 4: Ereignis, 5: Media, 6: Link)
-        $kategorieAlias = array("Kategorie", "kategorie", "Category", "category", "Kat", "kat", "Cat", "cat");
-        $instanzAlias = array("Instanz", "instanz", "Instance", "instance", "Module", "module", "Modul", "modul");
-        $variableAlias = array("Variable", "variable", "var", "Var");
-        $scriptAlias = array("Script", "script", "Skript", "Skript");
-        $ereignisAlias = array("Ereignis", "ereignis", "Event", "event", "Trigger", "trigger");
-        $mediaAlias = array("Media", "media", "File", "file");
-        $linkAlias = array("Link", "link", "Verknüpfung", "verknüpfung");
-
-        if (in_array($name, $kategorieAlias)) {
-
-            return 0;
-
-        } else if (in_array($name, $instanzAlias)) {
-
-            return 1;
-
-        } else if (in_array($name, $variableAlias)) {
-
-            return 2;
-
-        } else if (in_array($name, $scriptAlias)) {
-
-            return 3;
-
-        } else if (in_array($name, $ereignisAlias)) {
-
-            return 4;
-
-        } else if (in_array($name, $mediaAlias)) {
-
-            return 5;
-
-        } else if (in_array($name, $linkAlias)) {
-
-            return 6;
-
-        }
-
-    } 
-
-    protected function createSwitches ($varNames, $position = null) {
-
-        if ($position == null) {
-
-            $position = $this->InstanceID;
-
-        } else {
-            $position = "";
-        }
-
-        $index;
-
-        $IDs = null;
-
-        foreach ($varNames as $varName) {
-
-            if (strpos($varName, '|') !== false) {
-
-                $completeName = $varName;
-
-                $expl = explode("|", $varName);
-                $defaultValue = $expl[1];
-                $varName = $expl[0];
-
-                if ($defaultValue == "true") {
-                    $defaultValue = true;
-                } else {
-                    $defaultValue = false;
-                }
-
-                //print_r($expl);
-
-                if (count($expl) > 1){
-
-                    $index = intval($expl[2]);
-
-                } else {
-                    $index = 0;
-                }
-
-            } else {
-                $defaultValue = null;
-                $index = 0;
-            }
-
-            $IDs[] = $this->checkBoolean($varName, true, $position, $index, $defaultValue);
-
-        }
-
-        return $IDs;
-
-    }
-
-    protected function linkVar ($target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0, $ident = false) {
-
-        if ($parent == null) {
-            $parent = $this->InstanceID;
-        }
-
-        if ($this->doesExist($target)) {
-
-            if (!$this->doesExist($this->searchObjectByRealName($linkName, $parent))) {
-
-                $link = IPS_CreateLink();
-                IPS_SetName($link, $linkName);
-
-                if ($ident == true) {
-
-                    IPS_SetIdent($link, $this->nameToIdent($linkName));
-
-                }
-
-                IPS_SetParent($link, $parent);
-                IPS_SetLinkTargetID($link, $target);
-                IPS_SetHidden($link, false);
-                $this->setPosition($link, $linkPosition);
-
-                return $link;
-            }
-
-        }
-
-    }
+    // Profil Funktionen
 
     protected function checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null, $prefix = "", $suffix = "") {
 
@@ -969,171 +581,6 @@ abstract class PISymconModule extends IPSModule {
     protected function dynamicVariableProfileName ($name) {
 
         return $this->prefix . $this->InstanceID . "." . $name;
-
-    }
-
-    protected function getHighestPosition ($in = null) {
-
-        if ($in == null) {
-
-            $in = $this->InstanceID;
-
-        }
-
-        $obj = IPS_GetObject($in);
-
-        $maxPos = 0;
-
-        if (count($obj['ChildrenIDs']) > 0) {
-
-            foreach ($obj['ChildrenIDs'] as $child) {
-
-                $child = IPS_GetObject($child);
-
-                if ($child['ObjectPosition'] >= $maxPos) {
-
-                    $maxPos = $child['ObjectPosition'];
-
-                }
-
-            }
-
-        }
-
-        return $maxPos;
-
-    }
-
-    protected function getAllVarsByVariableCustomProfile ($name, $in = null) {
-
-        if ($in == null) {
-
-            $in = $this->InstanceID;
-
-        }
-
-        $own = IPS_GetObject($in);
-
-        //print_r($on);
-
-        $ary = null;
-
-        foreach ($own['ChildrenIDs'] as $child) {
-
-            $obj = IPS_GetObject($child);
-
-            if ($obj['ObjectType'] == $this->objectTypeByName("variable")) {
-
-                $obj = IPS_GetVariable($obj['ObjectID']);
-
-                if ($obj['VariableCustomProfile'] == $name) {
-
-                    $obj = IPS_GetObject($obj['VariableID']);
-                    $ary[] = $obj['ObjectName'];
-
-                }
-
-            }
-
-        }
-
-        return $ary;
-
-    }
-
-    // Sort
-
-    public static function cmp ($a, $b) {
-
-        return $a['ObjectPosition'] > $b['ObjectPosition'];
-
-    }
-
-    //
-
-    protected function linkCompleteDummy ($source, $target) {
-
-        $sourceObj = IPS_GetObject($source);
-        $targetObj = IPS_GetObject($target);
-
-        foreach ($sourceObj as $sourceChild) {
-
-            $sChildObj = IPS_GetObject($sourceChild);
-
-            $alreadyLinked = false;
-
-            if (count($targetObj['ChildrenIDs']) > 0) {
-
-              foreach ($targetObj['ChildrenIDs'] as $targetChild) {
-
-                $targetChildObj = IPS_GetObject($targetChild);
-
-                if ($targetChildObj['ObjectType'] == $this->objectTypeByName("Link")) {
-
-                    $tg = IPS_GetLink($targetChildObj);
-
-                    if ($tg['TargetID'] == $sourceChild) {
-
-                        $alreadyLinked = true;
-
-                    }
-
-                }
-
-              }  
-
-            }
-            
-            if (!$alreadyLinked) {
-
-                $this->linkVar($sChildObj['ObjectID'], $sChildObj['ObjectName'], $targetObj['ObjectID']);
-
-            }
-
-        }
-
-    }
-
-    protected function deleteObject ($id) {
-
-        if ($id == 0) {
-            return null;
-        }
-
-        if (!$this->doesExist($id)) {
-            return null; 
-        }
-
-        $obj = IPS_GetObject($id);
-
-        if ($obj['ObjectType'] == $this->objectTypeByName("Variable")) {
-            IPS_DeleteVariable($id);
-        } else if ($obj['ObjectType'] == $this->objectTypeByName("Event")) {
-            IPS_DeleteEvent($id);
-        } else if ($obj['ObjectType'] == $this->objectTypeByName("Link")) {
-            IPS_DeleteLink($id);
-        } else if ($obj['ObjectType'] == $this->objectTypeByName("Script")) {
-            if (IPS_HasChildren($id)) {
-                foreach ($obj['ChildrenIDs'] as $child) {
-                    $this->deleteObject($child);
-                }
-            }
-            IPS_DeleteScript($id, true);
-        } else if ($obj['ObjectType'] == $this->objectTypeByName("Kategorie")) {
-            if (IPS_HasChildren($id)) {
-                foreach ($obj['ChildrenIDs'] as $child) {
-                    $this->deleteObject($child);
-                }
-            }
-            IPS_DeleteCategory($id);
-        } else if ($obj['ObjectType'] == $this->objectTypeByName("Instance")) {
-            if (IPS_HasChildren($id)) {
-                foreach ($obj['ChildrenIDs'] as $child) {
-                    $this->deleteObject($child);
-                }
-            }
-            IPS_DeleteInstance($id);
-        }
 
     }
 
@@ -1435,6 +882,658 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    // Vereinfachende Funktionen
+
+    protected function setPosition ($id, $position, $in = null) {
+
+        if ($in == null) {
+            $in = $this->InstanceID;
+        }
+
+        if ($this->doesExist($id)) {
+
+            if (gettype($position) == "string") {
+
+                if ($position == "last" || $position == "Last") {
+
+                    $own = IPS_GetObject($in);
+
+                    $lastChildPosition = 0;
+                    $highestChildPositon = 0;
+
+                    foreach ($own['ChildrenIDs'] as $child) {
+
+                        $chld = IPS_GetObject($child);
+
+                        if ($chld['ObjectPosition'] >= $highestChildPositon) {
+
+                            $highestChildPositon = $chld['ObjectPosition'];
+
+                        }
+
+                    }
+
+                    IPS_SetPosition($id, $highestChildPositon + 1);
+
+                } else if ($position == "first" || $position == "First") {
+
+                    $own = IPS_GetObject($in);
+
+                    IPS_SetPosition($id, 0);
+
+                    if (IPS_HasChildren($in)) {
+
+                        $isfirst = true;
+
+                        foreach ($own['ChildrenIDs'] as $child) {
+
+                            $child = IPS_GetObject($child);
+
+                            if ($child['ObjectPosition'] != "0" && $isfirst) {
+                                break;
+                            } else {
+                                $isfirst = false;
+                                IPS_SetPosition($child['ObjectID'], $child['ObjectPosition'] + 1);
+                            }
+
+                        }
+
+                    }
+
+
+                } else if (strpos($position, "|AFTER|") !== false) {
+
+                    $own = IPS_GetObject($this->InstanceID);
+
+                    $expString = explode("|AFTER|", $position);
+
+                    $afterThisElement = $expString[1];
+
+                    $elementFound = false;
+
+                    // foreach ($own['ChildrenIDs'] as $child) {
+                        
+                    //     $childObj = IPS_GetObject($child);
+
+                    //     if ($child == $afterThisElement) {
+
+                    //         $subElem = false;
+                    //         $lastPos = null;
+
+                    //         foreach ($own['ChildrenIDs'] as $cld) {
+
+                    //             $cld = IPS_GetObject($cld);
+
+                    //             if (!$subElem) {
+                    //                 $this->setPosition($cld['ObjectID'], $cld['ObjectPosition'] - 1);
+                    //             } else {
+                    //                 $this->setPosition($cld['ObjectID'], $lastPos + 1);
+                    //             }
+
+                    //             if ($cld['ObjectID'] == $afterThisElement) {
+
+                    //                 $subElem = true;
+                    //                 $lastPos = $cld['ObjectPosition'];
+
+                    //             }
+
+                    //         }
+
+                    //         $elementFound = true;
+
+                    //     }
+
+                    //     if (!$elementFound) {
+
+                    //         $this->setPosition($child, $childObj['ObjectPosition'] + 1);
+
+                    //     } 
+
+                    // }
+
+                    $ownChildren = $own['ChildrenIDs'];
+
+                    // Sortiert Children nach Position
+
+                    usort($ownChildren, function($a, $b) {
+
+                        $go1 = IPS_GetObject($a);
+                        $go2 = IPS_GetObject($b);
+                        
+                        return $go1['ObjectPosition'] > $go2['ObjectPosition'];
+                    
+                    });
+
+                    foreach ($ownChildren as $child) {
+
+                        $obj = IPS_GetObject($child);
+
+                        if ($child == $afterThisElement) {
+
+                            $elementFound = true;
+                            $subElementFound = false;
+
+                            foreach ($ownChildren as $subChild) {
+
+                                $oo = IPS_GetObject($subChild);
+                                if ($subChild == $child) {
+                                    $subElementFound = true;
+                                } else {
+                                    if (!$subElementFound) {
+                                        $this->setPosition($child, $oo['ObjectPosition'] - 1);
+                                    }
+                                }
+
+                            }
+                            $this->setPosition($child, $obj['ObjectPosition']);
+                            $this->setPosition($id, $obj['ObjectPosition'] + 1);
+
+                        } else {
+
+                            if ($elementFound) {
+
+                                $this->setPosition($child, $obj['ObjectPosition'] + 1);
+
+                            } else {
+
+                                $this->setPosition($child, $obj['ObjectPosition']);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            } else {
+
+                IPS_SetPosition($id, $position);
+
+            }
+
+        }
+
+    }
+
+    protected function addSwitch ($vid) {
+
+        if(IPS_VariableProfileExists("Switch"))
+        {
+            IPS_SetVariableCustomProfile($vid,"Switch");
+            $this->addSetValue($vid);
+        } else {
+
+            $this->checkVariableProfile("Switch", $this->varTypeByName("boolean"), 0.00, 1.00, 1.00, array("Aus" => false, "An" => "true|0x8000FF"));
+
+        }
+
+    }
+
+    protected function addSetValue ($id) { 
+
+        if (!$this->doesExist($this->searchObjectByName("SetValue"))) {
+
+            $setValueScript = $this->checkScript("SetValue", "<?php SetValue(\$IPS_VARIABLE, \$IPS_VALUE); ?>", false);
+            $this->hide($setValueScript);
+
+            IPS_SetVariableCustomAction($id, $this->searchObjectByName("SetValue"));
+
+        } else {
+
+            IPS_SetVariableCustomAction($id, $this->searchObjectByName("SetValue"));
+
+        }
+
+    }
+
+    protected function addTime ($vid) {
+
+        if (IPS_VariableProfileExists("~UnixTimestampTime")) {
+
+            IPS_SetVariableCustomProfile($vid, "~UnixTimestampTime");
+            IPS_SetVariableCustomAction($vid, $this->searchObjectByName("~UnixTimestampTime"));
+        
+        }
+    }
+
+    protected function doesExist ($id) {
+
+        if (gettype($id) != "integer") {
+            return false;
+        }
+
+        if (IPS_ObjectExists($id) && $id != 0) {
+            
+            return true;
+
+        } else {
+
+            return false;
+        
+        }
+    }
+
+    protected function addProfile ($id, $profile, $useSetValue = true) {
+
+        if (IPS_VariableProfileExists($profile)) {
+
+            IPS_SetVariableCustomProfile($id, $profile);
+            
+            if ($useSetValue) {
+
+                $this->addSetValue($id);
+            
+            }
+        } else {
+
+            //echo $profile . " does not exist!";
+
+        }
+    }
+
+    protected function hide ($id) {
+
+        IPS_SetHidden($id, true);
+
+    }
+
+    protected function checkFolder ($name, $parent ,$index = 100000) {
+        
+        if ($this->doesExist($this->searchObjectByName($name, $parent)) == false) {
+            
+            $targets = $this->createFolder($name);
+            
+            $this->hide($targets);
+            
+            if ($index != null ) {
+                
+                IPS_SetPosition($targets, $index);
+            
+            }
+            
+            if ($parent != null) {
+                
+                IPS_SetParent($targets, $parent);
+            
+            }
+            
+            return $targets;
+
+        } else {
+
+            return $this->searchObjectByName($name, $parent);
+
+        }
+    }
+
+    protected function createFolder ($name) {
+
+        $units = IPS_CreateInstance($this->getModuleGuidByName());
+        IPS_SetName($units, $name);
+        IPS_SetIdent($units, $this->nameToIdent($name));
+        IPS_SetParent($units, $this->InstanceID);
+        return $units;
+
+    }
+
+    protected function getModuleGuidByName ($name = "Dummy Module") {
+        
+        $allModules = IPS_GetModuleList();
+        $GUID = ""; 
+        
+        foreach ($allModules as $module) {
+
+            if (IPS_GetModule($module)['ModuleName'] == $name) {
+                $GUID = $module;
+                break;
+            }
+
+        }
+
+        return $GUID;
+    } 
+
+    protected function setIcon ($objectId, $iconName) {
+
+        $object = IPS_GetObject($objectId);
+
+        if ($object['ObjectIcon'] != $iconName) {
+
+            $iconList = $this->getIconList();
+
+            if (in_array($iconName, $iconList)) {
+
+                IPS_SetIcon($objectId, $iconName);
+
+            } else {
+
+                echo "Icon existiert nicht!";
+
+            }
+
+        }
+
+    }
+
+    protected function getIconList () {
+
+        $ary =  array("Aircraft", "Alert", "ArrowRight", "Backspace", "Basement", "Bath", "Battery", "Bed", "Bike", "Book", "Bulb", "Calendar", "Camera", "Car", "Caret", "Cat", "Climate", "Clock", "Close", "CloseAll", "Cloud", "Cloudy", "Cocktail", "Cross", "Database", "Dining", "Distance", "DoctorBag", "Dog", "Dollar", "Door", "Download", "Drops", "Duck", "Edit", "Electricity", "EnergyProduction", "EnergySolar", "EnergyStorage", "ErlenmeyerFlask", "Euro", "Execute", "Eyes", "Factory", "Favorite", "Female", "Fitness", "Flag", "Flame", "FloorLamp", "Flower", "Fog", "Garage", "Gas", "Gauge", "Gear", "Graph", "GroundFloor", "Handicap", "Heart", "Help", "HollowArrowDown", "HollowArrowLeft", "HollowArrowRight", "HollowArrowUp", "HollowDoubleArrowDown", "HollowDoubleArrowLeft", "HollowDoubleArrowRight", "HollowDoubleArrowUp", "HollowLargeArrowDown", "HollowLargeArrowLeft", "HollowLargeArrowRight", "HollowLargeArrowUp", "Hourglass", "HouseRemote", "Image", "Information", "Intensity", "Internet", "IPS", "Jalousie", "Key", "Keyboard", "Kitchen", "Leaf", "Light", "Lightning", "Link", "Lock", "LockClosed", "LockOpen", "Macro", "Mail", "Male", "Melody", "Menu", "Minus", "Mobile", "Moon", "Motion", "Move", "Music", "Network", "Notebook", "Ok", "Pacifier", "Paintbrush", "Pants", "Party", "People", "Plug", "Plus", "Popcorn", "Power", "Presence", "Radiator", "Raffstore", "Rainfall", "Recycling", "Remote", "Repeat", "Return", "Robot", "Rocket", "Script", "Shift", "Shower", "Shuffle", "Shutter", "Sink", "Sleep", "Snow", "Snowflake", "Sofa", "Speaker", "Speedo", "Stars", "Sun", "Sunny", "Talk", "Tap", "Teddy", "Tee", "Telephone", "Temperature", "Thunder", "Title", "TopFloor", "Tree", "TurnLeft", "TurnRight", "TV", "Umbrella", "Unicorn", "Ventilation", "Warning", "Wave", "Wellness", "WindDirection", "WindSpeed", "Window", "WC", "XBMC");
+        return $ary;
+
+    }
+
+    protected function show ($id) {
+        IPS_SetHidden($id, false);
+    }
+
+    protected function varTypeByName ($name) {
+
+        $name = (string) $name;
+
+        $booleanAlias = array("Boolean", "boolean", "bool", "Bool", "b", "B");
+        $integerAlias = array("Integer", "integer", "Int", "int", "i", "I", 1);
+        $floatAlias = array("Float", "float", "fl", "Fl", 2);
+        $stringAlias = array("String", "string", "str", "Str", "s", "S", 3);
+
+        if (in_array($name, $booleanAlias)) {
+
+            return 0; 
+
+        } else if (in_array($name, $integerAlias)) {
+
+            return 1;
+
+        } else if (in_array($name, $floatAlias)) {
+
+            return 2;
+
+        } else if (in_array($name, $stringAlias)) {
+
+            return 3;
+
+        }
+
+    }
+
+    protected function objectTypeByName ($name) {
+
+        //0: Kategorie, 1: Instanz, 2: Variable, 3: Skript, 4: Ereignis, 5: Media, 6: Link)
+        $kategorieAlias = array("Kategorie", "kategorie", "Category", "category", "Kat", "kat", "Cat", "cat");
+        $instanzAlias = array("Instanz", "instanz", "Instance", "instance", "Module", "module", "Modul", "modul");
+        $variableAlias = array("Variable", "variable", "var", "Var");
+        $scriptAlias = array("Script", "script", "Skript", "Skript");
+        $ereignisAlias = array("Ereignis", "ereignis", "Event", "event", "Trigger", "trigger");
+        $mediaAlias = array("Media", "media", "File", "file");
+        $linkAlias = array("Link", "link", "Verknüpfung", "verknüpfung");
+
+        if (in_array($name, $kategorieAlias)) {
+
+            return 0;
+
+        } else if (in_array($name, $instanzAlias)) {
+
+            return 1;
+
+        } else if (in_array($name, $variableAlias)) {
+
+            return 2;
+
+        } else if (in_array($name, $scriptAlias)) {
+
+            return 3;
+
+        } else if (in_array($name, $ereignisAlias)) {
+
+            return 4;
+
+        } else if (in_array($name, $mediaAlias)) {
+
+            return 5;
+
+        } else if (in_array($name, $linkAlias)) {
+
+            return 6;
+
+        }
+
+    } 
+
+    // $varNames Beispiel: array("Name||true")
+    protected function createSwitches ($varNames, $position = null) {
+
+        if ($position == null) {
+
+            $position = $this->InstanceID;
+
+        } else {
+            $position = "";
+        }
+
+        $index;
+
+        $IDs = null;
+
+        foreach ($varNames as $varName) {
+
+            if (strpos($varName, '|') !== false) {
+
+                $completeName = $varName;
+
+                $expl = explode("|", $varName);
+                $defaultValue = $expl[1];
+                $varName = $expl[0];
+
+                if ($defaultValue == "true") {
+                    $defaultValue = true;
+                } else {
+                    $defaultValue = false;
+                }
+
+                //print_r($expl);
+
+                if (count($expl) > 1){
+
+                    $index = intval($expl[2]);
+
+                } else {
+                    $index = 0;
+                }
+
+            } else {
+                $defaultValue = null;
+                $index = 0;
+            }
+
+            $IDs[] = $this->checkBoolean($varName, true, $position, $index, $defaultValue);
+
+        }
+
+        return $IDs;
+
+    }
+
+    protected function linkVar ($target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0, $ident = false) {
+
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+
+        if ($this->doesExist($target)) {
+
+            if (!$this->doesExist($this->searchObjectByRealName($linkName, $parent))) {
+
+                $link = IPS_CreateLink();
+                IPS_SetName($link, $linkName);
+
+                if ($ident == true) {
+
+                    IPS_SetIdent($link, $this->nameToIdent($linkName));
+
+                }
+
+                IPS_SetParent($link, $parent);
+                IPS_SetLinkTargetID($link, $target);
+                IPS_SetHidden($link, false);
+                $this->setPosition($link, $linkPosition);
+
+                return $link;
+            }
+
+        }
+
+    }
+
+    protected function getHighestPosition ($in = null) {
+
+        if ($in == null) {
+
+            $in = $this->InstanceID;
+
+        }
+
+        $obj = IPS_GetObject($in);
+
+        $maxPos = 0;
+
+        if (count($obj['ChildrenIDs']) > 0) {
+
+            foreach ($obj['ChildrenIDs'] as $child) {
+
+                $child = IPS_GetObject($child);
+
+                if ($child['ObjectPosition'] >= $maxPos) {
+
+                    $maxPos = $child['ObjectPosition'];
+
+                }
+
+            }
+
+        }
+
+        return $maxPos;
+
+    }
+
+    protected function orderChildrenByPosition ($objID) {
+
+        if (IPS_HasChildren($objID)) {
+
+            $children = IPS_GetObject($objID);
+            $children = $children['ChildrenIDs'];
+            
+            usort($children, function($a, $b) {
+
+                $go1 = IPS_GetObject($a);
+                $go2 = IPS_GetObject($b);
+                
+                return $go1['ObjectPosition'] > $go2['ObjectPosition'];
+            
+            });
+
+            return $children;
+
+        }
+
+    }
+
+    // Sort
+
+    public static function cmp ($a, $b) {
+
+        return $a['ObjectPosition'] > $b['ObjectPosition'];
+
+    }
+
+    //
+
+    protected function linkCompleteDummy ($source, $target) {
+
+        $sourceObj = IPS_GetObject($source);
+        $targetObj = IPS_GetObject($target);
+
+        foreach ($sourceObj as $sourceChild) {
+
+            $sChildObj = IPS_GetObject($sourceChild);
+
+            $alreadyLinked = false;
+
+            if (count($targetObj['ChildrenIDs']) > 0) {
+
+              foreach ($targetObj['ChildrenIDs'] as $targetChild) {
+
+                $targetChildObj = IPS_GetObject($targetChild);
+
+                if ($targetChildObj['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                    $tg = IPS_GetLink($targetChildObj);
+
+                    if ($tg['TargetID'] == $sourceChild) {
+
+                        $alreadyLinked = true;
+
+                    }
+
+                }
+
+              }  
+
+            }
+            
+            if (!$alreadyLinked) {
+
+                $this->linkVar($sChildObj['ObjectID'], $sChildObj['ObjectName'], $targetObj['ObjectID']);
+
+            }
+
+        }
+
+    }
+
+    protected function deleteObject ($id) {
+
+        if ($id == 0) {
+            return null;
+        }
+
+        if (!$this->doesExist($id)) {
+            return null; 
+        }
+
+        $obj = IPS_GetObject($id);
+
+        if ($obj['ObjectType'] == $this->objectTypeByName("Variable")) {
+            IPS_DeleteVariable($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Event")) {
+            IPS_DeleteEvent($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Link")) {
+            IPS_DeleteLink($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Script")) {
+            if (IPS_HasChildren($id)) {
+                foreach ($obj['ChildrenIDs'] as $child) {
+                    $this->deleteObject($child);
+                }
+            }
+            IPS_DeleteScript($id, true);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Kategorie")) {
+            if (IPS_HasChildren($id)) {
+                foreach ($obj['ChildrenIDs'] as $child) {
+                    $this->deleteObject($child);
+                }
+            }
+            IPS_DeleteCategory($id);
+        } else if ($obj['ObjectType'] == $this->objectTypeByName("Instance")) {
+            if (IPS_HasChildren($id)) {
+                foreach ($obj['ChildrenIDs'] as $child) {
+                    $this->deleteObject($child);
+                }
+            }
+            IPS_DeleteInstance($id);
+        }
+
+    }
+
     protected function setDevice ($deviceID, $wert){
 
 
@@ -1524,7 +1623,7 @@ abstract class PISymconModule extends IPSModule {
                     
                         if($parentInstanz['ModuleInfo']['ModuleName'] == "EIB Group" ||  $parentInstanz['ModuleInfo']['ModuleName'] == "HomeMatic Device" ){
                     
-                            PI_SetOne($parent, $wert);
+                            $this->setDevice($parent, $wert);
                         
                         } else if ($parentInstanz['ModuleInfo']['ModuleName'] == "Dummy Module") {
                         
@@ -1647,79 +1746,14 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function getFirstChildFrom ($id) {
-
-        if ($this->doesExist($id)) {
-
-            $ipsObj = IPS_GetObject($id);
-
-            if (IPS_HasChildren($id)) {
-
-                foreach ($ipsObj['ChildrenIDs'] as $child) {
-
-                    return $child;
-                    break;
-
-                }
-
-            } else {
-                
-                return null;
-
-            }
-
-        } else {
-
-            return false;
-
-        }
-
-    }
-
-    protected function getAllObjectsContainsString ($string, $searchIn = null) {
-
-        if ($searchIn == null) {
-
-            $searchIn = $this->InstanceID;
-
-        }
-
-        if (IPS_HasChildren($searchIn)) {
-
-            $children = IPS_GetObject($searchIn);
-            $children = $children['ChildrenIDs'];
-
-            $newArray = array();
-
-            foreach ($children as $child) {
-
-                $child = IPS_GetObject($child);
-
-                if (strpos($child['ObjectName'], $string) !== false) {
-
-                    $newArray[] = $child['ObjectID'];
-
-                }
-
-            }
-
-            return $newArray;
-
-        } else {
-            return null;
-        }
-
-    }
-
     // "is" Funktionen
 
-    protected function isLink ($id) {
-
+    protected function isBaseFunction ($id, $is) {
         if ($id != 0 && $id != null) {
 
             $obj = IPS_GetObject($id);
 
-            if ($obj['ObjectType'] == 6) {
+            if ($obj['ObjectType'] == $is) {
                 return true;
             } else {
                 return false;
@@ -1728,9 +1762,49 @@ abstract class PISymconModule extends IPSModule {
         } else {
             return false;
         }
+    }
+
+    protected function isCategory ($id) {
+
+        return $this->isBaseFunction($id, 0);
 
     }
 
+    protected function isInstance ($id) {
+
+        return $this->isBaseFunction($id, 1);
+
+    }
+
+    protected function isVariable ($id) {
+
+        return $this->isBaseFunction($id, 2);
+
+    }
+
+    protected function isScript ($id) {
+
+        return $this->isBaseFunction($id, 3);
+
+    }
+
+    protected function isEvent ($id) {
+
+        return $this->isBaseFunction($id, 4);
+
+    }
+
+    protected function isMedia ($id) {
+
+        return $this->isBaseFunction($id, 5);
+
+    }
+
+    protected function isLink ($id) {
+
+        return $this->isBaseFunction($id, 6);
+
+    }
 
 }
 
