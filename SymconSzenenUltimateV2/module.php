@@ -223,7 +223,8 @@
 
         protected function deleteOldDaysets () {
 
-            $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
+            $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
+            //echo "OldSensor: " . $oldSensor;
             $sensor = $this->ReadPropertyInteger("Sensor");
 
             if ($sensor != null) {
