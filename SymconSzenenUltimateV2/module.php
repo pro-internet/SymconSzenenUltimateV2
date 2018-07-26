@@ -111,7 +111,7 @@
 
                 $this->updateSceneVarProfile();
 
-                $profName = $this->getVariableProfileById($sensorID);
+                $profName = $this->getVariableProfileByVariable($sensorID);
 
                 if ($profName != null) {
 
