@@ -81,7 +81,7 @@
             $events = $this->checkFolder("Events", null, 5);
             $sceneData = $this->checkFolder("SceneData", null, 6);
 
-            $lastSensor = $this->checkString("LastSensor");
+            $lastSensor = $this->checkString("LastSensor", false, $this->InstanceID);
 
             $this->hide($lastSensor);
 
