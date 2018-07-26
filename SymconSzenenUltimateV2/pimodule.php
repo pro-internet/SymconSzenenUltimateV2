@@ -944,7 +944,7 @@ abstract class PISymconModule extends IPSModule {
                 }
 
             } else {
-                return
+                return null;
             }
 
         } else {
