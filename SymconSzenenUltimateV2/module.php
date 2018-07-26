@@ -221,7 +221,7 @@
         #   Modulspez. Funktionen    #
         #                            #
 
-        protected deleteOldDaysets () {
+        protected function deleteOldDaysets () {
 
             $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
             $sensor = $this->ReadPropertyInteger("Sensor");
