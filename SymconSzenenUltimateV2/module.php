@@ -81,9 +81,6 @@
             $events = $this->checkFolder("Events", null, 5);
             $sceneData = $this->checkFolder("SceneData", null, 6);
 
-            $lastSensor = $this->checkString("LastSensor", false, $this->InstanceID);
-
-            $this->hide($lastSensor);
 
             $daysetActivated = $this->isSensorSet();
             $daysetSensor = $this->ReadPropertyInteger("Sensor");
