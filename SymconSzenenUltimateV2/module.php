@@ -47,7 +47,7 @@
 
             if ($this->isSensorSet()) {
 
-                 $this->easyCreateOnChangeFunctionEvent("", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
+                 $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
                  $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
 
             }
@@ -223,18 +223,18 @@
 
         protected function deleteOldDaysets () {
 
-            $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
-            $sensor = $this->ReadPropertyInteger("Sensor");
+            // $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
+            // $sensor = $this->ReadPropertyInteger("Sensor");
 
-            if ($sensor != null) {
+            // if ($sensor != null) {
 
-                if ($oldSensor != $sensor) {
+            //     if ($oldSensor != $sensor) {
 
-                    $this->deleteAllChildren($this->searchObjectByName("DaySets"));
+            //         $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
-                }
+            //     }
 
-            }
+            // }
 
         }
 
@@ -521,7 +521,7 @@
 
                 $this->deleteObject($this->AutomatikVar);
                 $this->deleteObject($this->SperreVar);
-                $this->deleteObject($this->searchObjectByName("", $this->searchObjectByName("Events")));
+                $this->deleteObject($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
 
             }
 
