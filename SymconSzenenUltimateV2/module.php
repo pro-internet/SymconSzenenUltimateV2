@@ -907,6 +907,9 @@
 
                     }
 
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Verstecke Einstellungen" => "Zeige Einstellungen"));
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+
                 }
 
             } 
