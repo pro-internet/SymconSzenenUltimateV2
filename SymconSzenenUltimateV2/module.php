@@ -31,8 +31,6 @@
             parent::ApplyChanges();
 
             //$onChangeEventName, $targetId, $function, $parent = null
-
-            echo "Alter Sensor: " . $this->sensorOld;
             
             $this->CheckScripts();
 
@@ -61,6 +59,12 @@
             $this->setTargetsOnChangeEvent();
 
             $this->deleteUnusedTargetOnChangeEvents();
+
+            if ($sensorOld != $this->ReadPropertyInteger("Sender")) {
+
+                echo "Neuer Sensor!";
+
+            }
 
         }
 
