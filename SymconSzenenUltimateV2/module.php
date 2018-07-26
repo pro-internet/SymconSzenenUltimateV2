@@ -768,7 +768,7 @@
 
                 $dsName = $this->getAssociationTextByValue($this->prefix . ".DaysetScenes." . $this->InstanceID, $senderVal);
 
-                $dsObj = $this->searchObjectByName($dsName, $this->searchObjectName("DaySets"));
+                $dsObj = $this->searchObjectByName($dsName, $this->searchObjectByName("DaySets"));
 
                 $dsVal = GetValue($dsObj);
 
