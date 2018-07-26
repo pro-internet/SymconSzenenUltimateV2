@@ -533,6 +533,7 @@
 
             } else {
 
+                echo "Dayset activated";
                 $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
