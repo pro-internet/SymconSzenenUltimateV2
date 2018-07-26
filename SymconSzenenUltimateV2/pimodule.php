@@ -927,6 +927,52 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getProfileAssociations ($profileName) {
+
+        if (IPS_VariableProfileExists($profileName)) {
+
+            $prof = IPS_GetVariableProfile($profileName);
+
+            if ($prof['Associations'] != null) {
+                
+                if (count($prof['Associations']) > 0) {
+
+                    return $prof['Associations'];
+
+                } else {
+                    return null;
+                }
+
+            } else {
+                return
+            }
+
+        } else {
+            return null;
+        }
+
+    }
+
+    protected function getVariableProfileByVariable ($id) {
+
+        if ($id != 0 && $id != null) {
+
+            if ($this->isVariable($id)) {
+
+                $var = IPS_GetVariable($id);
+
+                return $var['VariableCustomProfile'];
+
+            } else {
+                return null;
+            }
+
+        } else {
+            return null;
+        }
+
+    }
+
     // Vereinfachende Funktionen
 
     protected function setPosition ($id, $position, $in = null) {
