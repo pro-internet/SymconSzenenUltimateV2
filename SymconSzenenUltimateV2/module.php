@@ -36,6 +36,8 @@
 
             $this->updateSceneVarProfile();
 
+            $this->deleteOldDaysets();
+
             $this->CheckVariables();
 
             $this->checkSceneTimerVars();
@@ -45,7 +47,7 @@
 
             if ($this->isSensorSet()) {
 
-                 $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
+                 $this->easyCreateOnChangeFunctionEvent("", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
                  $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
 
             }
@@ -114,27 +116,27 @@
 
                 $this->updateSceneVarProfile();
 
-                // $profName = $this->getVariableProfileByVariable($daysetSensor);
+                $profName = $this->getVariableProfileByVariable($daysetSensor);
 
-                // if ($profName != null) {
+                if ($profName != null) {
 
-                //     $assocs = $this->getProfileAssociations($profName);
+                    $assocs = $this->getProfileAssociations($profName);
 
-                //     if ($assocs != null) {
+                    if ($assocs != null) {
 
-                //         $counter = 1;
+                        $counter = 1;
 
-                //         foreach ($assocs as $assoc) {
+                        foreach ($assocs as $assoc) {
 
-                //             $newVar = $this->checkInteger($assoc['Name'], false, $this->searchObjectByName("DaySets"), $counter, 0);
-                //             $this->addProfile($newVar, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
-                //             $counter = $counter + 1;
+                            $newVar = $this->checkInteger($assoc['Name'], false, $this->searchObjectByName("DaySets"), $counter, 0);
+                            $this->addProfile($newVar, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
+                            $counter = $counter + 1;
 
-                //         }
+                        }
 
-                //     }
+                    }
 
-                // }
+                }
  
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
@@ -218,6 +220,23 @@
         #                            #
         #   Modulspez. Funktionen    #
         #                            #
+
+        protected deleteOldDaysets () {
+
+            $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
+            $sensor = $this->ReadPropertyInteger("Sensor");
+
+            if ($sensor != null) {
+
+                if ($oldSensor != $sensor) {
+
+                    $this->deleteAllChildren($this->searchObjectByName("DaySets"));
+
+                }
+
+            }
+
+        }
 
         protected function setTargetsOnChangeEvent () {
 
@@ -502,7 +521,7 @@
 
                 $this->deleteObject($this->AutomatikVar);
                 $this->deleteObject($this->SperreVar);
-                $this->deleteObject($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
+                $this->deleteObject($this->searchObjectByName("", $this->searchObjectByName("Events")));
 
             }
 

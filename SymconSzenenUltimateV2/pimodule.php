@@ -1881,6 +1881,27 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    // Event Funktionen 
+    protected function eventGetTriggerVariable ($id) {
+
+        if ($this->doesExist($id)) {
+
+            if ($this->isEvent($id)) {
+
+                $obj = IPS_GetEvent($id);
+                
+                return $obj['TriggerVariableID'];
+
+            } else {
+                return null;
+            }
+
+        } else {
+            return null;
+        }
+
+    }
+
     // "is" Funktionen
 
     protected function isBaseFunction ($id, $is) {
