@@ -111,7 +111,7 @@
 
                 $this->updateSceneVarProfile();
 
-                $profName = $this->getVariableProfileByVariable($sensorID);
+                $profName = $this->getVariableProfileByVariable($daysetSensor);
 
                 if ($profName != null) {
 
