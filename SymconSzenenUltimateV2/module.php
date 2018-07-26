@@ -44,11 +44,11 @@
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
             $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
 
-            if ($this->isSensorSet()) {
+            // if ($this->isSensorSet()) {
 
-                // $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
+            //     // $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
 
-            }
+            // }
 
             $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
 
@@ -114,27 +114,27 @@
 
                 $this->updateSceneVarProfile();
 
-                $profName = $this->getVariableProfileByVariable($daysetSensor);
+                // $profName = $this->getVariableProfileByVariable($daysetSensor);
 
-                if ($profName != null) {
+                // if ($profName != null) {
 
-                    $assocs = $this->getProfileAssociations($profName);
+                //     $assocs = $this->getProfileAssociations($profName);
 
-                    if ($assocs != null) {
+                //     if ($assocs != null) {
 
-                        $counter = 1;
+                //         $counter = 1;
 
-                        foreach ($assocs as $assoc) {
+                //         foreach ($assocs as $assoc) {
 
-                            $newVar = $this->checkInteger($assoc['Name'], false, $this->searchObjectByName("DaySets"), $counter, 0);
-                            $this->addProfile($newVar, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
-                            $counter = $counter + 1;
+                //             $newVar = $this->checkInteger($assoc['Name'], false, $this->searchObjectByName("DaySets"), $counter, 0);
+                //             $this->addProfile($newVar, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
+                //             $counter = $counter + 1;
 
-                        }
+                //         }
 
-                    }
+                //     }
 
-                }
+                // }
  
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
