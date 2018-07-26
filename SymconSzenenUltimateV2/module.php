@@ -197,7 +197,7 @@
         public function CheckProfiles () {
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
-            $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Einstellungen" => 0, "Modul einklappen" => 1, "Start" => 2, "DaySets anzeigen" => 3));
+            $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Einstellungen" => 0, "Modul einklappen" => 1, "Start" => 2));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
 
@@ -847,39 +847,54 @@
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
             $timers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
 
+            // Abfragen 
+            $sensorSet = false;
+            $sensorID = $this->ReadPropertyInteger("Sensor");
+
+            if ($sensorID != null || $sensorID != 0) {
+
+                $sensorSet = true;
+
+            }
+
+
             if ($_IPS['OLDVALUE'] == $optionsVal) {
                 return;
             }
 
-            // Zeige Targets
+            // Zeige Einstellungen / Verstecke Einstellungen
             if ($optionsVal == 0) {
 
-                $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt);
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Einstellungen")) {
 
-            } 
+                    // Targets einblenden
+                    $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt);
 
-            // Verstecke / Zeige Targets
-            if ($optionsVal == 0) {
+                    // DaySets einblenden
+                    if ($sensorSet) {
 
-                $ergebnis = $this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Targets");
-
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Targets")) {
-
-                    if ($this->doesExist($this->searchObjectByRealName("Geräte", $prnt))) {
-                        $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt);
-                        $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Zeige Targets" => "Verstecke Targets"));
-                        $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+                        $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, 0, true);
+    
                     }
 
-                } else {
-
-                    $this->deleteObject($this->searchObjectByRealName("Geräte", $prnt));
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Verstecke Targets" => "Zeige Targets"));
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Zeige Einstellungen" => "Verstecke Einstellungen"));
                     $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+
+                } else if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Verstecke Einstellungen")) {
+
+                    // Targets ausblenden
+                    $this->deleteObject($this->searchObjectByRealName("Geräte", $prnt));
+
+                    if ($sensorSet) {
+
+                        $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
+
+                    }
 
                 }
 
-            }
+            } 
+
 
             // Modul verkleinern / Vergrößern
             if ($optionsVal == 1) {
@@ -968,32 +983,6 @@
 
             }
 
-            // DaySets verstecken
-            if ($optionsVal == 3) {
-
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen")) {
-
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => "DaySets verstecken"));
-
-                    $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, 0, true);
-
-                    SetValue($this->searchObjectByName("Einstellungen"), -1);
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-                    return;
-
-                }
-
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken")) {
-
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets verstecken" => "DaySets anzeigen"));
-
-                    $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
-
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-
-                }
-
-            }
 
             SetValue($this->searchObjectByName("Einstellungen"), -1);
 
