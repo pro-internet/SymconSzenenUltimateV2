@@ -762,6 +762,7 @@
             $automatik = GetValue($this->AutomatikVar);
             $sperre = GetValue($this->SperreVar);
             $sensor = $this->ReadPropertyInteger("Sensor");
+            $sensorProfile = $this->getVariableProfileByVariable($sensor);
             $sensorVal = GetValue($sensor);
 
             if ($automatik && !$sperre) {
