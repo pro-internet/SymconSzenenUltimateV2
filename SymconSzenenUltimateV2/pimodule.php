@@ -1962,6 +1962,17 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function sendWebfrontNotification ($titel, $text, $icon, $timeout = 5) {
+
+        $inst = $this->getWebfrontInstance();
+
+        if ($inst != null) {
+
+            WFC_SendNotification ($inst, $titel, $text, $icon, $timeout);
+
+        }
+
+    }
     
     // Kern Instanzen bekommen
 
