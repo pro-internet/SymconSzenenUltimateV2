@@ -715,6 +715,7 @@
 
                 $this->createDynamicProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $assocs);
                 $this->cloneVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $this->prefix . ".DaysetScenes." . $this->InstanceID);
+                $this->addAssociations($this->prefix . ".DaysetScenes." . $this->InstanceID, array("—" => -1));
                 $this->addAssociations($this->prefix . ".ScenesVarProfile." . $this->InstanceID, array("Individuell" => 999));
 
             } else {
