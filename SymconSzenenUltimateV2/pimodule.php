@@ -299,7 +299,7 @@ abstract class PISymconModule extends IPSModule {
         if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $parent))) {
 
             $eid = IPS_CreateEvent(0);
-            echo "KOMISCH? : " . $eid . "  " . $targetId;
+            echo IPS_GetName($eid) . "    " . $targetID . "  \n";
             IPS_SetEventTrigger($eid, 0, $targetId);
             IPS_SetParent($eid, $parent);
             if ($autoFunctionToText) {
