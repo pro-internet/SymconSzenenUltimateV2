@@ -773,7 +773,7 @@
 
                 $dsVal = GetValue($dsObj);
 
-                if ($dsVal) {
+
 
                     if ($dsVal != -1) {
 
@@ -781,7 +781,7 @@
 
                     }
 
-                }
+                
 
             }
             
