@@ -975,6 +975,26 @@ abstract class PISymconModule extends IPSModule {
 
     // Vereinfachende Funktionen
 
+    protected function deleteAllChildren ($id) {
+
+        if ($id != null && $id != 0) {
+
+            $obj = IPS_GetObject($id);
+
+            if (IPS_HasChildren($obj['ObjectID'])) {
+
+                foreach ($obj['ChildrenIDs'] as $child) {
+
+                    $this->deleteObject($child);
+
+                }
+
+            }
+
+        }
+
+    }
+
     protected function setPosition ($id, $position, $in = null) {
 
         if ($in == null) {
