@@ -38,15 +38,6 @@
 
             $this->CheckVariables();
 
-            $sensor = $this->ReadPropertyInteger("Sensor");
-            $lastSensor = GetValue($this->searchObjectByName("LastSensor"));
-
-            if ($sensor != $lastSensor) {
-
-                $this->deleteAllChildren($this->searchObjectByName("DaySets"));
-
-            }
-
             $this->checkSceneTimerVars();
 
             $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
@@ -501,6 +492,15 @@
             $daysetActivated = $this->isSensorSet();
 
             $sceneNames = $this->getAllSceneNames();
+
+            $sensor = $this->ReadPropertyInteger("Sensor");
+            $lastSensor = GetValue($this->searchObjectByName("LastSensor"));
+
+            if ($sensor != $lastSensor) {
+
+                $this->deleteAllChildren($this->searchObjectByName("DaySets"));
+
+            }
 
             if (!$daysetActivated) {
 
