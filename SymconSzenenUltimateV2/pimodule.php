@@ -1916,6 +1916,17 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    // String Analyizer
+    
+    protected function idIsNotNullOrEmpty ($id) {
+
+        if ($id != null && $id != 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
 
     // Starke vereinfachungen
