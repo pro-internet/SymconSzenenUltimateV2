@@ -28,6 +28,8 @@
            
             parent::ApplyChanges();
 
+            $daysetActivated = $this->isSensorSet();
+
             //$onChangeEventName, $targetId, $function, $parent = null
             
             $this->CheckScripts();
@@ -45,15 +47,10 @@
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
             $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
 
-            if ($this->isSensorSet()) {
+            if ($daysetActivated) {
 
                  $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
                  $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
-
-            } else {
-
-                $this->deleteObject($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
-                $this->deleteObject($this->searchObjectByName("onChange Automatik", $this->searchObjectByName("Events")));
 
             }
 
