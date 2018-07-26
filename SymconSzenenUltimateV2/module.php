@@ -121,7 +121,7 @@
                 $this->addProfile($daemmerung, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
                 $this->addProfile($abend, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
                 $this->addProfile($nacht, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
-
+ 
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
 
@@ -132,7 +132,7 @@
 
                 if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken")) {
 
-                    $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => 2));
+                    $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => 3));
                     $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
