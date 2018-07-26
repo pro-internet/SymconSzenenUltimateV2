@@ -1,7 +1,6 @@
 {
   "elements":
   [
-		{ "type": "CheckBox", "name": "ModeDaySet", "caption": "DaySet Steuerung aktivieren" },
 	{
 		"type": "List",
 		"name": "Names",

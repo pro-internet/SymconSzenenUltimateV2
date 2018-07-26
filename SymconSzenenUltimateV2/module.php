@@ -42,7 +42,7 @@
             $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
             $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
 
-            if ($this->ReadPropertyInteger("Sensor") != null && $this->ReadPropertyBoolean("ModeDaySet")) {
+            if ($this->ReadPropertyInteger("Sensor") != null && $this->isSensorSet()) {
 
                 $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
 
@@ -79,7 +79,7 @@
             $events = $this->checkFolder("Events", null, 5);
             $sceneData = $this->checkFolder("SceneData", null, 6);
 
-            $daysetActivated = $this->ReadPropertyBoolean("ModeDaySet");
+            $daysetActivated = $this->isSensorSet();
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
             if ($timeIsActivated) {
@@ -132,12 +132,12 @@
                 $this->activateVariableLogging($switches[0]);
                 $this->activateVariableLogging($switches[1]);
 
-                if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken")) {
+                // if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken")) {
 
-                    $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => 3));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+                //     $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => 3));
+                //     $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
-                }
+                // }
 
             } else {
 
@@ -147,8 +147,8 @@
 
                 $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
 
-                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen");
-                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken");
+                // $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen");
+                // $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken");
 
             }
 
@@ -474,7 +474,7 @@
             $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
             $existingSceneTimers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
             $timerIsEnabled = $this->ReadPropertyBoolean("ModeTime");
-            $daysetActivated = $this->ReadPropertyBoolean("ModeDaySet");
+            $daysetActivated = $this->isSensorSet();
 
             $sceneNames = $this->getAllSceneNames();
 
@@ -587,6 +587,22 @@
                     }
 
                 }
+
+            }
+
+        }
+
+        protected function isSensorSet () {
+
+            $sens = $this->ReadPropertyInteger("Sensor");
+
+            if ($sens != null && $sens != 0) {
+
+                return true;
+
+            } else {
+
+                return false;
 
             }
 
