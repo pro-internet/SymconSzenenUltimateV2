@@ -523,12 +523,13 @@
                 $this->deleteObject($this->SperreVar);
 
             }
-            
+
             $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
                 if ($oldSensor != $sensor) {
                     $this->deleteObject($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
+                    $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
                 }
 
             if ($existingScenes == null) {
