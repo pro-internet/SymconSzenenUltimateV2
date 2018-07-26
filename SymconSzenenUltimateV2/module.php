@@ -884,12 +884,12 @@
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Einstellungen")) {
 
                     // Targets einblenden
-                    $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt);
+                    $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt, "|AFTER|" . $this->InstanceID);
 
                     // DaySets einblenden
                     if ($sensorSet) {
 
-                        $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, 0, true);
+                        $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, "|AFTER|" . $this->InstanceID, true);
     
                     }
 
