@@ -896,8 +896,6 @@ abstract class PISymconModule extends IPSModule {
 
             $profile = IPS_GetVariableProfile($sourceProfileName);
 
-            $profile = IPS_GetVariableProfile($profileName);
-
             $name = $newProfileName;
             $type = $profile['ProfileType'];
             $maxVal = $profile['MaxValue'];
