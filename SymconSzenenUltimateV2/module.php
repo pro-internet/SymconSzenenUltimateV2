@@ -50,6 +50,11 @@
                  $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
                  $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
 
+            } else {
+
+                $this->deleteObject($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
+                $this->deleteObject($this->searchObjectByName("onChange Automatik", $this->searchObjectByName("Events")));
+
             }
 
             $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
