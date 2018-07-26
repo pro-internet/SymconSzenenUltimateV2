@@ -139,7 +139,11 @@
 
             } else {
 
+                $prnt = IPS_GetParent($this->InstanceID);
+
                 $this->deleteObject($this->searchObjectByName("DaySets"));
+
+                $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
 
                 $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen");
                 $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken");
