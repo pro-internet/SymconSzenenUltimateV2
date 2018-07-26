@@ -63,6 +63,8 @@
             parent::Destroy();
 
             IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
+            IPS_DeleteVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+            IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
             //IPS_DeleteVariableProfile($this->prefix . ".");
 
         }
@@ -116,12 +118,12 @@
                 $abend = $this->checkInteger("Abend", false, $this->searchObjectByName("DaySets"), 5, 0);
                 $nacht = $this->checkInteger("Nacht", false, $this->searchObjectByName("DaySets"), 6, 0);
 
-                $this->addProfile($frueh, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
-                $this->addProfile($morgen, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
-                $this->addProfile($tag, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
-                $this->addProfile($daemmerung, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
-                $this->addProfile($abend, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
-                $this->addProfile($nacht, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+                $this->addProfile($frueh, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
+                $this->addProfile($morgen, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
+                $this->addProfile($tag, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
+                $this->addProfile($daemmerung, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
+                $this->addProfile($abend, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
+                $this->addProfile($nacht, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
  
                 $this->setIcon($switches[0], "Power");
                 $this->setIcon($switches[1], "Power");
@@ -633,7 +635,12 @@
 
                 }
 
+                if (IPS_VariableProfileExists($this->prefix . ".DaysetScenes." . $this->InstanceID)) {
+                    IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
+                }
+
                 $this->createDynamicProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $assocs);
+                $this->cloneVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $this->prefix . ".DaysetScenes." . $this->InstanceID);
                 $this->addAssociations($this->prefix . ".ScenesVarProfile." . $this->InstanceID, array("Individuell" => 999));
 
             } else {

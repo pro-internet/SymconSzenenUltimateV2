@@ -890,6 +890,45 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function cloneVariableProfile ($sourceProfileName, $newProfileName) {
+
+        if (IPS_VariableProfileExists($sourceProfileName)) {
+
+            $profile = IPS_GetProfile($sourceProfileName);
+
+            $profile = IPS_GetVariableProfile($profileName);
+
+            $name = $newProfileName;
+            $type = $profile['ProfileType'];
+            $maxVal = $profile['MaxValue'];
+            $minVal = $profile['MinValue'];
+            $stepSize = $profile['StepSize'];
+            $digits = $profile['Digits'];
+            $suffix = $profile['Suffix'];
+            $prefix = $profile['Prefix'];
+            $actualAssocs = $profile['Associations'];
+            
+            $nAssocs = array();
+
+            if ($actualAssocs != null) {
+
+                foreach ($actualAssocs as $actualAssoc) {
+
+                    $aName = $actualAssoc['Name'];
+
+                    $nAssocs[$aName] = $actualAssoc['Value'];
+
+                }
+
+            }
+
+            $this->checkVariableProfile($name, $type, $minVal, $maxVal, $stepSize, $nAssocs, $prefix, $suffix);
+
+
+        }
+
+    }
+
     // Vereinfachende Funktionen
 
     protected function setPosition ($id, $position, $in = null) {
