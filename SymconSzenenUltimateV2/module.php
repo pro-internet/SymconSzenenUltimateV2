@@ -12,8 +12,6 @@
         public function __construct($InstanceID) {
             // Diese Zeile nicht löschen
             parent::__construct($InstanceID);
- 
-            $this->sensorOld = $this->ReadPropertyInteger("Sensor");
 
             // Selbsterstellter Code
         }
