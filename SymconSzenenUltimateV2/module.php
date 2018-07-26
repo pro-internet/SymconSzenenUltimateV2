@@ -5,12 +5,16 @@
     // Klassendefinition
     class SymconSzenenUltimateV2 extends PISymconModule {
  
+        public $sensorOld = null;
+
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
         public function __construct($InstanceID) {
             // Diese Zeile nicht löschen
             parent::__construct($InstanceID);
  
+            $this->sensorOld = $this->ReadPropertyInteger("Sensor");
+
             // Selbsterstellter Code
         }
  
@@ -28,6 +32,8 @@
 
             //$onChangeEventName, $targetId, $function, $parent = null
 
+            echo "Alter Sensor: " . $this->sensorOld;
+            
             $this->CheckScripts();
 
             $this->checkSceneVars();
