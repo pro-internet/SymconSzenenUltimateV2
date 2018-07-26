@@ -491,13 +491,12 @@
             $sceneNames = $this->getAllSceneNames();
 
             $sensor = $this->ReadPropertyInteger("Sensor");
-            $lastSensor = GetValue($this->searchObjectByName("LastSensor"));
 
-            if ($sensor != $lastSensor) {
+            // if ($sensor != $lastSensor) {
 
-                $this->deleteAllChildren($this->searchObjectByName("DaySets"));
+            //     $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
-            }
+            // }
 
             if (!$daysetActivated) {
 
