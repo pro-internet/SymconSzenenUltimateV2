@@ -1443,7 +1443,7 @@ abstract class PISymconModule extends IPSModule {
                 IPS_SetParent($link, $parent);
                 IPS_SetLinkTargetID($link, $target);
                 IPS_SetHidden($link, false);
-                $this->setPosition($link, $linkPosition);
+                $this->setPosition($link, $linkPosition, $parent);
 
                 return $link;
             }
