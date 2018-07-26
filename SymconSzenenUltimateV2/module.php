@@ -39,7 +39,7 @@
             $this->checkSceneTimerVars();
 
             $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
-            $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Optionen"), "onOptionsChange", $this->searchObjectByName("Events"));
+            $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
             $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
 
             if ($this->ReadPropertyInteger("Sensor") != null && $this->ReadPropertyBoolean("ModeDaySet")) {
@@ -72,7 +72,7 @@
 
         public function CheckVariables () {
 
-            $optionen = $this->checkInteger("Optionen", false, null, 2, -1);
+            $optionen = $this->checkInteger("Einstellungen", false, null, 2, -1);
             $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
@@ -91,7 +91,7 @@
                 if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
 
                     $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => 2));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
@@ -99,7 +99,7 @@
 
                 $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "Start");
                 $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop");
-                $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
             }
 
@@ -136,7 +136,7 @@
                 if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken")) {
 
                     $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("DaySets anzeigen" => 3));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
@@ -159,7 +159,7 @@
             $this->addProfile($optionen, $this->prefix . ".Options" . $this->InstanceID);
             $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
 
-            $this->setIcon($optionen, "Database");
+            $this->setIcon($optionen, "Gear");
             $this->setIcon($sceneVar, "Rocket");
 
             $this->addSetValue($optionen);
@@ -335,7 +335,7 @@
                         if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
 
                             $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
-                            $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                            $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                         }
 
@@ -842,7 +842,7 @@
 
         public function onOptionsChange () {
 
-            $optionsVal = GetValue($this->searchObjectByName("Optionen"));
+            $optionsVal = GetValue($this->searchObjectByName("Einstellungen"));
             $prnt = IPS_GetParent($this->InstanceID);
             $own = IPS_GetObject($this->InstanceID);
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
@@ -855,7 +855,7 @@
             // Zeige Targets
             if ($optionsVal == 0) {
 
-                $nLink = $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
+                $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt);
 
             } 
 
@@ -866,17 +866,17 @@
 
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Targets")) {
 
-                    if ($this->doesExist($this->searchObjectByRealName("TargetsLink", $prnt))) {
-                        $nLink = $this->linkVar($this->searchObjectByName("Targets"), "TargetsLink", $prnt);
+                    if ($this->doesExist($this->searchObjectByRealName("Geräte", $prnt))) {
+                        $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt);
                         $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Zeige Targets" => "Verstecke Targets"));
-                        $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                        $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
                     }
 
                 } else {
 
-                    $this->deleteObject($this->searchObjectByRealName("TargetsLink", $prnt));
+                    $this->deleteObject($this->searchObjectByRealName("Geräte", $prnt));
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Verstecke Targets" => "Zeige Targets"));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
@@ -906,9 +906,9 @@
                     }
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul verkleinern" => "Modul vergrößern"));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
-                    SetValue($this->searchObjectByName("Optionen"), -1);
+                    SetValue($this->searchObjectByName("Einstellungen"), -1);
 
                     return;
 
@@ -933,7 +933,7 @@
                     }
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul vergrößern" => "Modul verkleinern"));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
@@ -945,11 +945,11 @@
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start")) {
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                     $this->nextElement();
 
-                    SetValue($this->searchObjectByName("Optionen"), -1);
+                    SetValue($this->searchObjectByName("Einstellungen"), -1);
                     return;
 
                 }
@@ -962,7 +962,7 @@
                     SetValue($this->searchObjectByName("LastScene"), "");
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
@@ -978,8 +978,8 @@
 
                     $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, 0, true);
 
-                    SetValue($this->searchObjectByName("Optionen"), -1);
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    SetValue($this->searchObjectByName("Einstellungen"), -1);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
                     return;
 
                 }
@@ -990,13 +990,13 @@
 
                     $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
 
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
 
             }
 
-            SetValue($this->searchObjectByName("Optionen"), -1);
+            SetValue($this->searchObjectByName("Einstellungen"), -1);
 
         }
 
@@ -1070,11 +1070,11 @@
                 if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start")) {
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                     $this->nextElement();
 
-                    SetValue($this->searchObjectByName("Optionen"), -1);
+                    SetValue($this->searchObjectByName("Einstellungen"), -1);
                     return;
 
                 } else {
@@ -1101,7 +1101,7 @@
                     SetValue($this->searchObjectByName("LastScene"), "");
 
                     $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
-                    $this->addProfile($this->searchObjectByName("Optionen"), $this->prefix . ".Options" . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 } else {
 
