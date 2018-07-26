@@ -529,7 +529,7 @@
                 $this->deleteObject($this->AutomatikVar);
                 $this->deleteObject($this->SperreVar);
 
-                $this->deleteObject($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
+                $this->deleteObject($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
 
             } else {
 
