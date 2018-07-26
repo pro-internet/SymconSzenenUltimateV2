@@ -223,18 +223,18 @@
 
         protected function deleteOldDaysets () {
 
-            // $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
-            // $sensor = $this->ReadPropertyInteger("Sensor");
+            $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
+            $sensor = $this->ReadPropertyInteger("Sensor");
 
-            // if ($sensor != null) {
+            if ($sensor != null) {
 
-            //     if ($oldSensor != $sensor) {
+                if ($oldSensor != $sensor) {
 
-            //         $this->deleteAllChildren($this->searchObjectByName("DaySets"));
+                    $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
-            //     }
+                }
 
-            // }
+            }
 
         }
 
