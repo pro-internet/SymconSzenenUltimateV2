@@ -72,13 +72,12 @@
 
         public function CheckVariables () {
 
-            $optionen = $this->checkInteger("Einstellungen", false, null, 2, -1);
+            $optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
             $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
             $events = $this->checkFolder("Events", null, 5);
             $sceneData = $this->checkFolder("SceneData", null, 6);
-
 
             $daysetActivated = $this->ReadPropertyBoolean("ModeDaySet");
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
@@ -198,7 +197,7 @@
         public function CheckProfiles () {
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
-            $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Targets" => 0, "Modul verkleinern" => 1, "Start" => 2, "DaySets anzeigen" => 3));
+            $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Einstellungen" => 0, "Modul einklappen" => 1, "Start" => 2, "DaySets anzeigen" => 3));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
 
@@ -885,7 +884,7 @@
             // Modul verkleinern / Vergrößern
             if ($optionsVal == 1) {
 
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul verkleinern")) {
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul einklappen")) {
 
                     if ($scenes != null) {
 
@@ -905,7 +904,7 @@
     
                     }
 
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul verkleinern" => "Modul vergrößern"));
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul einklappen" => "Modul ausklappen"));
                     $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                     SetValue($this->searchObjectByName("Einstellungen"), -1);
@@ -914,7 +913,7 @@
 
                 }
 
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul vergrößern")) {
+                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul ausklappen")) {
 
                     if ($scenes != null) {
 
@@ -932,7 +931,7 @@
     
                     }
 
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul vergrößern" => "Modul verkleinern"));
+                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul ausklappen" => "Modul einklappen"));
                     $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 }
