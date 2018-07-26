@@ -63,6 +63,7 @@
             parent::Destroy();
 
             IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
+            //IPS_DeleteVariableProfile($this->prefix . ".");
 
         }
 
