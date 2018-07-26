@@ -1919,6 +1919,18 @@ abstract class PISymconModule extends IPSModule {
     }
 
 
+    protected function sendWebfrontNotification ($titel, $text, $icon, $timeout = 3) {
+
+        $webfront = $this->getWebfrontInstance();
+
+        if ($webfront != null) {
+
+            WFC_SendNotification($webfront, $titel, $text, $icon, $timeout);
+
+        }
+
+    }
+
 
     // Starke vereinfachungen
 
