@@ -767,7 +767,7 @@
 
             if ($automatik && !$sperre) {
 
-                $dsName = $this->getAssociationTextByValue($this->prefix . ".DaysetScenes." . $this->InstanceID, $senderVal);
+                $dsName = $this->getAssociationTextByValue($sensorProfile, $senderVal);
                 echo "dsName: " . $dsName;
                 $dsObj = $this->searchObjectByName($dsName, $this->searchObjectByName("DaySets"));
 
