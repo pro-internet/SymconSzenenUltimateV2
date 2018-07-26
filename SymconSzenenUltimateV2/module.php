@@ -761,28 +761,25 @@
             $senderVal = GetValue($senderVar);
             $automatik = GetValue($this->AutomatikVar);
             $sperre = GetValue($this->SperreVar);
+            $sensor = $this->ReadPropertyInteger("Sensor");
+            $sensorVal = GetValue($sensor);
 
             if ($automatik && !$sperre) {
 
-                // Wenn früh
-                if ($senderVal == 0) {
-                    $sceneVal = GetValue($this->searchObjectByName("Früh", $this->searchObjectByName("DaySets")));
-                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
-                } else if ($senderVal == 1) {
-                    $sceneVal = GetValue($this->searchObjectByName("Morgen", $this->searchObjectByName("DaySets")));
-                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
-                } else if ($senderVal == 2) {
-                    $sceneVal = GetValue($this->searchObjectByName("Tag", $this->searchObjectByName("DaySets")));
-                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
-                } else if ($senderVal == 3) {
-                    $sceneVal = GetValue($this->searchObjectByName("Dämmerung", $this->searchObjectByName("DaySets")));
-                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
-                } else if ($senderVal == 4) {
-                    $sceneVal = GetValue($this->searchObjectByName("Abend", $this->searchObjectByName("DaySets")));
-                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
-                } else if ($senderVal == 5) {
-                    $sceneVal = GetValue($this->searchObjectByName("Nacht", $this->searchObjectByName("DaySets")));
-                    SetValue($this->searchObjectByName("Szenen"), $sceneVal);
+                $dsName = $this->getAssociationTextByValue($this->prefix . ".DaysetScenes." . $this->InstanceID, $senderVal);
+
+                $dsObj = $this->searchObjectByName($dsName, $this->searchObjectName("DaySets"));
+
+                $dsVal = GetValue($dsObj);
+
+                if ($dsVal) {
+
+                    if ($dsVal != -1) {
+
+                        SetValue($this->searchObjectByName("Szenen"), $dsVal);
+
+                    }
+
                 }
 
             }
@@ -869,7 +866,13 @@
 
                     foreach ($json as $id => $val) {
 
-                        $this->setDevice($id, $val);
+                        $oldVal = GetValue($id);
+
+                        if ($oldVal != $val) {
+
+                            $this->setDevice($id, $val);
+
+                        }
 
                     }
 
@@ -907,7 +910,11 @@
 
                 foreach ($sceneData as $devId => $devVal) {
 
-                    $this->setDevice($devId, $devVal);
+                    $devValOld = GetValue($devId);
+
+                    if ($devValOld != $devVal) {
+                        $this->setDevice($devId, $devVal);
+                    }
 
                 }
 
