@@ -33,7 +33,7 @@
 
         protected function setExcludedShow () {
 
-            return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"));
+            return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"));
     
         }
 
