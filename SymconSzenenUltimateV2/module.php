@@ -7,6 +7,8 @@
  
         public $sensorOld = null;
 
+        public $details = true;
+
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
         public function __construct($InstanceID) {
@@ -23,6 +25,12 @@
  
         }
  
+        protected function setExcludedHide () {
+
+            return array($this->searchObjectByName("Details"), $this->AutomatikVar, $this->SperreVar);
+    
+        }
+
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
         public function ApplyChanges() {
            
