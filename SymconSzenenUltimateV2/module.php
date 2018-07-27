@@ -157,7 +157,7 @@
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
 
                 IPS_SetName($startStop, "Start / Stop");
-                $this->setIcon($startStop, "Power")
+                $this->setIcon($startStop, "Power");
 
                 $this->easyCreateOnChangeFunctionEvent("onChange StartStop", $startStop, "onStartStop", $this->searchObjectByName("Events"));
 
