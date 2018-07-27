@@ -39,7 +39,7 @@
 
         protected function onDetailsChangeHide () {
 
-
+            
 
         }
 
