@@ -1002,7 +1002,7 @@
                     $this->nextElement();
 
                     // SetValue($this->searchObjectByName("Einstellungen"), -1);
-                    SetValue($var, -1);
+                    SetValue($var, 0);
                     return;
 
                 }
@@ -1017,7 +1017,7 @@
                     $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Stop" => "Start"));
                     $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".StartStop." . $this->InstanceID);
 
-                    SetValue($var, -1);
+                    SetValue($var, 0);
 
                 }
 
