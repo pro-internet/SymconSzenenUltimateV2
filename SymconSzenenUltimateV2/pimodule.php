@@ -392,6 +392,20 @@ abstract class PISymconModule extends IPSModule {
         }
     }
 
+    protected function eventGetTriggerVariable ($id) {
+        if ($this->doesExist($id)) {
+            if ($this->isEvent($id)) {
+                $obj = IPS_GetEvent($id);
+                
+                return $obj['TriggerVariableID'];
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     protected function secondsToTimestamp($sek) {
         return (0 - 3600 + $sek);
     }
