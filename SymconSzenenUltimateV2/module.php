@@ -37,6 +37,18 @@
     
         }
 
+        protected function onDetailsChangeHide () {
+
+
+
+        }
+
+        protected function onDetailsChangeShow () {
+
+            
+
+        }
+
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
         public function ApplyChanges() {
            
