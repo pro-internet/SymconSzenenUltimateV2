@@ -170,6 +170,8 @@
 
                 $this->deleteObject($this->searchObjectByName("StartStop"));
 
+                $this->deleteObject($this->searchObjectByName("onChange StartStop", $this->searchObjectByName("Events")));
+
             }
 
             if ($daysetActivated) {
