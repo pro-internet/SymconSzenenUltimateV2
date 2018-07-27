@@ -33,7 +33,7 @@
 
         protected function setExcludedShow () {
 
-            return array("instance", "script", $this->searchObjectByName("SceneData"));
+            return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"));
     
         }
 
@@ -424,12 +424,12 @@
                         IPS_DeleteLink($this->searchObjectByName("Timer Status"));
 
                         SetValue($this->searchObjectByName("LastScene"), null);
-                        $this->setAllInLinkList($this->searchObjectByName("Targets"), 0);
+                        SetValue($this->searchObjectByName($allScenes[0]), 1);
 
-                        if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
+                        if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
 
-                            // $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
-                            // $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+                            $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Stop" => "Start"));
+                            $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".StartStop." . $this->InstanceID);
 
                         }
 
