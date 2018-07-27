@@ -156,6 +156,9 @@
                 $startStop = $this->checkInteger("StartStop", false, "", 2);
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
 
+                IPS_SetName($startStop, "Start / Stop");
+                $this->setIcon($startStop, "Power")
+
                 $this->easyCreateOnChangeFunctionEvent("onChange StartStop", $startStop, "onStartStop", $this->searchObjectByName("Events"));
 
                 $this->addProfile($startStop, $this->prefix . ".StartStop." . $this->InstanceID);
