@@ -389,12 +389,12 @@
 
             if ($lastScene == null) {
 
-                SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
-                SetValue($this->searchObjectByName($allScenes[0]), 1);
+                SetValue($this->searchObjectByName("LastScene"), $allScenes[1]);
+                SetValue($this->searchObjectByName($allScenes[1]), 1);
 
                 $lc = GetValue($this->searchObjectByName("LastScene"));
 
-                IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
+                IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[1]));
                 //$target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0
                 $this->linkVar($this->getFirstChildFrom($this->searchObjectByName("nextElement")), "Timer Status", $this->InstanceID, "|AFTER|" . $this->searchObjectByName($lc . " Timer"), true);
 
@@ -416,10 +416,10 @@
 
                     if ($this->ReadPropertyBoolean("Loop")) {
 
-                        SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
-                        SetValue($this->searchObjectByName($allScenes[0]), 1);
+                        SetValue($this->searchObjectByName("LastScene"), $allScenes[1]);
+                        SetValue($this->searchObjectByName($allScenes[1]), 1);
 
-                        $fc = $this->searchObjectByName($allScenes[0] . " Timer");
+                        $fc = $this->searchObjectByName($allScenes[1] . " Timer");
 
                         IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
 
@@ -999,6 +999,10 @@
                 return;
 
             } else {
+
+                $allScenes = $this->getAllScenesSorted();
+
+                SetValue($allScenes[0], 1);
 
                 $this->deleteObject($this->searchObjectByName("Timer Status"));
                 $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
