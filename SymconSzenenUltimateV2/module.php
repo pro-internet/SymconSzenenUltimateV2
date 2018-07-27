@@ -27,7 +27,7 @@
  
         protected function setExcludedHide () {
 
-            return array($this->detailsVar, $this->AutomatikVar, $this->SperreVar, $this->searchObjectByName("Szenen"), $this->searchObjectByName("StartStop"));
+            return array($this->detailsVar, $this->AutomatikVar, $this->SperreVar, $this->searchObjectByName("Szenen"), $this->searchObjectByName("Status"));
     
         }
 
@@ -158,7 +158,7 @@
 
                 $this->setIcon($status, "Power");
 
-                $this->easyCreateOnChangeFunctionEvent("onChange Status", $startStop, "onStatusChange", $this->searchObjectByName("Events"));
+                $this->easyCreateOnChangeFunctionEvent("onChange Status", $status, "onStatusChange", $this->searchObjectByName("Events"));
 
 
                 $this->hide($lastScene);
@@ -166,9 +166,9 @@
 
             } else {
 
-                $this->deleteObject($this->searchObjectByName("StartStop"));
+                $this->deleteObject($this->searchObjectByName("Status"));
 
-                $this->deleteObject($this->searchObjectByName("onChange StartStop", $this->searchObjectByName("Events")));
+                $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
 
             }
 
@@ -276,7 +276,7 @@
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
             // $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Einstellungen" => 0, "Modul einklappen" => 1, "Start" => 2));
-            $this->checkVariableProfile($this->prefix . ".StartStop." . $this->InstanceID, 1, 0, 1, 0, array("Start" => 1));
+            //$this->checkVariableProfile($this->prefix . ".StartStop." . $this->InstanceID, 1, 0, 1, 0, array("Start" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
 
@@ -432,12 +432,12 @@
                         SetValue($this->searchObjectByName("LastScene"), null);
                         SetValue($this->searchObjectByName($allScenes[0]), 1);
 
-                        if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
+                        // if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
 
-                            $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Stop" => "Start"));
-                            $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".StartStop." . $this->InstanceID);
+                        //     $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Stop" => "Start"));
+                        //     $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".StartStop." . $this->InstanceID);
 
-                        }
+                        // }
 
                         IPS_SetScriptTimer($this->searchObjectByName("nextElement"), 0);
 
@@ -1074,7 +1074,7 @@
 
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
-            $started = GetValue($this->searchObjectByName("StartStop"));
+            $started = GetValue($this->searchObjectByName("Status"));
 
             if ($timeIsActivated) {
 
@@ -1102,7 +1102,7 @@
 
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
-            $started = GetValue($this->searchObjectByName("StartStop"));
+            $started = GetValue($this->searchObjectByName("Status"));
 
             if ($timeIsActivated) {
 
