@@ -31,6 +31,12 @@
     
         }
 
+        protected function setExcludedShow () {
+
+            return array("instance", "script", $this->searchObjectByName("SceneData"));
+    
+        }
+
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
         public function ApplyChanges() {
            
