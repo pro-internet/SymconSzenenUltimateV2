@@ -10,7 +10,7 @@ abstract class PISymconModule extends IPSModule {
     public $instanceName = null;
     public $parentID = null;
     public $form;
-    public $details = false;
+    public $Details = false;
     public $detailsVar = 0;
     public $detailsExclude = null;
 

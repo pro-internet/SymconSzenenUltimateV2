@@ -7,7 +7,7 @@
  
         public $sensorOld = null;
 
-        public $details = true;
+        public $Details = true;
 
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
