@@ -2037,6 +2037,19 @@ abstract class PISymconModule extends IPSModule {
         
     }
     
+    protected function getVariableProfileByVariable ($id) {
+        if ($id != 0 && $id != null) {
+            if ($this->isVariable($id)) {
+                $var = IPS_GetVariable($id);
+                return $var['VariableCustomProfile'];
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     protected function getElementAfterInArray ($search, $array) {
 
         $elementFound = false;
