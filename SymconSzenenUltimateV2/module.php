@@ -999,7 +999,7 @@
                 if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Start")) {
 
                     $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Start" => "Stop"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".StartStop." . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("StartStop"), $this->prefix . ".StartStop." . $this->InstanceID);
 
                     $this->nextElement();
 
@@ -1017,7 +1017,7 @@
                     SetValue($this->searchObjectByName("LastScene"), "");
 
                     $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Stop" => "Start"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".StartStop." . $this->InstanceID);
+                    $this->addProfile($this->searchObjectByName("StartStop"), $this->prefix . ".StartStop." . $this->InstanceID);
 
                     SetValue($var, 0);
 
