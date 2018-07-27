@@ -165,6 +165,7 @@
 
             } else {
 
+                $this->deleteObject($this->searchObjectByName("StartStop"));
 
             }
 
