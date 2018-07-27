@@ -27,7 +27,7 @@
  
         protected function setExcludedHide () {
 
-            return array($this->detailsVar, $this->AutomatikVar, $this->SperreVar, $this->searchObjectByName("Szenen"));
+            return array($this->detailsVar, $this->AutomatikVar, $this->SperreVar, $this->searchObjectByName("Szenen"), $this->searchObjectByName("StartStop"));
     
         }
 
