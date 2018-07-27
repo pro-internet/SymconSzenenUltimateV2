@@ -153,15 +153,13 @@
 
             if ($timeIsActivated) {
 
-                $startStop = $this->checkInteger("StartStop", false, "", 2);
+                $status = $this->checkBoolean("Status", true, "", 2);
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
 
-                IPS_SetName($startStop, "Start / Stop");
-                $this->setIcon($startStop, "Power");
+                $this->setIcon($status, "Power");
 
-                $this->easyCreateOnChangeFunctionEvent("onChange StartStop", $startStop, "onStartStop", $this->searchObjectByName("Events"));
+                $this->easyCreateOnChangeFunctionEvent("onChange Status", $startStop, "onStatusChange", $this->searchObjectByName("Events"));
 
-                $this->addProfile($startStop, $this->prefix . ".StartStop." . $this->InstanceID);
 
                 $this->hide($lastScene);
                 
@@ -988,46 +986,26 @@
 
         }
 
-        public function onStartStop () {
+        public function onStatusChange () {
 
             $var = $_IPS['VARIABLE'];
             $val = GetValue($var);
 
             // Start / Stop Zeitschaltung
-            if ($val == 1) {
+            if ($val == true) {
 
-                if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Start")) {
+                $this->nextElement();
 
-                    $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Start" => "Stop"));
-                    $this->addProfile($this->searchObjectByName("StartStop"), $this->prefix . ".StartStop." . $this->InstanceID);
+                return;
 
-                    $this->nextElement();
+            } else {
 
-                    // SetValue($this->searchObjectByName("Einstellungen"), -1);
-                    SetValue($var, 0);
-                    return;
+                $this->deleteObject($this->searchObjectByName("Timer Status"));
+                $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
 
-                }
-
-                if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
-
-                    $this->deleteObject($this->searchObjectByName("Timer Status"));
-                    $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
-
-                    SetValue($this->searchObjectByName("LastScene"), "");
-
-                    $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Stop" => "Start"));
-                    $this->addProfile($this->searchObjectByName("StartStop"), $this->prefix . ".StartStop." . $this->InstanceID);
-
-                    SetValue($var, 0);
-
-                }
-
+                SetValue($this->searchObjectByName("LastScene"), "");
 
             }
-
-
-            SetValue($this->searchObjectByName("Einstellungen"), -1);
 
         }
 
