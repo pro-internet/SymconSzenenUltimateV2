@@ -41,6 +41,7 @@
             
             $sensorSet = false;
             $sensorID = $this->ReadPropertyInteger("Sensor");
+            $prnt = IPS_GetParent($this->InstanceID);
 
             if ($sensorID != null) {
 
