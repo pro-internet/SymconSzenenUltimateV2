@@ -43,6 +43,8 @@
             $sensorID = $this->ReadPropertyInteger("Sensor");
             $prnt = IPS_GetParent($this->InstanceID);
 
+            $name = IPS_GetName($this->InstanceID);
+
             if ($sensorID != null) {
 
                 $sensorSet = true;
@@ -50,11 +52,11 @@
             }
 
             // Targets ausblenden
-            $this->deleteObject($this->searchObjectByRealName("Geräte", $prnt));
+            $this->deleteObject($this->searchObjectByRealName($name . " Geräte", $prnt));
 
             if ($sensorSet) {
 
-                $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
+                $this->deleteObject($this->searchObjectByName($name . " DaySets", $prnt));
 
             }
 
@@ -66,19 +68,21 @@
             $sensorID = $this->ReadPropertyInteger("Sensor");
             $prnt = IPS_GetParent($this->InstanceID);
 
+            $name = IPS_GetName($this->InstanceID);
+
             if ($sensorID != null) {
 
                 $sensorSet = true;
 
             }
 
-            // Targets einblenden
-            $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt, "|AFTER|" . $this->InstanceID);
+            $this->linkFolderMobile($this->searchObjectByName("Targets"), $name . " Geräte", $prnt);
 
             // DaySets einblenden
             if ($sensorSet) {
             
-                $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, "|AFTER|" . $this->InstanceID, true);
+                //$this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, "|AFTER|" . $this->InstanceID, true);
+                $this->linkFolderMobile($this->searchObjectByName("DaySets"), $name . " DaySets", $prnt);
                 
             }
 

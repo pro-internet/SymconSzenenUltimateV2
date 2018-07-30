@@ -223,7 +223,7 @@ abstract class PISymconModule extends IPSModule {
 
             $this->setIcon($details, "Gear");
             $this->hide($events);
-            $this->createOnChangeEvents(array($details . "|onDetailsChange"), $events);
+            $this->createRealOnChangeEvents(array($details . "|onDetailsChange"), $events);
 
         }
 
@@ -323,6 +323,28 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function createRealOnChangeEvents ($ary, $parent = null) {
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+        $newEvents = array();
+        if ($ary != null) {
+            if (count($ary) > 0) {
+                foreach ($ary as $funcString) {
+                    if (strpos($funcString, "|") !== false) {
+                        $funcAry = explode("|", $funcString);
+                        $targetID = intval($funcAry[0]);
+                        $function = $funcAry[1];
+                        if ($this->doesExist($targetID)) {
+                            $newName = IPS_GetName($targetID);
+                            $newName = "onChange " . $newName;
+                            $newEvents[] = $this->easyCreateRealOnChangeFunctionEvent($newName, $targetID, $function, $parent);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // CheckVar Funktionen
 
@@ -568,6 +590,27 @@ abstract class PISymconModule extends IPSModule {
         }
 
     }
+
+    protected function easyCreateRealOnChangeFunctionEvent ($onChangeEventName, $targetId, $function, $parent = null, $autoFunctionToText = true) {
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+        if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $parent))) {
+            $eid = IPS_CreateEvent(0);
+            IPS_SetEventTrigger($eid, 1, $targetId);
+            IPS_SetParent($eid, $parent);
+            if ($autoFunctionToText) {
+                IPS_SetEventScript($eid, "<?php " . $this->prefix . "_" . $function . "(" . $this->InstanceID . "); ?>");
+            } else {
+                IPS_SetEventScript($eid, $function);
+            }
+            IPS_SetName($eid, $onChangeEventName);
+            IPS_SetEventActive($eid, true);
+            IPS_SetIdent($eid, $this->nameToIdent($onChangeEventName));
+            return $eid;
+        }
+    }
+
 
     // Such Funktionen
 
@@ -2464,6 +2507,81 @@ abstract class PISymconModule extends IPSModule {
         if ($wert == null) {
             return 0;
         }
+
+    }
+
+    protected function linkFolderMobile ($folder, $newFolderName, $parent = null, $index = null) {
+
+        if ($parent == null) {
+
+            $parent = $this->InstanceID;
+
+        }
+
+        if ($index == null) {
+
+            $index = "|AFTER|" . $this->InstanceID;
+
+        }
+
+        if ($this->doesExist($folder)) {
+
+            $newFolder = $this->checkFolder($newFolderName, $parent, $index);
+            $this->show($newFolder);
+
+            if (IPS_HasChildren($folder)) {
+
+                if ($this->doesExist($this->searchObjectByName($newFolderName, $parent))) {
+
+                    //$newFolder = $this->checkFolder($newFolderName, $parent, $index);
+
+                    $ownName = IPS_GetName($this->InstanceID);
+
+                    // $this->show($newFolder);
+
+                    $folder = IPS_GetObject($folder);
+
+                    foreach ($folder['ChildrenIDs'] as $elem) {
+
+                        //($target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0, $ident = false)
+
+                        $obj = IPS_GetObject($elem);
+
+                        if (!$this->doesExist($this->searchObjectByName($obj['ObjectName'], $newFolder))) {
+
+                            if ($obj['ObjectType'] == $this->objectTypeByName("link")) {
+
+                                $lnk = IPS_GetLink($obj['ObjectID']);
+    
+                                $link = IPS_CreateLink();
+                                IPS_SetName($link, $obj['ObjectName']);
+                                IPS_SetParent($link, $newFolder);
+                                IPS_SetIdent($link, $this->nameToIdent($ownName . $obj['ObjectName']));
+                                IPS_SetLinkTargetID($link, $lnk['TargetID']);
+    
+                            } else {
+    
+                                $this->linkVar($elem['ObjectID'], $elem['ObjectName'], $newFolder, 0, false);
+    
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            } else {
+
+                //echo "linkFolderMobile: No Children";
+
+            }            
+
+        } else {
+
+            //echo "linkFolderMobile: Folder does not exist!";
+        }
+
 
     }
 
