@@ -441,6 +441,8 @@
 
                         IPS_SetScriptTimer($this->searchObjectByName("nextElement"), 0);
 
+                        SetValue($this->searchObjectByName("Status"), false);
+
                     }
 
                 }
