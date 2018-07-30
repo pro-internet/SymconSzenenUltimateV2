@@ -7,6 +7,8 @@
  
         public $sensorOld = null;
 
+        public $Details = true;
+
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
         public function __construct($InstanceID) {
@@ -23,6 +25,65 @@
  
         }
  
+        protected function setExcludedHide () {
+
+            return array($this->detailsVar, $this->AutomatikVar, $this->SperreVar, $this->searchObjectByName("Szenen"), $this->searchObjectByName("Status"));
+    
+        }
+
+        protected function setExcludedShow () {
+
+            return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"));
+    
+        }
+
+        protected function onDetailsChangeHide () {
+            
+            $sensorSet = false;
+            $sensorID = $this->ReadPropertyInteger("Sensor");
+            $prnt = IPS_GetParent($this->InstanceID);
+
+            if ($sensorID != null) {
+
+                $sensorSet = true;
+
+            }
+
+            // Targets ausblenden
+            $this->deleteObject($this->searchObjectByRealName("Geräte", $prnt));
+
+            if ($sensorSet) {
+
+                $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
+
+            }
+
+        }
+
+        protected function onDetailsChangeShow () {
+
+            $sensorSet = false;
+            $sensorID = $this->ReadPropertyInteger("Sensor");
+            $prnt = IPS_GetParent($this->InstanceID);
+
+            if ($sensorID != null) {
+
+                $sensorSet = true;
+
+            }
+
+            // Targets einblenden
+            $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt, "|AFTER|" . $this->InstanceID);
+
+            // DaySets einblenden
+            if ($sensorSet) {
+            
+                $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, "|AFTER|" . $this->InstanceID, true);
+                
+            }
+
+        }
+
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
         public function ApplyChanges() {
            
@@ -44,7 +105,7 @@
 
             $this->checkSceneTimerVars();
 
-            $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
+            // $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
             $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
 
             if ($daysetActivated) {
@@ -78,7 +139,7 @@
 
         public function CheckVariables () {
 
-            $optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
+            //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
             $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
@@ -92,21 +153,22 @@
 
             if ($timeIsActivated) {
 
+                $status = $this->checkBoolean("Status", true, "", 2);
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
+
+                $this->setIcon($status, "Power");
+
+                $this->easyCreateOnChangeFunctionEvent("onChange Status", $status, "onStatusChange", $this->searchObjectByName("Events"));
+
+
                 $this->hide($lastScene);
-
-                if (!$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start") && !$this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
-
-                    $this->addAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => 2));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-
-                }
+                
 
             } else {
 
-                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "Start");
-                $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop");
-                $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+                $this->deleteObject($this->searchObjectByName("Status"));
+
+                $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
 
             }
 
@@ -171,13 +233,13 @@
             //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null, $istAbstand = false
             //$this->checkString("", false, $this->InstanceID, "|AFTER|" . $sceneVar, null, true);
 
-            $this->addProfile($optionen, $this->prefix . ".Options" . $this->InstanceID);
+            // $this->addProfile($optionen, $this->prefix . ".Options" . $this->InstanceID);
             $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
 
-            $this->setIcon($optionen, "Gear");
+            // $this->setIcon($optionen, "Gear");
             $this->setIcon($sceneVar, "Rocket");
 
-            $this->addSetValue($optionen);
+            // $this->addSetValue($optionen);
 
 
         }
@@ -213,7 +275,8 @@
         public function CheckProfiles () {
 
             //checkVariableProfile ($name, $type, $min = 0, $max = 100, $steps = 1, $associations = null) {
-            $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Einstellungen" => 0, "Modul einklappen" => 1, "Start" => 2));
+            // $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Einstellungen" => 0, "Modul einklappen" => 1, "Start" => 2));
+            //$this->checkVariableProfile($this->prefix . ".StartStop." . $this->InstanceID, 1, 0, 1, 0, array("Start" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
 
@@ -326,13 +389,13 @@
 
             if ($lastScene == null) {
 
-                SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
-                SetValue($this->searchObjectByName($allScenes[0]), 1);
+                SetValue($this->searchObjectByName("LastScene"), $allScenes[1]);
+                SetValue($this->searchObjectByName($allScenes[1]), 1);
 
                 $lc = GetValue($this->searchObjectByName("LastScene"));
 
-                IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
-                //$target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0
+                IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[1]));
+
                 $this->linkVar($this->getFirstChildFrom($this->searchObjectByName("nextElement")), "Timer Status", $this->InstanceID, "|AFTER|" . $this->searchObjectByName($lc . " Timer"), true);
 
             } else {
@@ -353,12 +416,12 @@
 
                     if ($this->ReadPropertyBoolean("Loop")) {
 
-                        SetValue($this->searchObjectByName("LastScene"), $allScenes[0]);
-                        SetValue($this->searchObjectByName($allScenes[0]), 1);
+                        SetValue($this->searchObjectByName("LastScene"), $allScenes[1]);
+                        SetValue($this->searchObjectByName($allScenes[1]), 1);
 
-                        $fc = $this->searchObjectByName($allScenes[0] . " Timer");
+                        $fc = $this->searchObjectByName($allScenes[1] . " Timer");
 
-                        IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
+                        IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[1]));
 
                         $this->setPosition($this->searchObjectByName("Timer Status"), "|AFTER|" . $fc);
 
@@ -367,16 +430,18 @@
                         IPS_DeleteLink($this->searchObjectByName("Timer Status"));
 
                         SetValue($this->searchObjectByName("LastScene"), null);
-                        $this->setAllInLinkList($this->searchObjectByName("Targets"), 0);
+                        SetValue($this->searchObjectByName($allScenes[0]), 1);
 
-                        if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
+                        // if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
 
-                            $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
-                            $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+                        //     $this->changeAssociations($this->prefix . ".StartStop." . $this->InstanceID, array("Stop" => "Start"));
+                        //     $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".StartStop." . $this->InstanceID);
 
-                        }
+                        // }
 
                         IPS_SetScriptTimer($this->searchObjectByName("nextElement"), 0);
+
+                        SetValue($this->searchObjectByName("Status"), false);
 
                     }
 
@@ -923,155 +988,30 @@
 
         }
 
-        public function onOptionsChange () {
+        public function onStatusChange () {
 
-            $optionsVal = GetValue($this->searchObjectByName("Einstellungen"));
-            $prnt = IPS_GetParent($this->InstanceID);
-            $own = IPS_GetObject($this->InstanceID);
-            $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
-            $timers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
-
-            // Abfragen 
-            $sensorSet = false;
-            $sensorID = $this->ReadPropertyInteger("Sensor");
-
-            if ($sensorID != null || $sensorID != 0) {
-
-                $sensorSet = true;
-
-            }
-
-
-            if ($_IPS['OLDVALUE'] == $optionsVal) {
-                return;
-            }
-
-            // Zeige Einstellungen / Verstecke Einstellungen
-            if ($optionsVal == 0) {
-
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Zeige Einstellungen")) {
-
-                    // Targets einblenden
-                    $nLink = $this->linkVar($this->searchObjectByName("Targets"), "Geräte", $prnt, "|AFTER|" . $this->InstanceID);
-
-                    // DaySets einblenden
-                    if ($sensorSet) {
-
-                        $this->linkVar($this->searchObjectByName("DaySets"), "DaySets-Auswahl", $prnt, "|AFTER|" . $this->InstanceID, true);
-    
-                    }
-
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Zeige Einstellungen" => "Verstecke Einstellungen"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-
-                } else if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Verstecke Einstellungen")) {
-
-                    // Targets ausblenden
-                    $this->deleteObject($this->searchObjectByRealName("Geräte", $prnt));
-
-                    if ($sensorSet) {
-
-                        $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
-
-                    }
-
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Verstecke Einstellungen" => "Zeige Einstellungen"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-
-                }
-
-            } 
-
-
-            // Modul verkleinern / Vergrößern
-            if ($optionsVal == 1) {
-
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul einklappen")) {
-
-                    if ($scenes != null) {
-
-                        foreach ($scenes as $scene) {
-
-                            IPS_SetHidden($this->searchObjectByName($scene), true);
-
-                            $this->hide($this->searchObjectByName($scene));
-
-                            if ($this->doesExist($this->searchObjectByName($scene . " Timer"))) {
-
-                                $this->hide($this->searchObjectByName($scene . " Timer"));
-
-                            }
-    
-                        }
-    
-                    }
-
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul einklappen" => "Modul ausklappen"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-
-                    SetValue($this->searchObjectByName("Einstellungen"), -1);
-
-                    return;
-
-                }
-
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Modul ausklappen")) {
-
-                    if ($scenes != null) {
-
-                        foreach ($scenes as $scene) {
-    
-                            $this->show($this->searchObjectByName($scene));
-
-                            if ($this->doesExist($this->searchObjectByName($scene . " Timer"))) {
-
-                                $this->show($this->searchObjectByName($scene . " Timer"));
-
-                            }
-    
-                        }
-    
-                    }
-
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Modul ausklappen" => "Modul einklappen"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-
-                }
-
-            }
+            $var = $_IPS['VARIABLE'];
+            $val = GetValue($var);
 
             // Start / Stop Zeitschaltung
-            if ($optionsVal == 2) {
+            if ($val == true) {
 
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start")) {
+                $this->nextElement();
 
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+                return;
 
-                    $this->nextElement();
+            } else {
 
-                    SetValue($this->searchObjectByName("Einstellungen"), -1);
-                    return;
+                $allScenes = $this->getAllScenesSorted();
 
-                }
+                SetValue($allScenes[0], 1);
 
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
+                $this->deleteObject($this->searchObjectByName("Timer Status"));
+                $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
 
-                    $this->deleteObject($this->searchObjectByName("Timer Status"));
-                    $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
-
-                    SetValue($this->searchObjectByName("LastScene"), "");
-
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-
-                }
-
+                SetValue($this->searchObjectByName("LastScene"), "");
 
             }
-
-
-            SetValue($this->searchObjectByName("Einstellungen"), -1);
 
         }
 
@@ -1135,17 +1075,18 @@
 
         //  Öffentliche Funktionen
 
-
         public function Start () {
 
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
+            $started = GetValue($this->searchObjectByName("Status"));
+
             if ($timeIsActivated) {
 
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Start")) {
+                if ($started) {
 
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+                    // $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
+                    // $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                     $this->nextElement();
 
@@ -1166,17 +1107,19 @@
 
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
+            $started = GetValue($this->searchObjectByName("Status"));
+
             if ($timeIsActivated) {
 
-                if ($this->profileHasAssociation($this->prefix . ".Options" . $this->InstanceID, "Stop")) {
+                if (!$started) {
 
                     $this->deleteObject($this->searchObjectByName("Timer Status"));
                     $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
 
                     SetValue($this->searchObjectByName("LastScene"), "");
 
-                    $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
-                    $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
+                    // $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Stop" => "Start"));
+                    // $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
 
                 } else {
 

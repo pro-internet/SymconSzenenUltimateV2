@@ -9,6 +9,11 @@ abstract class PISymconModule extends IPSModule {
     public $prefix = null;
     public $instanceName = null;
     public $parentID = null;
+    public $form;
+    public $Details = false;
+    public $detailsVar = 0;
+    public $detailsExclude = null;
+
 
     // Vordefinierte Variablen (müssen nicht beschrieben werden)
     public $AutomatikVar = null;
@@ -16,6 +21,7 @@ abstract class PISymconModule extends IPSModule {
 
     public function __construct($InstanceID) {
         // Diese Zeile nicht löschen
+
         parent::__construct($InstanceID);
 
         $className = get_class($this);
@@ -48,24 +54,33 @@ abstract class PISymconModule extends IPSModule {
 
         }
 
-        
+        if ($this->Details) {
+
+            $this->detailsVar = $this->getVarIfPossible("Details");
+
+        }
+
+        $this->initNeededProfiles();
+        $this->initGlobalized();
     }
+
 
     // Überschreibt die interne IPS_Create($id) Funktion
     public function Create() {
 
         parent::Create();
 
-        $this->parentID = IPS_GetParent($this->InstanceID);
-
         $this->RegisterProperties();
 
         $this->CheckProfiles();
+
+        $this->setNeededProfiles();
 
         $this->CheckVariables();
 
         $this->CheckScripts();
 
+        $this->initDetails();
 
     }
 
@@ -79,6 +94,8 @@ abstract class PISymconModule extends IPSModule {
         $this->CheckVariables();
 
         $this->CheckScripts();
+
+        $this->initDetails();
 
     }
 
@@ -104,11 +121,207 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    ##########################
+    ##                      ##
+    ## Globalize VarID Mod  ##
+    ##                      ##
+    ##########################
+
+    protected function setGlobalized () {
+
+        return array();
+    
+    }
+
+    protected function initGlobalized () {
+
+        $gbl = $this->setGlobalized();
+
+        if (count($gbl) > 0) {
+
+            foreach ($gbl as $var) {
+
+                if ($this->doesExist($this->searchObjectByName($var))) {
+
+                    $this->$var = $this->searchObjectByName($var);
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    ##########################
+    ##                      ##
+    ## Standard Profile Mod ##
+    ##                      ##
+    ##########################
+
+    protected function setNeededProfiles () {
+
+        return array();
+
+    }
+
+    protected function initNeededProfiles () {
+
+        $neededModules = $this->setNeededProfiles();
+
+        if (count($neededModules) > 0) {
+
+            //$name, $type, $min = 0, $max = 100, $steps = 1, $associations = null, $prefix = "", $suffix = ""
+
+            if (in_array("Lux", $neededModules)) {
+
+                $this->checkVariableProfile($this->prefix . ".Lux_float", $this->varTypeByName("float"), 0, 150000, 100, null, "", " lx");
+                $this->checkVariableProfile($this->prefix . ".Lux_int", $this->varTypeByName("int"), 0, 150000, 100, null, "", " lx");
+
+            }
+
+            if (in_array("Temperature_F", $neededModules)) {
+
+                $this->checkVariableProfile($this->prefix . ".Temperature_F_float", $this->varTypeByName("float"), 0, 8450, 34, null, "", " °F");
+                $this->checkVariableProfile($this->prefix . ".Temperature_F_int", $this->varTypeByName("int"), 0, 8450, 34, null, "", " °F");
+
+            }
+
+            if (in_array("Temperature_C", $neededModules)) {
+
+                $this->checkVariableProfile($this->prefix . ".Temperature_C_float", $this->varTypeByName("float"), 0,  250, 1, null, "", " °C");
+                $this->checkVariableProfile($this->prefix . ".Temperature_C_int", $this->varTypeByName("int"), 0, 250, 1, null, "", " °C");
+
+            }
+
+            if (in_array("Wattage", $neededModules)) {
+
+                $this->checkVariableProfile($this->prefix . ".Wattage_float", $this->varTypeByName("float"), 0, 5000, 1, null, "", " W");
+                $this->checkVariableProfile($this->prefix . ".Wattage_int", $this->varTypeByName("float"), 0, 5000, 1, null, "", " W");
+
+            }
+
+        }
+
+    }
+
+
+    #################
+    ##             ##
+    ## Details Mod ##
+    ##             ##
+    #################
+
+    protected function initDetails () {
+
+        if ($this->Details) {
+
+            //$name, $setProfile = false, $position = "", $index = 0, $defaultValue = null
+            $details = $this->checkBoolean("Details", true, $this->InstanceID, "last", true);
+            $events = $this->checkFolder("Events");
+
+            $this->setIcon($details, "Gear");
+            $this->hide($events);
+            $this->createOnChangeEvents(array($details . "|onDetailsChange"), $events);
+
+        }
+
+    }
+
+    protected function setExcludedShow () {
+
+        return array();
+
+    }
+
+    protected function setExcludedHide () {
+
+        return array();
+
+    }
+
+    protected function setSpecialShow () {
+
+        return array();
+
+    }
+
+    protected function setSpecialHide () {
+
+        return array();
+
+    }
+
+    protected function onDetailsChangeHide () {
+
+    }
+
+    protected function onDetailsChangeShow () {
+        
+    }
+
+    public function onDetailsChange () {
+
+        $senderVar = $_IPS['VARIABLE'];
+        $senderVal = GetValue($senderVar);
+        $excludeHide = $this->setExcludedHide();
+        $excludeShow = $this->setExcludedShow();
+
+        $specialShow = $this->setSpecialShow();
+        $specialHide = $this->setSpecialHide();
+
+        // Wenn ausblenden
+        if ($senderVal == false) {
+
+            $this->hideAll($excludeHide);
+
+            if (count($specialHide)) {
+
+                foreach ($specialHide as $id) {
+                    $this->hide($id);
+                }
+
+            }
+
+            $this->onDetailsChangeHide();
+
+        } else {
+
+            $this->showAll($excludeShow);
+
+            foreach ($specialShow as $id) {
+                $this->show($id);
+            }
+
+            $this->onDetailsChangeShow();
+
+        }
+
+    }
+
+    ##------------------------------------------------------------------------------------------------------------
+
     ##                      ##
     ##  Grundfunktionen     ##
     ##                      ##
 
     // PI GRUNDFUNKTIONEN
+
+    protected function getVarProfile($id) {
+
+        if ($this->doesExist($id)) {
+
+            if ($this->isVariable($id)) {
+
+                $id = IPS_GetVariable($id);
+                return $id['VariableCustomProfile'];
+
+            }
+
+        }
+
+    }
 
 
     // CheckVar Funktionen
@@ -159,6 +372,46 @@ abstract class PISymconModule extends IPSModule {
 
         }
 
+    }
+
+    protected function getProfileAssociations ($profileName) {
+        if (IPS_VariableProfileExists($profileName)) {
+            $prof = IPS_GetVariableProfile($profileName);
+            if ($prof['Associations'] != null) {
+                
+                if (count($prof['Associations']) > 0) {
+                    return $prof['Associations'];
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    protected function eventGetTriggerVariable ($id) {
+        if ($this->doesExist($id)) {
+            if ($this->isEvent($id)) {
+                $obj = IPS_GetEvent($id);
+                
+                return $obj['TriggerVariableID'];
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    protected function secondsToTimestamp($sek) {
+        return (0 - 3600 + $sek);
+    }
+
+    protected function timestampToSeconds ($timestamp) {
+        return ((0 - 3600) + ($timestamp * -1)) * -1;
     }
 
     protected function checkInteger ($name, $setProfile = false, $position = "", $index = 0, $defaultValue = null) {
@@ -299,7 +552,6 @@ abstract class PISymconModule extends IPSModule {
         if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $parent))) {
 
             $eid = IPS_CreateEvent(0);
-            //echo "Strange? " . $onChangeEventName . $targetId;
             IPS_SetEventTrigger($eid, 0, $targetId);
             IPS_SetParent($eid, $parent);
             if ($autoFunctionToText) {
@@ -327,13 +579,16 @@ abstract class PISymconModule extends IPSModule {
         
         }
         
-
-        $childs = IPS_GetChildrenIDs($searchIn);
+        if (!$this->doesExist($searchIn)) {
+            return null;
+        }
 
         if (!IPS_HasChildren($searchIn)) {
             return null;
         }
         
+        $childs = IPS_GetChildrenIDs($searchIn);
+
         $returnId = 0;
         
         foreach ($childs as $child) {
@@ -928,73 +1183,7 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function getProfileAssociations ($profileName) {
-
-        if (IPS_VariableProfileExists($profileName)) {
-
-            $prof = IPS_GetVariableProfile($profileName);
-
-            if ($prof['Associations'] != null) {
-                
-                if (count($prof['Associations']) > 0) {
-
-                    return $prof['Associations'];
-
-                } else {
-                    return null;
-                }
-
-            } else {
-                return null;
-            }
-
-        } else {
-            return null;
-        }
-
-    }
-
-    protected function getVariableProfileByVariable ($id) {
-
-        if ($id != 0 && $id != null) {
-
-            if ($this->isVariable($id)) {
-
-                $var = IPS_GetVariable($id);
-
-                return $var['VariableCustomProfile'];
-
-            } else {
-                return null;
-            }
-
-        } else {
-            return null;
-        }
-
-    }
-
     // Vereinfachende Funktionen
-
-    protected function deleteAllChildren ($id) {
-
-        if ($id != null && $id != 0) {
-
-            $obj = IPS_GetObject($id);
-
-            if (IPS_HasChildren($obj['ObjectID'])) {
-
-                foreach ($obj['ChildrenIDs'] as $child) {
-
-                    $this->deleteObject($child);
-
-                }
-
-            }
-
-        }
-
-    }
 
     protected function setPosition ($id, $position, $in = null) {
 
@@ -1230,7 +1419,22 @@ abstract class PISymconModule extends IPSModule {
 
         if (IPS_VariableProfileExists($profile)) {
 
-            IPS_SetVariableCustomProfile($id, $profile);
+            if ($this->isVariable($id)) {
+
+                $vr = IPS_GetVariable($id);
+                
+                if ($vr['VariableProfile'] != $profile) {
+
+                    IPS_SetVariableCustomProfile($id, $profile);
+
+                }
+
+
+            } else {
+
+                IPS_SetVariableCustomProfile($id, $profile);
+
+            }
             
             if ($useSetValue) {
 
@@ -1415,6 +1619,50 @@ abstract class PISymconModule extends IPSModule {
 
     } 
 
+    protected function getTargetID ($id) {
+
+        if ($this->isLink($id)) {
+
+            $lnk = IPS_GetLink($id);
+            return $lnk['TargetID'];
+
+        }
+
+    }
+
+    protected function nameByObjectType ($ot) {
+
+        switch ($ot) {
+
+            case 0:
+                return "category";
+            case 1:
+                return "instance";
+            case 2:
+                return "variable";
+            case 3:
+                return "script";
+            case 4:
+                return "event";
+            case 5:
+                return "media";
+            case 6:
+                return "link";
+
+        }
+    } 
+
+    protected function getVarType ($id) {
+
+        if ($id != null && $id != 0) {
+
+            $obj = IPS_GetVariable($id);
+            return $obj['VariableType'];
+
+        }
+
+    }
+
     // $varNames Beispiel: array("Element 1|false|1>onElement1Change", "Element 2|true|2")
     //                     array("Name|DefaultVal|Index")
     protected function createSwitches ($varNames, $position = null) {
@@ -1510,7 +1758,7 @@ abstract class PISymconModule extends IPSModule {
                 IPS_SetParent($link, $parent);
                 IPS_SetLinkTargetID($link, $target);
                 IPS_SetHidden($link, false);
-                $this->setPosition($link, $linkPosition, $parent);
+                $this->setPosition($link, $linkPosition);
 
                 return $link;
             }
@@ -1821,6 +2069,19 @@ abstract class PISymconModule extends IPSModule {
         
     }
     
+    protected function getVariableProfileByVariable ($id) {
+        if ($id != 0 && $id != null) {
+            if ($this->isVariable($id)) {
+                $var = IPS_GetVariable($id);
+                return $var['VariableCustomProfile'];
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     protected function getElementAfterInArray ($search, $array) {
 
         $elementFound = false;
@@ -1877,27 +2138,6 @@ abstract class PISymconModule extends IPSModule {
 
             }
 
-        }
-
-    }
-
-    // Event Funktionen 
-    protected function eventGetTriggerVariable ($id) {
-
-        if ($this->doesExist($id)) {
-
-            if ($this->isEvent($id)) {
-
-                $obj = IPS_GetEvent($id);
-                
-                return $obj['TriggerVariableID'];
-
-            } else {
-                return null;
-            }
-
-        } else {
-            return null;
         }
 
     }
@@ -1962,17 +2202,6 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function sendWebfrontNotification ($titel, $text, $icon, $timeout = 5) {
-
-        $inst = $this->getWebfrontInstance();
-
-        if ($inst != null) {
-
-            WFC_SendNotification ($inst, $titel, $text, $icon, $timeout);
-
-        }
-
-    }
     
     // Kern Instanzen bekommen
 
@@ -2052,6 +2281,84 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function hideAll ($exclude = null, $parent = null) {
+
+        if ($parent == null || $parent == null) {
+            $parent = $this->InstanceID;
+        }
+        if ($exclude == null) {
+            $exclude = array();
+        }
+
+        $obj = IPS_GetObject($parent);
+
+        if (IPS_HasChildren($obj['ObjectID'])) {
+
+            foreach ($obj['ChildrenIDs'] as $child) {
+
+                $o = IPS_GetObject($child);
+
+                if (!in_array($child, $exclude) && !in_array($this->nameByObjectType($o['ObjectType']), $exclude)) {
+
+                    $this->hide($child);
+
+                }
+
+            }
+
+        }
+
+    }
+
+    protected function showAll ($exclude = null, $parent = null) {
+
+        if ($parent == null || $parent == null) {
+            $parent = $this->InstanceID;
+        }
+        if ($exclude == null) {
+            $exclude = array();
+        }
+
+        $obj = IPS_GetObject($parent);
+
+        if (IPS_HasChildren($obj['ObjectID'])) {
+
+            foreach ($obj['ChildrenIDs'] as $child) {
+
+                $o = IPS_GetObject($child);
+
+                if (!in_array($child, $exclude) && !in_array($this->nameByObjectType($o['ObjectType']), $exclude)) {
+
+                    $this->show($child);
+
+                }
+
+            }
+
+        }
+
+    }
+
+    protected function getVarIfPossible ($name, $parent = null) {
+
+        if ($parent == null) {
+
+            $parent = $this->InstanceID;
+
+        }
+
+        if ($this->doesExist($this->searchObjectByName($name, $parent))) {
+
+            return $this->searchObjectByName($name, $parent);
+
+        } else {
+
+            return null;
+
+        }
+
+    }
+
     // String Analyizer
     
     protected function idIsNotNullOrEmpty ($id) {
@@ -2110,10 +2417,14 @@ abstract class PISymconModule extends IPSModule {
                         $targetID = intval($funcAry[0]);
                         $function = $funcAry[1];
 
-                        $newName = IPS_GetName($targetID);
-                        $newName = "onChange " . $newName;
+                        if ($this->doesExist($targetID)) {
 
-                        $newEvents[] = $this->easyCreateOnChangeFunctionEvent($newName, $targetID, $function, $parent);
+                            $newName = IPS_GetName($targetID);
+                            $newName = "onChange " . $newName;
+
+                            $newEvents[] = $this->easyCreateOnChangeFunctionEvent($newName, $targetID, $function, $parent);
+
+                        }
 
                     }
 
@@ -2125,8 +2436,384 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getValueIfPossible ($id) {
+
+        if ($id == null || $id == 0) {
+
+            return null;
+
+        } else {
+
+            if ($this->doesExist($id)) {
+
+                $gv = GetValue($id);
+                return $gv;
+
+            } else {
+
+                return 0;
+
+            }
+
+        }
+
+    }
+
+    protected function nullToNull ($wert) {
+
+        if ($wert == null) {
+            return 0;
+        }
+
+    }
 
 
 }
+
+
+## LISTE FEHLT!
+
+
+// interface iFormElement {
+//     // public $type;
+//     // public $name;
+// }
+
+// class Label implements iFormElement {
+
+//     public $type = "Label";
+//     public $label;
+
+//     public function __construct($text) {
+
+//         $this->label = $text;
+
+//     }
+
+// }
+
+// class CheckBox implements iFormElement {
+
+//     public $type = "CheckBox";
+//     public $name;
+//     public $caption;
+
+//     public function __construct($name, $caption) {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class HorizontalSlider implements iFormElement {
+
+//     public $type = "HorizontalSlider";
+//     public $name;
+//     public $caption;
+//     public $minimum;
+//     public $maximum;
+//     public $onChange;
+
+//     public function __construct ($name, $caption = "No Title", $minimum = 0, $maximum = 100, $onChange = "") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+//         $this->minimum = $minimum;
+//         $this->maximum = $maximum;
+//         $this->onChange = $onChange;
+
+//     }
+
+// }
+
+// class IntervalBox implements iFormElement {
+
+//     public $type = "IntervalBox";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name;
+//         $this->caption;
+
+//     }
+
+// }
+
+// class NumberSpinner implements iFormElement {
+
+//     public $type = "NumberSpinner";
+//     public $name;
+//     public $caption;
+//     public $digits;
+//     public $hex;
+//     public $suffix;
+
+//     public function __construct($name, $caption = "Unnamed", $digits = 0, $hex = false, $suffix = "") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+//         $this->digits = $digits;
+//         $this->hex = $hex;
+//         $this->suffix = $suffix;
+
+//     }
+
+// }
+
+// class Button {
+
+//     public $type = "Button";
+//     public $label;
+//     public $onClick;
+
+//     public function __construct ($label, $onClick) {
+
+//         $this->label = $label;
+//         $this->onClick = $onClick;
+
+//     }
+
+// }
+
+// class PasswordTextBox implements iFormElement {
+
+//     public $type = "PasswordTextBox";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption) {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class Select implements iFormElement {
+
+//     public $type = "";
+//     public $name;
+//     public $caption;
+//     public $options;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectOption {
+
+//     public $label;
+//     public $value;
+
+//     public function __construct($label, $value) {
+
+//         $this->label = $label;
+//         $this->value = $value;
+
+//     }
+
+// }
+
+// class SelectCategory implements iFormElement {
+
+//     public $type = "SelectCategory";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+
+// }
+
+// class SelectColor implements iFormElement {
+
+//     public $type = "SelectColor";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+
+// }
+
+// class SelectDate implements iFormElement {
+
+//     public $type = "SelectDate";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectDateTime implements iFormElement {
+
+//     public $type = "SelectDateTime";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectEvent implements iFormElement {
+
+//     public $type = "SelectEvent";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectFile implements iFormElement {
+
+//     public $type = "SelectFile";
+//     public $name;
+//     public $caption;
+//     public $extension;
+
+//     public function __construct ($name, $caption = "Unnamed", $extension = null) {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+//         $this->extension = $extension;
+
+//     }
+    
+// }
+
+// class SelectInstance implements iFormElement {
+
+//     public $type = "SelectInstance";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectLink implements iFormElement {
+
+//     public $type = "SelectLink";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectMedia implements iFormElement {
+
+//     public $type = "SelectMedia";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectObject implements iFormElement {
+
+//     public $type = "SelectObject";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectScript implements iFormElement {
+
+//     public $type = "SelectScript";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class SelectVariable implements iFormElement {
+
+//     public $type = "SelectVariable";
+//     public $name;
+//     public $caption;
+
+//     public function __construct ($name, $caption = "Unnamed") {
+
+//         $this->name = $name;
+//         $this->caption = $caption;
+
+//     }
+
+// }
+
+// class Form {
+
+//     public $elements;
+//     public $actions;
+//     public $status;
+
+// }
 
 ?>
