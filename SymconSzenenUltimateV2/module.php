@@ -1075,7 +1075,6 @@
 
         //  Öffentliche Funktionen
 
-
         public function Start () {
 
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
