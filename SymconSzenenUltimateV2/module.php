@@ -395,7 +395,7 @@
                 $lc = GetValue($this->searchObjectByName("LastScene"));
 
                 IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[1]));
-                //$target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0
+
                 $this->linkVar($this->getFirstChildFrom($this->searchObjectByName("nextElement")), "Timer Status", $this->InstanceID, "|AFTER|" . $this->searchObjectByName($lc . " Timer"), true);
 
             } else {
@@ -421,7 +421,7 @@
 
                         $fc = $this->searchObjectByName($allScenes[1] . " Timer");
 
-                        IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[0]));
+                        IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[1]));
 
                         $this->setPosition($this->searchObjectByName("Timer Status"), "|AFTER|" . $fc);
 
