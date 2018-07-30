@@ -1874,6 +1874,22 @@ abstract class PISymconModule extends IPSModule {
 
     //
 
+    protected function deleteAllChildren ($id) {
+
+        if (IPS_HasChildren($id)) {
+
+            $obj = IPS_GetObject($id);
+
+            foreach ($obj['ChildrenIDs'] as $child) {
+
+                $this->deleteObject($child);
+
+            }
+
+        }
+
+    }
+
     protected function linkCompleteDummy ($source, $target) {
 
         $sourceObj = IPS_GetObject($source);
