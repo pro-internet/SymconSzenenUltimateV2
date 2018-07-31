@@ -1,11 +1,11 @@
 {
     "id": "{ad411635-4938-4513-a923-8e0108fa17fa}",
-    "name": "SymconSzenenUltimateV2",
+    "name": "SymconSzenenV2",
     "type": 3,
     "vendor": "prointernet",
     "aliases":
     [
-        "SymconSzenenUltimateV2"
+        "SymconSzenenV2"
     ],  
     "parentRequirements": [],
     "childRequirements": [],

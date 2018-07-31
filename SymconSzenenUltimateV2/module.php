@@ -3,7 +3,7 @@
     require(__DIR__ . "\\pimodule.php");
 
     // Klassendefinition
-    class SymconSzenenUltimateV2 extends PISymconModule {
+    class SymconSzenenV2 extends PISymconModule {
  
         public $sensorOld = null;
 
