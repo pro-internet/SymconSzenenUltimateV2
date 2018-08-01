@@ -142,7 +142,7 @@
 
             }
 
-            $nme = IPS_GetName($this->InstanceID)
+            $nme = IPS_GetName($this->InstanceID);
             $parent = IPS_GetParent($this->InstanceID);
 
             $this->deleteObject($this->searchObjectByName($nme . " Geräte", $parent));
