@@ -96,6 +96,7 @@
             parent::ApplyChanges();
 
             $daysetActivated = $this->isSensorSet();
+            $timeActivated = $this->ReadPropertyBoolean("ModeTime");
 
             //$onChangeEventName, $targetId, $function, $parent = null
             
@@ -118,6 +119,12 @@
 
                  $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
                  $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
+
+            }
+
+            if (!$timeActivated) {
+
+                $this->deleteObject($this->searchObjectByName("Timer Status"));
 
             }
 
@@ -406,6 +413,8 @@
                 $lc = GetValue($this->searchObjectByName("LastScene"));
 
                 IPS_SetScriptTimer($this->searchObjectByName("nextElement"), $this->getTimerLengthBySceneName($allScenes[1]));
+
+                $this->setIcon($this->getFirstChildFrom($this->searchObjectByName("nextElement")), "Clock");
 
                 $this->linkVar($this->getFirstChildFrom($this->searchObjectByName("nextElement")), "Timer Status", $this->InstanceID, "|AFTER|" . $this->searchObjectByName($lc . " Timer"), true);
 
