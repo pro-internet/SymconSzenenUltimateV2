@@ -11,10 +11,6 @@
 
         public $GeräteFolder = null;
 
-        public $ParentID = null;
-
-        public $InstanceName = "";
-
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
         public function __construct($InstanceID) {
