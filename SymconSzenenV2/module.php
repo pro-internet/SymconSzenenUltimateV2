@@ -1012,7 +1012,7 @@
 
                 $allScenes = $this->getAllScenesSorted();
 
-                SetValue($allScenes[0], 1);
+                SetValue($this->searchObjectByName($allScenes[0]), 1);
 
                 $this->deleteObject($this->searchObjectByName("Timer Status"));
                 $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
