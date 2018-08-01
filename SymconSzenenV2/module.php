@@ -9,6 +9,8 @@
 
         public $Details = true;
 
+        public $GeräteFolder = null;
+
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
         public function __construct($InstanceID) {
@@ -16,6 +18,19 @@
             parent::__construct($InstanceID);
 
             // Selbsterstellter Code
+
+            if ($this->doesExist($InstanceID)) {
+
+                $parent = IPS_GetParent($InstanceID);
+                $nme = IPS_GetName($InstanceID);
+
+                if ($this->doesExist($this->searchObjectByName($nme . " Geräte", $parent))) {
+
+                    $ths->GeräteFolder = $this->searchObjectByName($nme . " Geräte", $parent);
+
+                }
+
+            }
         }
  
         // Überschreibt die interne IPS_Create($id) Funktion
@@ -131,12 +146,13 @@
 
         public function Destroy () {
 
-            $nme = IPS_GetName($this->InstanceID);
-            $parent = IPS_GetParent($this->InstanceID);
-
-            $this->deleteObject($this->searchObjectByName($nme . " Geräte", $parent));
-
             parent::Destroy();
+
+            if ($this->doesExist($this->GeräteFolder)) {
+
+                $this->deleteObject($this->GeräteFolder);
+
+            }
 
             //IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
             IPS_DeleteVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID);
