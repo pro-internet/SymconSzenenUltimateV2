@@ -147,10 +147,9 @@
 
         public function Destroy () {
 
-            parent::Destroy();
-
-
             echo $this->InstanceName . "Geräte " . $this->ParentID;
+
+            parent::Destroy();
 
             $gFolder = $this->searchObjectByName($this->InstanceName . " Geräte", $this->ParentID);
 
