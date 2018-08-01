@@ -11,6 +11,10 @@
 
         public $GeräteFolder = null;
 
+        public $ParentID = null;
+
+        public $InstanceName = null;
+
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
         public function __construct($InstanceID) {
@@ -24,11 +28,8 @@
                 $parent = IPS_GetParent($InstanceID);
                 $nme = IPS_GetName($InstanceID);
 
-                if ($this->doesExist($this->searchObjectByName($nme . " Geräte", $parent))) {
-
-                    $this->GeräteFolder = $this->searchObjectByName($nme . " Geräte", $parent);
-
-                }
+                $this->InstanceName = $nme;
+                $this->ParentID = $parent;
 
             }
         }
@@ -148,9 +149,12 @@
 
             parent::Destroy();
 
-            if ($this->doesExist($this->GeräteFolder)) {
+            $gFolder = $this->searchObjectByName($this->InstanceName . " Geräte", $this->ParentID);
 
-                $this->deleteObject($this->GeräteFolder);
+
+            if ($this->doesExist($gFolder)) {
+
+                $this->deleteObject($gFolder);
 
             }
 
