@@ -149,8 +149,10 @@
 
             parent::Destroy();
 
-            $gFolder = $this->searchObjectByName($this->InstanceName . " Geräte", $this->ParentID);
 
+            echo $instanceName . "Geräte " . $this->ParentID;
+
+            $gFolder = $this->searchObjectByName($this->InstanceName . " Geräte", $this->ParentID);
 
             if ($this->doesExist($gFolder)) {
 
