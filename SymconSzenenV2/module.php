@@ -131,6 +131,11 @@
 
         public function Destroy () {
 
+            $nme = IPS_GetName($this->InstanceID);
+            $parent = IPS_GetParent($this->InstanceID);
+
+            $this->deleteObject($this->searchObjectByName($nme . " Geräte", $parent));
+
             parent::Destroy();
 
             //IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
@@ -141,11 +146,6 @@
                 IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
 
             }
-
-            $nme = IPS_GetName($this->InstanceID);
-            $parent = IPS_GetParent($this->InstanceID);
-
-            $this->deleteObject($this->searchObjectByName($nme . " Geräte", $parent));
 
         }
 
