@@ -26,7 +26,7 @@
 
                 if ($this->doesExist($this->searchObjectByName($nme . " Geräte", $parent))) {
 
-                    $ths->GeräteFolder = $this->searchObjectByName($nme . " Geräte", $parent);
+                    $this->GeräteFolder = $this->searchObjectByName($nme . " Geräte", $parent);
 
                 }
 
