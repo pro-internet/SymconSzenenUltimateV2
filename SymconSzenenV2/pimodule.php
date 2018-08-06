@@ -2581,8 +2581,9 @@ abstract class PISymconModule extends IPSModule {
                                 IPS_SetLinkTargetID($link, $lnk['TargetID']);
     
                             } else {
-    
-                                echo "Link Dayset ... " . $elem['ObjectID'] ." ... \n";
+                                
+                                $elem = $obj;
+
                                 $this->linkVar($elem['ObjectID'], $elem['ObjectName'], $newFolder, 0, false);
     
                             }
