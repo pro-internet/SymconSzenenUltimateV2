@@ -2590,7 +2590,8 @@ abstract class PISymconModule extends IPSModule {
                                 IPS_SetParent($link, $newFolder);
                                 IPS_SetIdent($link, $this->nameToIdent($ownName . $obj['ObjectName']));
                                 IPS_SetLinkTargetID($link, $lnk['TargetID']);
-                                $this->setPosition($link, $obj['ObjectPosition']);
+                                //$this->setPosition($link, $obj['ObjectPosition']);
+                                IPS_SetPosition($link, $obj['ObjectPosition']);
     
                             } else {
                                 
