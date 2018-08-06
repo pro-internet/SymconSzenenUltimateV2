@@ -2562,7 +2562,18 @@ abstract class PISymconModule extends IPSModule {
 
                     $folder = IPS_GetObject($folder);
 
-                    foreach ($folder['ChildrenIDs'] as $elem) {
+                    $folderChildren = $folder['ChildrenIDs'];
+
+                    usort($folderChildren, function($a, $b) {
+
+                        $go1 = IPS_GetObject($a);
+                        $go2 = IPS_GetObject($b);
+                        
+                        return $go1['ObjectPosition'] > $go2['ObjectPosition'];
+                    
+                    });
+
+                    foreach ($folderChildren as $elem) {
 
                         //($target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0, $ident = false)
 
