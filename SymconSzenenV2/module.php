@@ -991,7 +991,7 @@
 
                 } else {
 
-                    if ($sceneDataName == $allScenes[0]) {
+                    if ($senderName == $allScenes[0]) {
 
                         $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
 
