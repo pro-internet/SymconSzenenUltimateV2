@@ -1805,8 +1805,12 @@ abstract class PISymconModule extends IPSModule {
                 $this->setPosition($link, $linkPosition);
 
                 return $link;
+            } else {
+                echo "linkVar: Link already exists!";
             }
 
+        } else {
+            echo "linkVar: Target does not exist!";
         }
 
     }
