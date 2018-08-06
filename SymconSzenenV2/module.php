@@ -970,6 +970,8 @@
                 $sceneDataName = $senderName . " SceneData";
                 $sceneDataVar = $this->searchObjectByName($sceneDataName, $this->searchObjectByName("SceneData"));
                 $sceneDataVal = GetValue($sceneDataVar);
+
+                $allScenes = $this->getAllScenesSorted();
                 
                 if ($sceneDataVal != null && $sceneDataVal != "") {
 
@@ -989,7 +991,15 @@
 
                 } else {
 
-                    $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
+                    if ($sceneDataName == $allScenes[0]) {
+
+                        $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
+
+                    } else {
+
+                        $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
+
+                    }
 
                 }
 
