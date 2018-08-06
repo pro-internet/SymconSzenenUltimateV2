@@ -1117,10 +1117,6 @@
 
                         if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
 
-                            SetValue($this->searchObjectByName("Szenen"), 999);
-
-                        } else {
-
                             $found = false;
 
                             foreach ($this->getSceneHashList() as $kkey => $kval) {
@@ -1161,9 +1157,15 @@
 
                                     SetValue($this->searchObjectByName("Szenen"), 0);
 
+                                } else {
+
+                                    SetValue($this->searchObjectByName("Szenen"), 999);
+
                                 }
 
                             }
+
+                        } else {
 
                         }
                         //echo md5(json_encode($states));
