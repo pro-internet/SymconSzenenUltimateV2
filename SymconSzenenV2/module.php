@@ -35,13 +35,14 @@
 
         protected function setExcludedShow () {
 
-            $allScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+            $allScenes = $this->getAllScenesSorted();
 
             if ($allScenes != null) {
 
                 if (count($allScenes) > 0) {
 
-                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $allScenes[0]);
+                    $sceneID = $this->searchObjectByName($allScenes[0]);
+                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $sceneID);
 
                 } else {
 
