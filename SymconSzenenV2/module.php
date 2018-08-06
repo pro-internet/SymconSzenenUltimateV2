@@ -1121,11 +1121,45 @@
 
                         } else {
 
+                            $found = false;
+
                             foreach ($this->getSceneHashList() as $kkey => $kval) {
 
                                 if ($kval == md5(json_encode($states))) {
 
+                                    $found = true;
                                     SetValue($this->searchObjectByName("Szenen"), $kkey);
+
+                                }
+
+                            }
+
+                            if (!$found) {
+
+                                $obj = IPS_GetObject($this->searchObjectByName("Targets"));
+
+                                $anyTrue = false;
+
+                                foreach ($obj['ChildrenIDs'] as $child) {
+
+                                    if ($this->isLink($child)) {
+
+                                        $child = IPS_GetLink($child);
+                                        $childVal = GetValue($child['TargetID']);
+
+                                        if ($childVal == true) {
+
+                                            $anyTrue = true;
+
+                                        }
+
+                                    }
+
+                                }
+
+                                if (!$anyTrue) {
+
+                                    SetValue($this->searchObjectByName("Szenen"), 0);
 
                                 }
 
