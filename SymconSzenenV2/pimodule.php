@@ -2595,7 +2595,7 @@ abstract class PISymconModule extends IPSModule {
                                 
                                 $elem = $obj;
 
-                                $this->linkVar($elem['ObjectID'], $elem['ObjectName'], $newFolder, 0, false);
+                                $this->linkVar($elem['ObjectID'], $elem['ObjectName'], $newFolder, $elem['ObjectPosition'], false);
     
                             }
 
