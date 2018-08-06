@@ -35,7 +35,26 @@
 
         protected function setExcludedShow () {
 
-            return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"));
+            $allScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+
+            if ($allScenes != null) {
+
+                if (count($allScenes) > 0) {
+
+                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $allScenes[0]);
+
+                } else {
+
+                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"));
+
+                }
+
+            } else {
+
+                return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"));
+
+            }
+
     
         }
 
@@ -519,7 +538,7 @@
 
                     }
 
-                    if (!$doesexist && $scene != $scenes[0]) {
+                    if (!$doesexist) {
 
                         $newPos = $this->getHighestPosition() + 1;
                         $newInt = $this->checkInteger($scene->Name, false, $this->InstanceID, $newPos, -1);
@@ -530,6 +549,11 @@
 
                         $this->easyCreateOnChangeFunctionEvent("onChange " . $newInt, $newInt, "onSceneVarChange", $this->searchObjectByName("Events"));
 
+                        if ($scene == $scenes[0]) {
+
+                            $this->hide($newInt);
+
+                        }
 
                     }
 
