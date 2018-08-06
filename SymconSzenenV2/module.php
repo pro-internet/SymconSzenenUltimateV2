@@ -1119,17 +1119,6 @@
 
                             $found = false;
 
-                            foreach ($this->getSceneHashList() as $kkey => $kval) {
-
-                                if ($kval == md5(json_encode($states))) {
-
-                                    $found = true;
-                                    SetValue($this->searchObjectByName("Szenen"), $kkey);
-
-                                }
-
-                            }
-
                             if (!$found) {
 
                                 $obj = IPS_GetObject($this->searchObjectByName("Targets"));
@@ -1166,6 +1155,17 @@
                             }
 
                         } else {
+
+                            foreach ($this->getSceneHashList() as $kkey => $kval) {
+
+                                if ($kval == md5(json_encode($states))) {
+
+                                    //$found = true;
+                                    SetValue($this->searchObjectByName("Szenen"), $kkey);
+
+                                }
+
+                            }
 
                         }
                         //echo md5(json_encode($states));
