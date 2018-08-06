@@ -519,7 +519,7 @@
 
                     }
 
-                    if (!$doesexist) {
+                    if (!$doesexist && $scene != $scenes[0]) {
 
                         $newPos = $this->getHighestPosition() + 1;
                         $newInt = $this->checkInteger($scene->Name, false, $this->InstanceID, $newPos, -1);
@@ -576,7 +576,7 @@
 
                     }
 
-                    if (!$doesExist) {
+                    if (!$doesExist && ($sceneVar != $allSceneVars[0])) {
 
                         $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, "", "|AFTER|" . $this->searchObjectByname($sceneVar), 10);
                         $this->setIcon($checkTimer, "Clock");
