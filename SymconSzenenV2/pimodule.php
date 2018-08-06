@@ -1806,11 +1806,11 @@ abstract class PISymconModule extends IPSModule {
 
                 return $link;
             } else {
-                echo "linkVar: Link already exists!";
+                // echo "linkVar: Link already exists!";
             }
 
         } else {
-            echo "linkVar: Target does not exist!";
+            // echo "linkVar: Target does not exist!";
         }
 
     }
@@ -2582,7 +2582,7 @@ abstract class PISymconModule extends IPSModule {
     
                             } else {
     
-                                echo "Link Dayset ... ... \n";
+                                echo "Link Dayset ... " . $elem['ObjectID'] ." ... \n";
                                 $this->linkVar($elem['ObjectID'], $elem['ObjectName'], $newFolder, 0, false);
     
                             }
