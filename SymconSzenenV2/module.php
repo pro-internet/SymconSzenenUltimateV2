@@ -1003,6 +1003,7 @@
 
             $sender = $_IPS['VARIABLE'];
             $senderVal = GetValue($sender);
+            $alleScenes = $this->getAllScenesSorted();
 
             if ($_IPS['OLDVALUE'] == $senderVal) {
                 return;
@@ -1028,6 +1029,18 @@
                     }
 
                 }
+
+            } else {
+
+                if ($sceneName == $alleScenes[0]) {
+
+                    $targets = $this->searchObjectByName("Targets");
+
+                    $this->setAllInLinkList($targets);
+
+                }
+
+                echo "Keinen Szenendaten vorhanden!";
 
             }
 
