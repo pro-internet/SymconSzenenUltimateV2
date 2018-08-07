@@ -98,7 +98,7 @@
 
             }
 
-            $this->linkFolderMobile($this->searchObjectByName("Targets"), $name . " Geräte", $prnt);
+            $this->linkFolderMobile($this->searchObjectByName("Targets"), $name . " Geräte", $prnt); 
 
             // DaySets einblenden
             if ($sensorSet) {
