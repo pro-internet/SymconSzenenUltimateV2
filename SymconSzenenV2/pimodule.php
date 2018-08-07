@@ -1881,6 +1881,10 @@ abstract class PISymconModule extends IPSModule {
 
     protected function deleteAllChildren ($id) {
 
+        if (!$this->doesExist($id)) {
+            return;
+        }
+
         if (IPS_HasChildren($id)) {
 
             $obj = IPS_GetObject($id);
