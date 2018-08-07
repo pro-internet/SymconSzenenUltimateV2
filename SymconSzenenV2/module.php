@@ -339,7 +339,7 @@
                 echo "OLD SENSOR: " . $oldSensor . "\n";
                 echo "NEW SENSOR: " . $sensor . "\n";
 
-                if ($sensor != null) {
+                if ($sensor != null) { 
 
                     if ($oldSensor != $sensor) {
 
