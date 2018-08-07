@@ -263,8 +263,6 @@
 
                 $prnt = IPS_GetParent($this->InstanceID);
 
-                echo "Delete DaySets!";
-
                 $this->deleteObject($this->searchObjectByName("DaySets"));
 
                 $this->deleteObject($this->searchObjectByName("DaySets-Auswahl", $prnt));
@@ -342,6 +340,7 @@
 
                     if ($oldSensor != $sensor) {
 
+                        echo "Delete old DaySets ... "; 
                         $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
                     }
