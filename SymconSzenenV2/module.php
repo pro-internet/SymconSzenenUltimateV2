@@ -156,59 +156,9 @@
 
             $this->deleteUnusedTargetOnChangeEvents();
 
-        }
-
-        public function Destroy () {
-
-            parent::Destroy();
-
-
-            //IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
-            IPS_DeleteVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID);
-
-            if (IPS_VariableProfileExists($this->prefix . ".DaysetScenes." . $this->InstanceID)) {
-
-                IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
-
-            }
-
-        }
-
-
-        public function CheckVariables () {
-
-            //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
-            $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
-
-            $targets = $this->checkFolder("Targets", null, 4);
-            $events = $this->checkFolder("Events", null, 5);
-            $sceneData = $this->checkFolder("SceneData", null, 6);
-
-
             $daysetActivated = $this->isSensorSet();
-            $daysetSensor = $this->ReadPropertyInteger("Sensor");
-            $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
-            if ($timeIsActivated) {
-
-                $status = $this->checkBoolean("Status", true, "", 2);
-                $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
-
-                $this->setIcon($status, "Power");
-
-                $this->easyCreateOnChangeFunctionEvent("onChange Status", $status, "onStatusChange", $this->searchObjectByName("Events"));
-
-
-                $this->hide($lastScene);
-                
-
-            } else {
-
-                $this->deleteObject($this->searchObjectByName("Status"));
-
-                $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
-
-            }
+            // Experimental
 
             if ($daysetActivated) {
 
@@ -269,6 +219,62 @@
 
                 // $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets anzeigen");
                 // $this->removeAssociation($this->prefix . ".Options" . $this->InstanceID, "DaySets verstecken");
+
+            }
+
+
+
+        }
+
+        public function Destroy () {
+
+            parent::Destroy();
+
+
+            //IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
+            IPS_DeleteVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+
+            if (IPS_VariableProfileExists($this->prefix . ".DaysetScenes." . $this->InstanceID)) {
+
+                IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
+
+            }
+
+        }
+
+
+        public function CheckVariables () {
+
+            //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
+            $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
+
+            $targets = $this->checkFolder("Targets", null, 4);
+            $events = $this->checkFolder("Events", null, 5);
+            $sceneData = $this->checkFolder("SceneData", null, 6);
+
+
+            $daysetActivated = $this->isSensorSet();
+            $daysetSensor = $this->ReadPropertyInteger("Sensor");
+            $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
+
+            if ($timeIsActivated) {
+
+                $status = $this->checkBoolean("Status", true, "", 2);
+                $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
+
+                $this->setIcon($status, "Power");
+
+                $this->easyCreateOnChangeFunctionEvent("onChange Status", $status, "onStatusChange", $this->searchObjectByName("Events"));
+
+
+                $this->hide($lastScene);
+                
+
+            } else {
+
+                $this->deleteObject($this->searchObjectByName("Status"));
+
+                $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
 
             }
 
