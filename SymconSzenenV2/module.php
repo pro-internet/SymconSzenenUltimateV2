@@ -230,9 +230,13 @@
 
                         foreach ($assocs as $assoc) {
 
-                            $newVar = $this->checkInteger($assoc['Name'], false, $this->searchObjectByName("DaySets"), $counter, -1);
-                            $this->addProfile($newVar, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
-                            $counter = $counter + 1;
+                            if (!$this->doesExist($this->searchObjectByName($assoc['Name'],$this->searchObjectByName("DaySets")))) {
+
+                                $newVar = $this->checkInteger($assoc['Name'], false, $this->searchObjectByName("DaySets"), $counter, -1);
+                                $this->addProfile($newVar, $this->prefix . ".DaysetScenes." . $this->InstanceID, true);
+                                $counter = $counter + 1;
+
+                            }
 
                         }
 
