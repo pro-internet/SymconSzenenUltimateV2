@@ -1055,10 +1055,14 @@
 
                 foreach ($sceneData as $devId => $devVal) {
 
-                    $devValOld = GetValue($devId);
+                    if ($this->doesExist($devId)) {
+
+                        $devValOld = GetValue($devId);
 
                     if ($devValOld != $devVal) {
                         $this->setDevice($devId, $devVal);
+                    }
+
                     }
 
                 }
