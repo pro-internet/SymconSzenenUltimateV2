@@ -157,6 +157,7 @@
             $this->deleteUnusedTargetOnChangeEvents();
 
             $daysetActivated = $this->isSensorSet();
+            $daysetSensor = $this->ReadPropertyInteger("Sensor");
 
             // Experimental
 
