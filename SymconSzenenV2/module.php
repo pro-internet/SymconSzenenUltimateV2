@@ -475,7 +475,8 @@
                         IPS_DeleteLink($this->searchObjectByName("Timer Status"));
 
                         SetValue($this->searchObjectByName("LastScene"), null);
-                        SetValue($this->searchObjectByName($allScenes[0]), 1);
+                        //SetValue($this->searchObjectByName($allScenes[0]), 1);
+                        SetValue($this->searchObjectByName("Szenen"), 0);
 
                         // if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
 
@@ -1089,7 +1090,8 @@
 
                 $allScenes = $this->getAllScenesSorted();
 
-                SetValue($this->searchObjectByName($allScenes[0]), 1);
+                //SetValue($this->searchObjectByName($allScenes[0]), 1);
+                SetValue($this->searchObjectByName("Szenen"), 0);
 
                 $this->deleteObject($this->searchObjectByName("Timer Status"));
                 $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
