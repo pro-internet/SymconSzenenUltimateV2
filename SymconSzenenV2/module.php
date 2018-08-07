@@ -333,18 +333,21 @@
             if ($this->isSensorSet()) {
 
                 $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
-            //echo "OldSensor: " . $oldSensor;
-            $sensor = $this->ReadPropertyInteger("Sensor");
+                //echo "OldSensor: " . $oldSensor;
+                $sensor = $this->ReadPropertyInteger("Sensor");
 
-            if ($sensor != null) {
+                echo "OLD SENSOR: " . $oldSensor . "\n";
+                echo "NEW SENSOR: " . $sensor . "\n";
 
-                if ($oldSensor != $sensor) {
+                if ($sensor != null) {
 
-                    $this->deleteAllChildren($this->searchObjectByName("DaySets"));
+                    if ($oldSensor != $sensor) {
+
+                        $this->deleteAllChildren($this->searchObjectByName("DaySets"));
+
+                    }
 
                 }
-
-            }
 
             }
 
