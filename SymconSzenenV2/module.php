@@ -1047,7 +1047,7 @@
 
                     $targets = $this->searchObjectByName("Targets");
 
-                    $this->setAllInLinkList($targets);
+                    $this->setAllInLinkList($targets, false);
 
                 } else {
 
