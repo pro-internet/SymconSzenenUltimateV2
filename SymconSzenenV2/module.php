@@ -340,7 +340,7 @@
 
                     if ($oldSensor != $sensor) {
 
-                        echo "Delete old DaySets ... "; 
+                        //echo "Delete old DaySets ... "; 
                         $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
                     }
@@ -1032,7 +1032,7 @@
 
             if ($senderVal == 0) {
 
-                echo "Auf aus gesetzt";
+                //echo "Auf aus gesetzt";
                 $targets = $this->searchObjectByName("Targets");
                 $this->setAllInLinkList($targets, false);
                 return;
