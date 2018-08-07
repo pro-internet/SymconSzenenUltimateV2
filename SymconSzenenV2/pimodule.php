@@ -2000,11 +2000,15 @@ abstract class PISymconModule extends IPSModule {
 
         }
 
-        $deviceVal = GetValue($deviceID);
+        if ($this->isVariable($deviceID)) {
 
-        if ($deviceVal == $wert) {
+            $deviceVal = GetValue($deviceID);
 
-            return;
+            if ($deviceVal == $wert) {
+
+                return;
+
+            }
 
         }
 
