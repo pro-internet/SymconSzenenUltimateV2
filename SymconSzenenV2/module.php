@@ -1055,7 +1055,7 @@
 
                 foreach ($sceneData as $devId => $devVal) {
 
-                    if ($this->doesExist($devId)) {
+                    // if ($this->doesExist($devId)) {
 
                         $devValOld = GetValue($devId);
 
@@ -1063,7 +1063,7 @@
                         $this->setDevice($devId, $devVal);
                     }
 
-                    }
+                    // }
 
                 }
 
