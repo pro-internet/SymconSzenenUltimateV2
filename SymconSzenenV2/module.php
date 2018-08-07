@@ -1026,6 +1026,7 @@
 
             if ($senderVal == 0) {
 
+                echo "Auf aus gesetzt";
                 $targets = $this->searchObjectByName("Targets");
                 $this->setAllInLinkList($targets, false);
                 return;
