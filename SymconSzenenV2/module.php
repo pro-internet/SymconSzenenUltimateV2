@@ -1107,6 +1107,8 @@
 
                 if ($_IPS['OLDVALUE'] == $send) {
 
+                    return;
+
                 }
 
                 if (count($targets['ChildrenIDs']) > 0)  {
