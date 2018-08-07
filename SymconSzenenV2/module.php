@@ -992,15 +992,15 @@
 
                 } else {
 
-                    if ($senderName == $allScenes[0]) {
+                    // if ($senderName == $allScenes[0]) {
 
-                        $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
+                    //     $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
 
-                    } else {
+                    // } else {
 
                         $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
 
-                    }
+                    // }
 
                 }
 
