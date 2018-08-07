@@ -29,7 +29,7 @@
  
         protected function setExcludedHide () {
 
-            return array($this->detailsVar, $this->AutomatikVar, $this->SperreVar, $this->searchObjectByName("Szenen"), $this->searchObjectByName("Status"));
+            return array($this->detailsVar, $this->AutomatikVar, $this->SperreVar, $this->searchObjectByName("Szene"), $this->searchObjectByName("Status"));
     
         }
 
@@ -133,7 +133,7 @@
             $this->checkSceneTimerVars();
 
             // $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
-            $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szenen"), "onSzenenChange", $this->searchObjectByName("Events"));
+            $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szene"), "onSzenenChange", $this->searchObjectByName("Events"));
 
             if ($daysetActivated) {
 
@@ -148,7 +148,7 @@
 
             }
 
-            $this->addProfile($this->searchObjectByName("Szenen"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+            $this->addProfile($this->searchObjectByName("Szene"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
 
             $this->deleteUnusedVars();
 
@@ -247,7 +247,7 @@
         public function CheckVariables () {
 
             //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
-            $sceneVar = $this->checkInteger("Szenen", false, null, 3, 0);
+            $sceneVar = $this->checkInteger("Szene", false, null, 3, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
             $events = $this->checkFolder("Events", null, 5);
@@ -483,7 +483,7 @@
 
                         SetValue($this->searchObjectByName("LastScene"), null);
                         //SetValue($this->searchObjectByName($allScenes[0]), 1);
-                        SetValue($this->searchObjectByName("Szenen"), 0);
+                        SetValue($this->searchObjectByName("Szene"), 0);
 
                         // if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
 
@@ -900,7 +900,7 @@
 
                     if ($dsVal != -1) {
 
-                        SetValue($this->searchObjectByName("Szenen"), $dsVal);
+                        SetValue($this->searchObjectByName("Szene"), $dsVal);
 
                     }
 
@@ -1102,7 +1102,7 @@
                 $allScenes = $this->getAllScenesSorted();
 
                 //SetValue($this->searchObjectByName($allScenes[0]), 1);
-                SetValue($this->searchObjectByName("Szenen"), 0);
+                SetValue($this->searchObjectByName("Szene"), 0);
 
                 $this->deleteObject($this->searchObjectByName("Timer Status"));
                 $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
@@ -1176,11 +1176,11 @@
 
                                 if (!$anyTrue) {
 
-                                    SetValue($this->searchObjectByName("Szenen"), 0);
+                                    SetValue($this->searchObjectByName("Szene"), 0);
 
                                 } else {
 
-                                    SetValue($this->searchObjectByName("Szenen"), 999);
+                                    SetValue($this->searchObjectByName("Szene"), 999);
 
                                 }
 
@@ -1193,7 +1193,7 @@
                                 if ($kval == md5(json_encode($states))) {
 
                                     //$found = true;
-                                    SetValue($this->searchObjectByName("Szenen"), $kkey);
+                                    SetValue($this->searchObjectByName("Szene"), $kkey);
 
                                 }
 
