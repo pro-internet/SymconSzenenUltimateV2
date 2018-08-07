@@ -1024,6 +1024,14 @@
                 return;
             }
 
+            if ($senderVal == 0) {
+
+                $targets = $this->searchObjectByName("Targets");
+                $this->setAllInLinkList($targets, false);
+                return;
+            
+            }
+
             $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $senderVal);
             $sceneDataVal = GetValue($this->searchObjectByName($sceneName . " SceneData", $this->searchObjectByName("SceneData")));
             
@@ -1043,17 +1051,17 @@
 
             } else {
 
-                if ($sceneName == $alleScenes[0]) {
+                // if ($sceneName == $alleScenes[0]) {
 
-                    $targets = $this->searchObjectByName("Targets");
+                //     $targets = $this->searchObjectByName("Targets");
 
-                    $this->setAllInLinkList($targets, false);
+                //     $this->setAllInLinkList($targets, false);
 
-                } else {
+                // } else {
 
                     echo "Keinen Szenendaten vorhanden!";
 
-                }
+                // }
 
             }
 
