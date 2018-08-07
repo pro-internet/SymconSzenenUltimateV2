@@ -133,7 +133,7 @@
             $this->checkSceneTimerVars();
 
             // $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
-            $this->easyCreateOnChangeFunctionEvent("onChange Szenen", $this->searchObjectByName("Szene"), "onSzenenChange", $this->searchObjectByName("Events"));
+            $this->easyCreateOnChangeFunctionEvent("onChange Szene", $this->searchObjectByName("Szene"), "onSzenenChange", $this->searchObjectByName("Events"));
 
             if ($daysetActivated) {
 
