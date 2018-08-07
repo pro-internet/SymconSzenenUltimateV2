@@ -336,9 +336,6 @@
                 //echo "OldSensor: " . $oldSensor;
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
-                echo "OLD SENSOR: " . $oldSensor . "\n";
-                echo "NEW SENSOR: " . $sensor . "\n";
-
                 if ($sensor != null) { 
 
                     if ($oldSensor != $sensor) {
