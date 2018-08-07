@@ -905,7 +905,7 @@
             // Wenn Automatik auf true
             if ($automatik) {
 
-
+                $this->targetSensorChange();
 
             } else {
             // Wenn Automatik auf false, Timer Löschen (Funktion prüft autom. ob Element existiert)!
