@@ -33,7 +33,7 @@
     
         }
 
-        protected function setExcludedShow () {
+        protected function setExcludedShow () { 
 
             $allScenes = $this->getAllScenesSorted();
 
