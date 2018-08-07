@@ -962,7 +962,8 @@
                     }
 
                 //}
-
+                
+                $this->targetSensorChange();
 
             } else if ($senderVal == 1) {
 
