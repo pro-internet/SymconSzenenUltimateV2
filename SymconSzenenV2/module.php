@@ -1015,9 +1015,9 @@
             $senderVal = GetValue($sender);
             $alleScenes = $this->getAllScenesSorted();
 
-            if ($_IPS['OLDVALUE'] == $senderVal) {
-                return;
-            }
+            // if ($_IPS['OLDVALUE'] == $senderVal) {
+            //     return;
+            // }
 
             if ($senderVal == 999) {
                 return;
@@ -1048,9 +1048,11 @@
 
                     $this->setAllInLinkList($targets);
 
-                }
+                } else {
 
-                echo "Keinen Szenendaten vorhanden!";
+                    echo "Keinen Szenendaten vorhanden!";
+
+                }
 
             }
 
