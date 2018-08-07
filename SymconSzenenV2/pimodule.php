@@ -1996,6 +1996,14 @@ abstract class PISymconModule extends IPSModule {
 
         }
 
+        $deviceVal = GetValue($deviceID);
+
+        if ($deviceVal == $wert) {
+
+            return;
+
+        }
+
         $device = IPS_GetObject($deviceID);
     
         switch($device['ObjectType']){
