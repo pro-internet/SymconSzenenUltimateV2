@@ -343,7 +343,7 @@
 
                     if ($oldSensor != $sensor) {
 
-                        echo "Delete old DaySets ... ";
+                        echo "Delete old DaySets ... "; 
                         $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
                     }
