@@ -121,7 +121,7 @@
             //$onChangeEventName, $targetId, $function, $parent = null
             
             $this->CheckScripts();
-
+ 
             $this->checkSceneVars();
 
             $this->updateSceneVarProfile();
