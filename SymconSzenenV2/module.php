@@ -538,16 +538,20 @@
 
                     $doesexist = false;
 
-                    if (count($existingScenes) > 0) {
+                    if ($existingScenes != null) {
 
-                        foreach ($existingScenes as $escene) {
+                        if (count($existingScenes) > 0) {
 
-                            if ($escene == $scene->Name) {
-
-                                $doesexist = true;
-
+                            foreach ($existingScenes as $escene) {
+    
+                                if ($escene == $scene->Name) {
+    
+                                    $doesexist = true;
+    
+                                }
+    
                             }
-
+    
                         }
 
                     }
