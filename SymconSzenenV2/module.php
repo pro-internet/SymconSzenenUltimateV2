@@ -818,17 +818,20 @@
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
+            $scenesByList = $this->ReadPropertyInteger("Names");
+            $scenesByList = json_decode($scenesByList);
+
             $assocs = null;
 
             $counter = 0;
 
             if (count($scenes) > 0) {
 
-                foreach ($scenes as $scene) {
+                foreach ($scenesByList as $scene) {
 
-                    $scene = IPS_GetObject($this->searchObjectByName($scene));
+                    // $scene = IPS_GetObject($this->searchObjectByName($scene));
 
-                    $sceneName = $scene['ObjectName'];
+                    $sceneName = $scene->name;
 
                     $assocs[$sceneName] = $counter;
                     
@@ -836,7 +839,7 @@
 
                 }
 
-                print_r($scenes);
+                //print_r($scenes);
 
                 if (IPS_VariableProfileExists($this->prefix . ".DaysetScenes." . $this->InstanceID)) {
                     IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
