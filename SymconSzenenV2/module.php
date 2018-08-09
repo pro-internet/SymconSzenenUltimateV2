@@ -818,7 +818,7 @@
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
-            $scenesByList = $this->ReadPropertyInteger("Names");
+            $scenesByList = $this->ReadPropertyString("Names");
             $scenesByList = json_decode($scenesByList);
 
             $assocs = null;
