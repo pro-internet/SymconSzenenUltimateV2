@@ -42,7 +42,7 @@
                 if ($this->arrayNotEmpty($allScenes)) {
 
                     $sceneID = $this->searchObjectByName($allScenes[0]);
-                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $sceneID);
+                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $sceneID, $this->searchObjectByName("SceneHashList"));
 
                 } else {
 
