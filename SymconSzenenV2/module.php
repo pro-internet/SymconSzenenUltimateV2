@@ -1004,6 +1004,8 @@
 
                         SetValue($sceneDataVar, json_encode($states));
 
+                        $this->refreshSceneHashList();
+
                     }
 
                 //}
