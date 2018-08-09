@@ -223,6 +223,7 @@
 
             }
 
+            $this->targetSensorChange();
             $this->refreshSceneHashList();
 
         }
@@ -1156,6 +1157,11 @@
                 $send = $_IPS['VARIABLE'];
                 $send = GetValue($send);
 
+                if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
+
+                    return;
+
+                }
 
                 if ($_IPS['OLDVALUE'] == $send) {
 
