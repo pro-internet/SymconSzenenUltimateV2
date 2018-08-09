@@ -893,7 +893,7 @@ abstract class PISymconModule extends IPSModule {
 
     protected function createDynamicProfile ($profileName, $elements) {
 
-        if ($profileName != null && count($elements) > 0 ) {
+        if ($profileName != null && $this->arrayNotEmpty($elements)) {
 
             $min = 0;
             $max = count($elements) - 1;
