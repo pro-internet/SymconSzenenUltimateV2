@@ -831,7 +831,7 @@
 
                     // $scene = IPS_GetObject($this->searchObjectByName($scene));
 
-                    $sceneName = $scene->name;
+                    $sceneName = $scene->Name;
 
                     $assocs[$sceneName] = $counter;
                     
