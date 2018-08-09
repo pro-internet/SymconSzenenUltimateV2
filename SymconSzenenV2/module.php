@@ -160,7 +160,7 @@
             $daysetSensor = $this->ReadPropertyInteger("Sensor");
 
             // Experimental
-
+ 
             if ($daysetActivated) {
 
                 $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
