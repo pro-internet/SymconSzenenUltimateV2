@@ -1259,6 +1259,12 @@
 
             }
 
+            if (!$this->arrayNotEmpty($this->getSceneHashList())) {
+
+                return;
+
+            }
+
             if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
                 foreach ($targets['ChildrenIDs'] as $child) {
