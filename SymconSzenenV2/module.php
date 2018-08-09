@@ -223,7 +223,7 @@
 
             }
 
-
+            $this->refreshSceneHashList();
 
         }
 
@@ -534,6 +534,8 @@
 
             if (count($scenes) > 0) {
 
+                $counter = 0;
+
                 foreach ($scenes as $scene) {
 
                     $doesexist = false;
@@ -564,6 +566,10 @@
                         $this->addSetValue($newInt);
                         $this->setIcon($newInt, "Rocket");
                         $this->addProfile($newInt, $this->prefix . ".SceneOptions");
+
+
+
+                        IPS_SetPosition($newSceneData, $newPos);
 
                         $this->easyCreateOnChangeFunctionEvent("onChange " . $newInt, $newInt, "onSceneVarChange", $this->searchObjectByName("Events"));
 
@@ -862,6 +868,23 @@
 
         protected function getSceneHashList () {
 
+            $shl = GetValue($this->searchObjectByName("SceneHashList"));
+
+            $shl = json_decode($shl);
+
+            return $shl;
+
+        }
+
+        protected function refreshSceneHashList () {
+
+            if (!$this->doesExist($this->searchObjectByName("SceneHashList"))) {
+
+                $shl = $this->checkString("SceneHashList");
+                $this->hide($shl);
+
+            }
+
             $sceneData = $this->searchObjectByName("SceneData");
             $sceneData = IPS_GetObject($sceneData);
 
@@ -879,7 +902,7 @@
 
             }
 
-            return $ary;
+            SetValue($this->searchObjectByName("SceneHashList"), json_encode($ary));
 
         }
 
