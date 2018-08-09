@@ -297,7 +297,7 @@
         public function RegisterProperties () {
     
             $this->RegisterPropertyBoolean("ModeDaySet", true);
-            $this->RegisterPropertyString("Names", "[{\"ID\":0,\"Name\":\"Offen\"},{\"ID\":0,\"Name\":\"Ausblick\"},{\"ID\":0,\"Name\":\"Beschattung\"},{\"ID\":0,\"Name\":\"Geschlossen\"}]");
+            $this->RegisterPropertyString("Names", "");
             $this->RegisterPropertyBoolean("ModeTime", false);
             $this->RegisterPropertyBoolean("Loop", false);
             $this->RegisterPropertyInteger("Sensor", null);
