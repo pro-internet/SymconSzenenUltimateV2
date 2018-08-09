@@ -2649,6 +2649,23 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function arrayNotEmpty ($array) {
+
+        if ($array == null) {
+
+            return false;
+
+        } else if (count($array) > 0) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+
+    }
 
 }
 

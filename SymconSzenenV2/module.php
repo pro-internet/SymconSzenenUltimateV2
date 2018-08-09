@@ -39,7 +39,7 @@
 
             if ($allScenes != null) {
 
-                if (count($allScenes) > 0) {
+                if ($this->arrayNotEmpty($allScenes)) {
 
                     $sceneID = $this->searchObjectByName($allScenes[0]);
                     return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $sceneID);
@@ -532,7 +532,7 @@
 
             $sceneNames = null;
 
-            if (count($scenes) > 0) {
+            if ($this->arrayNotEmpty($scenes)) {
 
                 $counter = 0;
 
@@ -542,7 +542,7 @@
 
                     if ($existingScenes != null) {
 
-                        if (count($existingScenes) > 0) {
+                        if ($this->arrayNotEmpty($existingScenes)) {
 
                             foreach ($existingScenes as $escene) {
     
@@ -608,7 +608,7 @@
 
                     $sceneVarObj = IPS_GetObject($this->searchObjectByName($sceneVar));
 
-                    if (count($allTimerVars) > 0) {
+                    if ($this->arrayNotEmpty($allTimerVars)) {
 
                         foreach ($allTimerVars as $timerVar) {
 
@@ -686,7 +686,7 @@
 
                 if ($existingSceneTimers != null) {
 
-                    if (count($existingSceneTimers) > 0) {
+                    if ($this->arrayNotEmpty($existingSceneTimers)) {
 
                         foreach ($existingSceneTimers as $timerVar) {
 
@@ -806,7 +806,7 @@
 
             $ary = null;
 
-            if (count($scenes) > 0) {
+            if ($this->arrayNotEmpty($scenes)) {
 
                 foreach ($scenes as $scene) {
 
@@ -831,7 +831,7 @@
 
             $counter = 0;
 
-            if (count($scenes) > 0) {
+            if ($this->arrayNotEmpty($scenes)) {
 
                 foreach ($scenesByList as $scene) {
 
@@ -984,7 +984,7 @@
 
                     $states = array();
 
-                    if (count($targets['ChildrenIDs']) > 0)  {
+                    if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
                         foreach ($targets['ChildrenIDs'] as $child) {
 
@@ -1161,7 +1161,7 @@
 
                 }
 
-                if (count($targets['ChildrenIDs']) > 0)  {
+                if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
                     foreach ($targets['ChildrenIDs'] as $child) {
 
