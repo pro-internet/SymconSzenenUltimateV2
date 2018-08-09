@@ -869,9 +869,17 @@
 
         protected function getSceneHashList () {
 
-            $shl = GetValue($this->searchObjectByName("SceneHashList"));
+            if ($this->doesExist($this->searchObjectByName("SceneHashList"))) {
 
-            $shl = json_decode($shl);
+                $shl = GetValue($this->searchObjectByName("SceneHashList"));
+
+                $shl = json_decode($shl);
+
+            } else {
+
+                $shl = null;
+
+            }
 
             return $shl;
 
