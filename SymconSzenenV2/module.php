@@ -656,17 +656,19 @@
 
                         $this->addSetValue($checkTimer);
 
-                    } else {
+                    } else if ($this->doesExist($this->searchObjectByName($sceneVarObj['ObjectName'] . " Timer"))) {
 
                         $timerVarMode = $this->ReadPropertyInteger("TimeVarMode");
 
+                        $timer = $this->searchObjectByName($sceneVarObj['ObjectName'] . " Timer"));
+
                         if ($timerVarMode == 0) {
 
-                            $this->addProfile($checkTimer, $this->prefix . ".SceneTimerVarSek");
+                            $this->addProfile($timer, $this->prefix . ".SceneTimerVarSek");
 
                         } else if ($timerVarMode == 1) {
 
-                            $this->addProfile($checkTimer, $this->prefix . ".SceneTimerVarMin");
+                            $this->addProfile($timer, $this->prefix . ".SceneTimerVarMin");
 
                         }
 
