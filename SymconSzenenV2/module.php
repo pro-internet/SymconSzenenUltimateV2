@@ -301,7 +301,8 @@
             $this->RegisterPropertyBoolean("ModeTime", false);
             $this->RegisterPropertyBoolean("Loop", false);
             $this->RegisterPropertyInteger("Sensor", null);
-    
+            $this->RegisterPropertyInteger("TimeVarMode", 0);
+
         }
     
         public function CheckScripts () {
@@ -328,7 +329,8 @@
             // $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Einstellungen" => 0, "Modul einklappen" => 1, "Start" => 2));
             //$this->checkVariableProfile($this->prefix . ".StartStop." . $this->InstanceID, 1, 0, 1, 0, array("Start" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
-            $this->checkVariableProfile($this->prefix . ".SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
+            $this->checkVariableProfile($this->prefix . ".SceneTimerVarSek", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
+            $this->checkVariableProfile($this->prefix . ".SceneTimerVarMin", $this->varTypeByName("int"), 0, 3600, 1, null, "", " min");
 
         }
 
@@ -514,7 +516,15 @@
 
         protected function getTimerLengthBySceneName ($sceneName) {
 
+            $timeMode = $this->ReadPropertyInteger("TimeVarMode");
             $timer = GetValue($this->searchObjectByName($sceneName . " Timer"));
+
+            if ($timeMode == 1) {
+
+                $timer = $timer * 60;
+
+            }
+
             return $timer;
 
         }
@@ -594,7 +604,9 @@
 
             if ($modeActivated) {
 
-                $allTimerVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
+                $allTimerVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVarSek");
+                $allTimerVars2 = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVarMin");
+                $allTimerVars = $this->combineArrays($allTimerVars2, $allTimerVars);
                 $allSceneVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
                 //print_r($allSceneVars);
@@ -629,8 +641,36 @@
 
                         $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, "", "|AFTER|" . $this->searchObjectByname($sceneVar), 10);
                         $this->setIcon($checkTimer, "Clock");
-                        $this->addProfile($checkTimer, $this->prefix . ".SceneTimerVar");
+
+                        $timerVarMode = $this->ReadPropertyInteger("TimeVarMode");
+
+                        if ($timerVarMode == 0) {
+
+                            $this->addProfile($checkTimer, $this->prefix . ".SceneTimerVarSek");
+
+                        } else if ($timerVarMode == 1) {
+
+                            $this->addProfile($checkTimer, $this->prefix . ".SceneTimerVarMin");
+
+                        }
+
                         $this->addSetValue($checkTimer);
+
+                    } else if ($this->doesExist($this->searchObjectByName($sceneVarObj['ObjectName'] . " Timer"))) {
+
+                        $timerVarMode = $this->ReadPropertyInteger("TimeVarMode");
+
+                        $timer = $this->searchObjectByName($sceneVarObj['ObjectName'] . " Timer");
+
+                        if ($timerVarMode == 0) {
+
+                            $this->addProfile($timer, $this->prefix . ".SceneTimerVarSek");
+
+                        } else if ($timerVarMode == 1) {
+
+                            $this->addProfile($timer, $this->prefix . ".SceneTimerVarMin");
+
+                        }
 
                     }
 
@@ -644,7 +684,9 @@
         protected function deleteUnusedVars () {
 
             $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
-            $existingSceneTimers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
+            $existingSceneTimers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVarSek");
+            $existingSceneTimers2 = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVarMin");
+            $existingSceneTimers = $this->combineArrays($existingSceneTimers, $existingSceneTimers2);
             $timerIsEnabled = $this->ReadPropertyBoolean("ModeTime");
             $daysetActivated = $this->isSensorSet();
 
@@ -1120,7 +1162,8 @@
 
                 // } else {
 
-                    echo "Keinen Szenendaten vorhanden!";
+                    $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
+                    echo "Keine Szenendaten vorhanden!";
 
                 // }
 
