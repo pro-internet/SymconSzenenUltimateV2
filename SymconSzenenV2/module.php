@@ -660,7 +660,7 @@
 
                         $timerVarMode = $this->ReadPropertyInteger("TimeVarMode");
 
-                        $timer = $this->searchObjectByName($sceneVarObj['ObjectName'] . " Timer"));
+                        $timer = $this->searchObjectByName($sceneVarObj['ObjectName'] . " Timer");
 
                         if ($timerVarMode == 0) {
 
