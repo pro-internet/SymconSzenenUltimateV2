@@ -1162,7 +1162,8 @@
 
                 // } else {
 
-                    echo "Keinen Szenendaten vorhanden!";
+                    $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
+                    echo "Keine Szenendaten vorhanden!";
 
                 // }
 
