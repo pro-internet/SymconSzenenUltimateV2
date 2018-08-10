@@ -2667,6 +2667,36 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function combineArrays ($arrayA, $arrayB) {
+
+        if ($this->arrayNotEmpty($arrayA)) {
+
+            foreach ($arrayA as $ary) {
+
+                $arrayB[] = $ary;
+    
+            }
+
+            return $arrayB;
+
+        } else if ($this->arrayNotEmpty($arrayB)) {
+
+            foreach ($arrayB as $ary) {
+
+                $arrayA[] = $ary;
+    
+            }
+
+            return $arrayA;
+
+        }
+
+        if (!$this->arrayNotEmpty($arrayB) && !$this->arrayNotEmpty($arrayA)) {
+            return array();
+        }
+
+    }
+
 }
 
 
