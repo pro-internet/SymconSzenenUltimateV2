@@ -331,7 +331,7 @@
             //$this->checkVariableProfile($this->prefix . ".StartStop." . $this->InstanceID, 1, 0, 1, 0, array("Start" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneTimerVarSek", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
-            $this->checkVariableProfile($this->prefix . ".SceneTimerVarMin", $this->varTypeByName("int"), 0, 3600, 1, null, "", " min");
+            $this->checkVariableProfile($this->prefix . ".SceneTimerVarMin", $this->varTypeByName("int"), 0, 600, 1, null, "", " min");
 
         }
 
