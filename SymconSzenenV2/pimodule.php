@@ -574,7 +574,14 @@ abstract class PISymconModule extends IPSModule {
         if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $parent))) {
 
             $eid = IPS_CreateEvent(0);
-            IPS_SetEventTrigger($eid, 0, $targetId);
+            if (IPS_SetEventTrigger($eid, 0, $targetId)) {
+
+
+            } else {
+
+                echo "FEHLER 577: " . $onChangeEventName . " " . $targetId . "  FUNCTION: $function";
+
+            }
             IPS_SetParent($eid, $parent);
             if ($autoFunctionToText) {
                 IPS_SetEventScript($eid, "<?php " . $this->prefix . "_" . $function . "(" . $this->InstanceID . "); ?>");

@@ -138,7 +138,6 @@
             if ($daysetActivated) {
 
                  $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
-                 $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
 
             }
 
@@ -164,6 +163,8 @@
             if ($daysetActivated) {
 
                 $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
+
+                $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
 
                 $daysets = $this->checkFolder("DaySets", null, 7);
 
