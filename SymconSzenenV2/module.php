@@ -249,7 +249,7 @@
         public function CheckVariables () {
 
             //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
-            $sceneVar = $this->checkInteger("Szene", false, null, 2, 0);
+            $sceneVar = $this->checkInteger("Szene", false, null, 1, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
             $events = $this->checkFolder("Events", null, 5);
@@ -262,7 +262,7 @@
 
             if ($timeIsActivated) {
 
-                $status = $this->checkBoolean("Status", true, "", 1);
+                $status = $this->checkBoolean("Status", true, "", 2);
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
 
                 $this->setIcon($status, "Power");
