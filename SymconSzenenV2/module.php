@@ -1215,11 +1215,11 @@
 
                 }
 
-                if ($_IPS['OLDVALUE'] == $send) {
+                // if ($_IPS['OLDVALUE'] == $send) {
 
-                    return;
+                //     return;
 
-                }
+                // }
 
                 if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
