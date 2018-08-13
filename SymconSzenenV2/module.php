@@ -164,7 +164,7 @@
 
                 $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
 
-                $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
+                $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "", $this->searchObjectByName("Events"));
 
                 $daysets = $this->checkFolder("DaySets", null, 7);
 
@@ -995,7 +995,7 @@
 
         }
 
-        public function onAutomatikChange () {
+        public function  () {
 
             $automatik = GetValue($this->searchObjectByName("Automatik"));
 
@@ -1083,6 +1083,20 @@
 
                         if ($oldVal != $val) {
 
+                            $prnt = IPS_GetParent($id);
+
+                            if ($this->isInstance($prnt)) {
+
+                                $prnt = IPS_GetInstance($prnt);
+
+                                if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
+
+                                    Sleep(1);
+
+                                }
+
+                            }
+
                             $this->setDevice($id, $val);
 
                         }
@@ -1146,6 +1160,21 @@
                         $devValOld = GetValue($devId);
 
                     if ($devValOld != $devVal) {
+
+                        $prnt = IPS_GetParent($devId);
+
+                            if ($this->isInstance($prnt)) {
+
+                                $prnt = IPS_GetInstance($prnt);
+
+                                if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
+
+                                    Sleep(1);
+
+                                }
+
+                            }
+
                         $this->setDevice($devId, $devVal);
                     }
 
