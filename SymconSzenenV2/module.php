@@ -164,7 +164,7 @@
 
                 $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
 
-                $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "", $this->searchObjectByName("Events"));
+                $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
 
                 $daysets = $this->checkFolder("DaySets", null, 7);
 
@@ -995,7 +995,7 @@
 
         }
 
-        public function  () {
+        public function onAutomatikChange() {
 
             $automatik = GetValue($this->searchObjectByName("Automatik"));
 
