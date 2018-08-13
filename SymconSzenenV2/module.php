@@ -1002,7 +1002,7 @@
             // Wenn Automatik auf true
             if ($automatik) {
 
-                $this->targetSensorChange();
+                $this->updateTargetSensorChange();
 
             } else {
             // Wenn Automatik auf false, Timer Löschen (Funktion prüft autom. ob Element existiert)!
@@ -1215,11 +1215,109 @@
 
                 }
 
-                // if ($_IPS['OLDVALUE'] == $send) {
+                if ($_IPS['OLDVALUE'] == $send) {
 
-                //     return;
+                    return;
 
-                // }
+                }
+
+                if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
+
+                    foreach ($targets['ChildrenIDs'] as $child) {
+
+                            $child = IPS_GetObject($child);
+
+                            if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                                $child = IPS_GetLink($child['ObjectID']);
+
+                                $tg = $child['TargetID'];
+
+                                $states[$tg] = GetValue($tg);
+
+                            }
+
+                        }
+
+                        if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
+
+                            $found = false;
+
+                            if (!$found) {
+
+                                $obj = IPS_GetObject($this->searchObjectByName("Targets"));
+
+                                $anyTrue = false;
+
+                                foreach ($obj['ChildrenIDs'] as $child) {
+
+                                    if ($this->isLink($child)) {
+
+                                        $child = IPS_GetLink($child);
+                                        $childVal = GetValue($child['TargetID']);
+
+                                        if ($childVal == true) {
+
+                                            $anyTrue = true;
+
+                                        }
+
+                                    }
+
+                                }
+
+                                if (!$anyTrue) {
+
+                                    SetValue($this->searchObjectByName("Szene"), 0);
+
+                                } else {
+
+                                    SetValue($this->searchObjectByName("Szene"), 999);
+
+                                }
+
+                            }
+
+                        } else {
+
+                            foreach ($this->getSceneHashList() as $kkey => $kval) {
+
+                                if ($kval == md5(json_encode($states))) {
+
+                                    //$found = true;
+                                    SetValue($this->searchObjectByName("Szene"), $kkey);
+
+                                }
+
+                            }
+
+                        }
+                        //echo md5(json_encode($states));
+
+                    }
+
+                //}
+
+        }
+
+        protected function updateTargetSensorChange () {
+
+            $states = array();
+                $targets = IPS_GetObject($this->searchObjectByName("Targets"));
+                $send = $this->ReadPropertyInteger("Sensor");
+                $send = GetValue($send);
+
+                if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
+
+                    return;
+
+                }
+
+                if ($_IPS['OLDVALUE'] == $send) {
+
+                    return;
+
+                }
 
                 if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
