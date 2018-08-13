@@ -511,6 +511,15 @@
         public function getAllScenesSorted () {
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+            usort($scenes, function($a, $b) {
+
+                $sc1 = IPS_GetObject($this->searchObjectByName($a));
+                $sc2 = IPS_GetObject($this->searchObjectByName($b));
+
+                return $sc1['ObjectPosition'] > $sc2['ObjectPosition'];
+
+            }); 
+            
             return $scenes;
 
         }
