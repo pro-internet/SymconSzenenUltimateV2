@@ -997,7 +997,7 @@
 
         public function onAutomatikChange () {
 
-            $automatik = GetValue($this->AutomatikVar);
+            $automatik = GetValue($this->searchObjectByName("Automatik"));
 
             // Wenn Automatik auf true
             if ($automatik) {
