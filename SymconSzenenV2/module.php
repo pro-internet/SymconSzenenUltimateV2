@@ -957,11 +957,11 @@
 
                     $childVal = GetValue($child);
                     //$childVal = md5($childVal);
-                    if (!in_array(md5($childVal), $ary)) {
+                    //if (!in_array(md5($childVal), $ary)) {
 
                         $ary[] = md5($childVal);
 
-                    }
+                    //}
 
                 }
 
