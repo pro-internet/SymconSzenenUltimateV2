@@ -1008,6 +1008,38 @@
 
         }
 
+        public function onSensorChangeInternal () {
+
+            $senderVar = $this->ReadPropertyInteger("Sensor");
+            $senderVal = GetValue($senderVar);
+            $automatik = GetValue($this->AutomatikVar);
+            $sperre = GetValue($this->SperreVar);
+            $sensor = $this->ReadPropertyInteger("Sensor");
+            $sensorProfile = $this->getVariableProfileByVariable($sensor);
+            $sensorVal = GetValue($sensor);
+
+            if ($automatik && !$sperre) {
+
+                $dsName = $this->getAssociationTextByValue($sensorProfile, $senderVal);
+                ////echo "dsName: " . $dsName;
+                $dsObj = $this->searchObjectByName($dsName, $this->searchObjectByName("DaySets"));
+
+                $dsVal = GetValue($dsObj);
+
+
+
+                    if ($dsVal != -1) {
+
+                        SetValue($this->searchObjectByName("Szene"), $dsVal);
+
+                    }
+
+                
+
+            }
+
+        }
+
         public function onAutomatikChange() {
 
             $automatik = GetValue($this->searchObjectByName("Automatik"));
@@ -1015,7 +1047,7 @@
             // Wenn Automatik auf true
             if ($automatik) {
 
-                $this->onSensorChange();
+                $this->onSensorChangeInternal();
 
             } else {
             // Wenn Automatik auf false, Timer Löschen (Funktion prüft autom. ob Element existiert)!
