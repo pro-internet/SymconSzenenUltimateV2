@@ -1104,7 +1104,7 @@
 
                                 if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
 
-                                    echo "Szenenmodul " . IPS_GetName($prnt) . " schalten ...";
+                                    echo "Szenenmodul " . ".." . " schalten ...";
                                     Sleep(2);
 
                                 }
@@ -1183,7 +1183,7 @@
 
                                 if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
 
-                                    echo "SzenenModul Schalten ..." . $prnt['InstanceName'] . " \n";
+                                    echo "SzenenModul Schalten ..." . ".." . " \n";
                                     Sleep(1);
 
                                 }
