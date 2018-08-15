@@ -2113,6 +2113,11 @@ abstract class PISymconModule extends IPSModule {
                                 
                             }
                             
+                        } else {
+
+                            // Anderes / Unbekanntes Modul
+                            SetValue($deviceID, $wert);
+
                         }
                     } else {
                     
