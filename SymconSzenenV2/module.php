@@ -1521,7 +1521,10 @@
 
                 foreach ($szenen as $szene) {
                     //echo $szene . "\n";
-                    $szenenId = $this->searchObjectByName($szene . " SceneData", $sceneDataFolder);
+
+                    if ($szenen[0] != $szene) {
+
+                        $szenenId = $this->searchObjectByName($szene . " SceneData", $sceneDataFolder);
 
                     //echo $szenenId;
 
@@ -1532,6 +1535,8 @@
                     foreach ($szene as $k => $val) {
 
                         echo "   " . $k . "(" . IPS_GetName($k) . ") ==>" . $val . "\n";
+
+                    }
 
                     }
 
