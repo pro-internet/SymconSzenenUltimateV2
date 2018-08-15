@@ -1521,7 +1521,7 @@
 
                     $szenenId = $this->searchObjectByName($szene, $sceneDataFolder);
 
-                    $szene = json_decode($szenenId);
+                    $szene = json_decode(GetValue($szenenId));
 
                     echo IPS_GetName($szenenId) . ": \n";
 
