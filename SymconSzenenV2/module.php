@@ -1520,8 +1520,10 @@
             if (count($szenen) > 0) {
 
                 foreach ($szenen as $szene) {
-                    echo $szene;
-                    $szenenId = $this->searchObjectByRealName($szene, $sceneDataFolder);
+                    echo $szene . "\n";
+                    $szenenId = $this->searchObjectByName($szene, $sceneDataFolder);
+
+                    echo $szenenId;
 
                     $szene = json_decode(GetValue($szenenId));
 
