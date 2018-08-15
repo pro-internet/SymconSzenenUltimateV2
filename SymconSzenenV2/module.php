@@ -1185,12 +1185,19 @@
 
                                     echo "SzenenModul Schalten ..." . ".." . " \n";
                                     Sleep(1);
+                                    SetValue($devId, $devVal);
+
+                                } else {
+
+                                    $this->setDevice($devId, $devVal);
 
                                 }
 
-                            }
+                            } else {
 
-                        $this->setDevice($devId, $devVal);
+                                $this->setDevice($devId, $devVal);
+
+                            }
                     }
 
                     // }
