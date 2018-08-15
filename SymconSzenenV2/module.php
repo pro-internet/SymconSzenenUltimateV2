@@ -1515,6 +1515,8 @@
 
             $sceneDataFolder = $this->searchObjectByName("SceneData");
 
+            echo $sceneDataFolder;
+
             if (count($szenen) > 0) {
 
                 foreach ($szenen as $szene) {
