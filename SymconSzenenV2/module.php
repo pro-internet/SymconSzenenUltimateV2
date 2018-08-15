@@ -1519,7 +1519,7 @@
 
                 foreach ($szenen as $szene) {
 
-                    $szenenId = $this->searchObjectByName($szene, $sceneDataFolder);
+                    $szenenId = $this->searchObjectByRealName($szene, $sceneDataFolder);
 
                     $szene = json_decode(GetValue($szenenId));
 
