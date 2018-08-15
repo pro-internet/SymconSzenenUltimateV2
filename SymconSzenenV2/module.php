@@ -1515,15 +1515,15 @@
 
             $sceneDataFolder = $this->searchObjectByName("SceneData");
 
-            echo $sceneDataFolder;
+            //echo $sceneDataFolder;
 
             if (count($szenen) > 0) {
 
                 foreach ($szenen as $szene) {
-                    echo $szene . "\n";
-                    $szenenId = $this->searchObjectByName($szene, $sceneDataFolder);
+                    //echo $szene . "\n";
+                    $szenenId = $this->searchObjectByName($szene . " SceneData", $sceneDataFolder);
 
-                    echo $szenenId;
+                    //echo $szenenId;
 
                     $szene = json_decode(GetValue($szenenId));
 
