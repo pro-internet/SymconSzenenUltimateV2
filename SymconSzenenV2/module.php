@@ -725,8 +725,8 @@
 
             if (!$daysetActivated) {
 
-                $this->deleteObject($this->searchObjectByName("onChange Automatik"), $this->searchObjectByName("Events"));
-                $this->deleteObject($this->searchObjectByName("onChange Sperre"), $this->searchObjectByName("Events"));
+                $this->deleteObject($this->searchObjectByRealName("onChange Automatik"), $this->searchObjectByName("Events"));
+                $this->deleteObject($this->searchObjectByRealName("onChange Sperre"), $this->searchObjectByName("Events"));
                 $this->deleteObject($this->AutomatikVar);
                 $this->deleteObject($this->SperreVar);
 
