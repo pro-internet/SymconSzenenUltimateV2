@@ -1518,7 +1518,7 @@
             if (count($szenen) > 0) {
 
                 foreach ($szenen as $szene) {
-
+                    echo $szene;
                     $szenenId = $this->searchObjectByRealName($szene, $sceneDataFolder);
 
                     $szene = json_decode(GetValue($szenenId));
