@@ -1507,6 +1507,41 @@
 
         }
 
+
+
+        public function GetSceneOverview () {
+
+            $szenen = $this->getAllScenesSorted();
+
+            $sceneDataFolder = $this->searchObjectByName("SceneData");
+
+            if ($count($szenen) > 0) {
+
+                foreach ($szenen as $szene) {
+
+                    $szenenId = $this->searchObjectByName($szene, $sceneDataFolder);
+
+                    $szene = json_decode($szenenId);
+
+                    echo IPS_GetName($szenenId) . ": \n";
+
+                    foreach ($szene as $k => $val) {
+
+                        echo "   " . $k . "(" . IPS_GetName($k) . ") ==>" . $val . "\n";
+
+                    }
+
+                }
+
+            } else {
+
+                echo "Keine Szenen vorhanden!";
+
+            }
+
+        }
+
+
     }
 
 
