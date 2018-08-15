@@ -165,6 +165,7 @@
                 $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
 
                 $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
+                $this->easyCreateOnChangeFunctionEvent("onChange Sperre", $this->searchObjectByName("Sperre"), "onSperreChange", $this->searchObjectByName("Events"));
 
                 $daysets = $this->checkFolder("DaySets", null, 7);
 
@@ -245,6 +246,18 @@
 
         }
 
+        public function onSperreChange () {
+
+            $sperreVar = $this->searchObjectByName("Sperre");
+            $sperreVal = GetValue($sperreVar);
+
+            if ($sperreVar == false) {
+
+                $this->onSensorChangeInternal();
+
+            }
+
+        }
 
         public function CheckVariables () {
 
