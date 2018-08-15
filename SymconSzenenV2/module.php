@@ -1104,14 +1104,17 @@
 
                                 if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
 
-                                    echo "Szenenmodul " . ".." . " schalten ...";
-                                    Sleep(2);
+                                    //echo "Szenenmodul " . ".." . " schalten ...";
+                                    Sleep(1);
+                                    SetValue($id, $val);
 
+                                } else {
+                                    $this->setDevice($id, $val);
                                 }
 
+                            } else {
+                                $this->setDevice($id, $val);
                             }
-
-                            $this->setDevice($id, $val);
 
                         }
 
