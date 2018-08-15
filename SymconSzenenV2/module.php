@@ -251,7 +251,7 @@
             $sperreVar = $this->searchObjectByName("Sperre");
             $sperreVal = GetValue($sperreVar);
 
-            if ($sperreVar == false) {
+            if ($sperreVal == false) {
 
                 $this->onSensorChangeInternal();
 
