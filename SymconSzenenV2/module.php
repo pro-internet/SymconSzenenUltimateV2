@@ -344,14 +344,14 @@
             if ($this->isSensorSet()) {
 
                 $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
-                //echo "OldSensor: " . $oldSensor;
+                ////echo "OldSensor: " . $oldSensor;
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
                 if ($sensor != null) { 
 
                     if ($oldSensor != $sensor) {
 
-                        //echo "Delete old DaySets ... "; 
+                        ////echo "Delete old DaySets ... "; 
                         $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
                     }
@@ -719,7 +719,7 @@
 
             } else {
 
-                //echo "Dayset activated";
+                ////echo "Dayset activated";
                 $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
@@ -988,7 +988,7 @@
             if ($automatik && !$sperre) {
 
                 $dsName = $this->getAssociationTextByValue($sensorProfile, $senderVal);
-                //echo "dsName: " . $dsName;
+                ////echo "dsName: " . $dsName;
                 $dsObj = $this->searchObjectByName($dsName, $this->searchObjectByName("DaySets"));
 
                 $dsVal = GetValue($dsObj);
@@ -1104,7 +1104,7 @@
 
                                 if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
 
-                                    //echo "Szenenmodul " . ".." . " schalten ...";
+                                    ////echo "Szenenmodul " . ".." . " schalten ...";
                                     Sleep(1);
                                     SetValue($id, $val);
 
@@ -1156,7 +1156,7 @@
 
             if ($senderVal == 0) {
 
-                //echo "Auf aus gesetzt";
+                ////echo "Auf aus gesetzt";
                 $targets = $this->searchObjectByName("Targets");
                 $this->setAllInLinkList($targets, false);
                 return;
@@ -1186,7 +1186,7 @@
 
                                 if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
 
-                                    echo "SzenenModul Schalten ..." . ".." . " \n";
+                                    //echo "SzenenModul Schalten ..." . ".." . " \n";
                                     Sleep(1);
                                     SetValue($devId, $devVal);
 
@@ -1218,7 +1218,7 @@
                 // } else {
 
                     $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
-                    echo "Keine Szenendaten vorhanden!";
+                    //echo "Keine Szenendaten vorhanden!";
 
                 // }
 
@@ -1346,7 +1346,7 @@
                             }
 
                         }
-                        //echo md5(json_encode($states));
+                        ////echo md5(json_encode($states));
 
                     }
 
@@ -1442,7 +1442,7 @@
                         }
 
                     }
-                    //echo md5(json_encode($states));
+                    ////echo md5(json_encode($states));
 
                 }
 
@@ -1471,7 +1471,7 @@
 
                 } else {
 
-                    echo "Ist bereits gestartet!";
+                    //echo "Ist bereits gestartet!";
 
                 }
 
@@ -1499,7 +1499,7 @@
 
                 } else {
 
-                    echo "Läuft nicht!";
+                    //echo "Läuft nicht!";
 
                 }
 
