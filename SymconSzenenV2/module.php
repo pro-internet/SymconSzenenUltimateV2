@@ -1459,6 +1459,10 @@
 
             }
 
+            if ($id == 999) {
+                return;
+            }
+
             
             $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $id);
             $sceneDataVal = GetValue($this->searchObjectByName($sceneName . " SceneData", $this->searchObjectByName("SceneData")));
@@ -1469,7 +1473,13 @@
 
                 foreach ($scene as $sid => $sval) {
 
-                    $this->setDevice($sid, $sval);
+                    $currentVal = GetValue($sid);
+
+                    if ($sval != $currentVal) {
+
+                        $this->setDevice($sid, $sval);
+
+                    }
 
                 }
 
