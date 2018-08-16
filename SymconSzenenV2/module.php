@@ -1541,6 +1541,8 @@
                     
                 //if ($sceneDataVal != null && $sceneDataVal != "") {
 
+                echo "Check current scene";
+
                 $states = array();
                 $targets = IPS_GetObject($this->searchObjectByName("Targets"));
                 $block = $this->searchObjectByName("Block");
