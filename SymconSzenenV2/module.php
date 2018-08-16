@@ -1246,7 +1246,7 @@
 
                         }
 
-                        echo md5(json_encode($states));
+                        print_r($states);
 
                         if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
 
