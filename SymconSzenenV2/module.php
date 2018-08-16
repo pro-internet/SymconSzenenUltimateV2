@@ -1546,10 +1546,6 @@
                     $block = $this->searchObjectByName("Block");
                     $blockVal = GetValue($block);
     
-                    if ($blockVal) {
-                        return;
-                    }
-    
                     if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
     
                         return;
