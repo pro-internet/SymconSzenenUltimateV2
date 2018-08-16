@@ -1674,6 +1674,124 @@
 
         }
 
+        public function CheckCurrentSceneDev () {
+
+                    
+            //if ($sceneDataVal != null && $sceneDataVal != "") {
+
+            //echo "Check current scene";
+
+            $states = array();
+            $targets = IPS_GetObject($this->searchObjectByName("Targets"));
+            $block = $this->searchObjectByName("Block");
+            $blockVal = GetValue($block);
+
+
+            if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
+
+                return;
+
+            }
+
+            if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
+
+                foreach ($targets['ChildrenIDs'] as $child) {
+
+                        $child = IPS_GetObject($child);
+
+                        if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                            $child = IPS_GetLink($child['ObjectID']);
+
+                            $tg = $child['TargetID'];
+
+                            $states[$tg] = GetValue($tg);
+
+                        }
+
+                    }
+
+                    //print_r($states);
+
+                    echo "States: \n";
+                    print_r($states);
+                    echo json_encode($states) . "\n";
+                    echo md5(json_encode($states)) . "\n";
+
+                    echo "-------------";
+                    print_r($this->getSceneHashList());
+
+                    if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
+
+                        //echo "Hash " . md5(json_encode($states)) . " not in List";
+
+                        $found = false;
+
+                        if (!$found) {
+
+                            $obj = IPS_GetObject($this->searchObjectByName("Targets"));
+
+                            $anyTrue = false;
+
+                            foreach ($obj['ChildrenIDs'] as $child) {
+
+                                if ($this->isLink($child)) {
+
+                                    $child = IPS_GetLink($child);
+                                    $childVal = GetValue($child['TargetID']);
+
+                                    if ($childVal == true) {
+
+                                        $anyTrue = true;
+
+                                    }
+
+                                }
+
+                            }
+
+                            if (!$anyTrue) {
+
+                                SetValue($this->searchObjectByName("Szene"), 0);
+                                //$this->executeSceneById(0);
+
+                            } else {
+
+                                SetValue($this->searchObjectByName("Szene"), 999);
+
+                            }
+
+                        }
+
+                    } else {
+
+                        //echo "Hash " . md5(json_encode($states)) . " in List";
+
+                        foreach ($this->getSceneHashList() as $kkey => $kval) {
+
+                            if ($kval == md5(json_encode($states))) {
+
+                                //$found = true;
+                                SetValue($this->searchObjectByName("Szene"), $kkey);
+
+                            }
+
+                        }
+
+                        //print_r($this->getSceneHashList());
+                        //echo md5(json_encode($states));
+
+                    }
+                    //////echo md5(json_encode($states));
+
+                }
+
+            //}
+
+
+
+    }
+
 
         public function SetScene ($sceneId) {
 
