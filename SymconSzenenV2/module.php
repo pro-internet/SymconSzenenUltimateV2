@@ -1224,6 +1224,7 @@
                 ////echo "Auf aus gesetzt";
                 $targets = $this->searchObjectByName("Targets");
                 $this->setAllInLinkList($targets, false);
+                $this->setVariableTemp($this->searchObjectByName("Block"), true, 15);
                 return;
             
             }
@@ -1271,6 +1272,8 @@
                     // }
 
                 }
+
+                $this->setVariableTemp($this->searchObjectByName("Block"), true, 15);
 
             } else {
 
