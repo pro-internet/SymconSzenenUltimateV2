@@ -982,7 +982,7 @@
 
                     if ($scene != $allScenes[0]) {
 
-                        $sceneVal = $this->searchObjectByName($scene . " SceneData", $sceneDataVar);
+                        $sceneVal = GetValue($this->searchObjectByName($scene . " SceneData", $sceneDataVar));
                         $ary[] = md5($sceneVal);
 
                     }
