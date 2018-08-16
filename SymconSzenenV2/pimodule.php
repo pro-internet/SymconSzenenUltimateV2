@@ -2763,11 +2763,15 @@ abstract class PISymconModule extends IPSModule {
 
         if ($this->doesExist($id)) {
 
-            SetValue($id, $val);
+            if (!$this->doesExist($this->searchObjectByName("TimerEnd"))) {
 
-            $script = $this->checkScript("TimerEnd", "<?php if (IPS_HasChildren(\$_IPS['SELF'])) { foreach (IPS_GetChildrenIDs(\$_IPS['SELF']) as \$child) { IPS_DeleteEvent(\$child); } } SetValue($id, false); IPS_DeleteScript(\$_IPS['SELF'], true); ?>", false, true, 1000, $id);
+                SetValue($id, $val);
 
-            IPS_SetScriptTimer($script, $seconds);
+                $script = $this->checkScript("TimerEnd", "<?php if (IPS_HasChildren(\$_IPS['SELF'])) { foreach (IPS_GetChildrenIDs(\$_IPS['SELF']) as \$child) { IPS_DeleteEvent(\$child); } } SetValue($id, false); IPS_DeleteScript(\$_IPS['SELF'], true); ?>", false, true, 1000, $id);
+
+                IPS_SetScriptTimer($script, $seconds);
+
+            }
 
         } else {
             echo $this->getVariableInformationString($id);
