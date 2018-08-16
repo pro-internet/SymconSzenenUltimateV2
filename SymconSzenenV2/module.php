@@ -1205,6 +1205,7 @@
                 
                 //if ($sceneDataVal != null && $sceneDataVal != "") {
 
+                echo "targetSensorChange";
                 $states = array();
                 $targets = IPS_GetObject($this->searchObjectByName("Targets"));
                 $send = $_IPS['VARIABLE'];
