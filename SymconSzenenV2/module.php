@@ -1215,82 +1215,7 @@
             //     return;
             // }
 
-            if ($senderVal == 999) {
-                return;
-            }
-
-            if ($senderVal == 0) {
-
-                ////echo "Auf aus gesetzt";
-                $targets = $this->searchObjectByName("Targets");
-                $this->setAllInLinkList($targets, false);
-                $this->setVariableTemp($this->searchObjectByName("Block"), true, 15);
-                return;
-            
-            }
-
-            $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $senderVal);
-            $sceneDataVal = GetValue($this->searchObjectByName($sceneName . " SceneData", $this->searchObjectByName("SceneData")));
-            
-            if ($sceneDataVal != null && $sceneDataVal != "") {
-
-                $sceneData = json_decode($sceneDataVal);
-
-                foreach ($sceneData as $devId => $devVal) {
-
-                    // if ($this->doesExist($devId)) {
-
-                        $devValOld = GetValue($devId);
-
-                    if ($devValOld != $devVal) {
-
-                        $prnt = IPS_GetParent($devId);
-
-                            if ($this->isInstance($prnt)) {
-
-                                $prnt = IPS_GetInstance($prnt);
-
-                                if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
-
-                                    //echo "SzenenModul Schalten ..." . ".." . " \n";
-                                    Sleep(1);
-                                    SetValue($devId, $devVal);
-
-                                } else {
-
-                                    $this->setDevice($devId, $devVal);
-
-                                }
-
-                            } else {
-
-                                $this->setDevice($devId, $devVal);
-
-                            }
-                    }
-
-                    // }
-
-                }
-
-                $this->setVariableTemp($this->searchObjectByName("Block"), true, 15);
-
-            } else {
-
-                // if ($sceneName == $alleScenes[0]) {
-
-                //     $targets = $this->searchObjectByName("Targets");
-
-                //     $this->setAllInLinkList($targets, false);
-
-                // } else {
-
-                    $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
-                    //echo "Keine Szenendaten vorhanden!";
-
-                // }
-
-            }
+            $this->executeSceneById($senderVal);
 
         }
 
@@ -1519,6 +1444,41 @@
                     ////echo md5(json_encode($states));
 
                 }
+
+        }
+
+        protected function executeSceneById ($id) {
+
+            $targets = $this->searchObjectByName("Targets");
+
+            if ($id == 0) {
+
+                $this->setAllInLinkList($targets, false);
+                $this->setVariableTemp($this->searchObjectByName("Block"), true, 15);
+                return;
+
+            }
+
+            
+            $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $id);
+            $sceneDataVal = GetValue($this->searchObjectByName($sceneName . " SceneData", $this->searchObjectByName("SceneData")));
+            
+            if ($sceneDataVal != null && $sceneDataVal != "") {
+
+                $scene = json_decode($sceneDataVal);
+
+                foreach ($scene as $sid => $sval) {
+
+                    $this->setDevice($sid, $sval);
+
+                }
+
+            } else {
+
+                $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
+
+            }
+
 
         }
 

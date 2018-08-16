@@ -2119,6 +2119,12 @@ abstract class PISymconModule extends IPSModule {
                                 
                             }
                             
+                        } else if ($parentInstanz['ModuleInfo']['ModuleName'] == "SymconSzenenV2"){
+
+                            Sleep(1);
+                            SetValue($deviceID, $wert);
+
+
                         } else {
 
                             // Anderes / Unbekanntes Modul
