@@ -11,6 +11,8 @@
 
         public $GeräteFolder = null;
 
+        public $BlockingTime = 15;
+
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
         public function __construct($InstanceID) {
@@ -1414,7 +1416,7 @@
             if ($id == 0) {
 
                 $this->setAllInLinkList($targets, false);
-                $this->setVariableTemp($this->searchObjectByName("Block"), true, 15, $this->prefix . "_CheckCurrentScene(" . $this->InstanceID . ");");
+                $this->setVariableTemp($this->searchObjectByName("Block"), true, $this->BlockingTime, $this->prefix . "_CheckCurrentScene(" . $this->InstanceID . ");");
                 return;
 
             }
@@ -1443,7 +1445,7 @@
 
                 }
 
-                $this->setVariableTemp($this->searchObjectByName("Block"), true, 15, $this->prefix . "_CheckCurrentScene(" . $this->InstanceID . ");");
+                $this->setVariableTemp($this->searchObjectByName("Block"), true, $this->BlockingTime, $this->prefix . "_CheckCurrentScene(" . $this->InstanceID . ");");
 
             } else {
 
