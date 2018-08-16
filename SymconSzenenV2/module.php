@@ -1447,7 +1447,7 @@
 
         }
 
-        protected function executeSceneById ($id) {
+        public function executeSceneById ($id) {
 
             $targets = $this->searchObjectByName("Targets");
 
