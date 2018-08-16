@@ -1299,6 +1299,9 @@
 
                             }
 
+                            print_r($this->getSceneHashList());
+                            echo md5(json_encode($states));
+
                         }
                         ////echo md5(json_encode($states));
 
