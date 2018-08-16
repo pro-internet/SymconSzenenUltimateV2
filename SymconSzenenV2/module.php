@@ -1541,100 +1541,101 @@
                     
                 //if ($sceneDataVal != null && $sceneDataVal != "") {
 
-                    $states = array();
-                    $targets = IPS_GetObject($this->searchObjectByName("Targets"));
-                    $block = $this->searchObjectByName("Block");
-                    $blockVal = GetValue($block);
-    
-                    if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
-    
-                        return;
-    
-                    }
-    
-    
-                    if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
-    
-                        foreach ($targets['ChildrenIDs'] as $child) {
-    
-                                $child = IPS_GetObject($child);
-    
-                                if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
-    
-                                    $child = IPS_GetLink($child['ObjectID']);
-    
-                                    $tg = $child['TargetID'];
-    
-                                    $states[$tg] = GetValue($tg);
-    
-                                }
-    
+                $states = array();
+                $targets = IPS_GetObject($this->searchObjectByName("Targets"));
+                $block = $this->searchObjectByName("Block");
+                $blockVal = GetValue($block);
+
+
+                if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
+
+                    return;
+
+                }
+
+                if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
+
+                    foreach ($targets['ChildrenIDs'] as $child) {
+
+                            $child = IPS_GetObject($child);
+
+                            if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                                $child = IPS_GetLink($child['ObjectID']);
+
+                                $tg = $child['TargetID'];
+
+                                $states[$tg] = GetValue($tg);
+
                             }
-    
-                            //print_r($states);
-    
-                            if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
-    
-                                $found = false;
-    
-                                if (!$found) {
-    
-                                    $obj = IPS_GetObject($this->searchObjectByName("Targets"));
-    
-                                    $anyTrue = false;
-    
-                                    foreach ($obj['ChildrenIDs'] as $child) {
-    
-                                        if ($this->isLink($child)) {
-    
-                                            $child = IPS_GetLink($child);
-                                            $childVal = GetValue($child['TargetID']);
-    
-                                            if ($childVal == true) {
-    
-                                                $anyTrue = true;
-    
-                                            }
-    
-                                        }
-    
-                                    }
-    
-                                    if (!$anyTrue) {
-    
-                                        SetValue($this->searchObjectByName("Szene"), 0);
-                                        //$this->executeSceneById(0);
-    
-                                    } else {
-    
-                                        SetValue($this->searchObjectByName("Szene"), 999);
-    
-                                    }
-    
-                                }
-    
-                            } else {
-    
-                                foreach ($this->getSceneHashList() as $kkey => $kval) {
-    
-                                    if ($kval == md5(json_encode($states))) {
-    
-                                        //$found = true;
-                                        SetValue($this->searchObjectByName("Szene"), $kkey);
-    
-                                    }
-    
-                                }
-    
-                                //print_r($this->getSceneHashList());
-                                //echo md5(json_encode($states));
-    
-                            }
-                            //////echo md5(json_encode($states));
-    
+
                         }
-    
-                    //}
+
+                        //print_r($states);
+
+                        if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
+
+                            $found = false;
+
+                            if (!$found) {
+
+                                $obj = IPS_GetObject($this->searchObjectByName("Targets"));
+
+                                $anyTrue = false;
+
+                                foreach ($obj['ChildrenIDs'] as $child) {
+
+                                    if ($this->isLink($child)) {
+
+                                        $child = IPS_GetLink($child);
+                                        $childVal = GetValue($child['TargetID']);
+
+                                        if ($childVal == true) {
+
+                                            $anyTrue = true;
+
+                                        }
+
+                                    }
+
+                                }
+
+                                if (!$anyTrue) {
+
+                                    SetValue($this->searchObjectByName("Szene"), 0);
+                                    //$this->executeSceneById(0);
+
+                                } else {
+
+                                    SetValue($this->searchObjectByName("Szene"), 999);
+
+                                }
+
+                            }
+
+                        } else {
+
+                            foreach ($this->getSceneHashList() as $kkey => $kval) {
+
+                                if ($kval == md5(json_encode($states))) {
+
+                                    //$found = true;
+                                    SetValue($this->searchObjectByName("Szene"), $kkey);
+
+                                }
+
+                            }
+
+                            //print_r($this->getSceneHashList());
+                            //echo md5(json_encode($states));
+
+                        }
+                        //////echo md5(json_encode($states));
+
+                    }
+
+                //}
+
     
 
         }
