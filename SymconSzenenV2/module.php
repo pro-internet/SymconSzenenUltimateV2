@@ -1483,6 +1483,8 @@
 
                 }
 
+                $this->setVariableTemp($this->searchObjectByName("Block"), true, 15);
+
             } else {
 
                 $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
