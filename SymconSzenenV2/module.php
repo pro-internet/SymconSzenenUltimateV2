@@ -13,6 +13,8 @@
 
         public $BlockingTime = 15;
 
+        public $Version = "5.1";
+
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
         public function __construct($InstanceID) {
@@ -1690,6 +1692,11 @@
 
         }
 
+        public function GetVersion () {
+
+            return $this->Version;
+
+        }
 
     }
 
