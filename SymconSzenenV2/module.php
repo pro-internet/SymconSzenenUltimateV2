@@ -1645,6 +1645,8 @@
 
                         } else {
 
+                            echo "Hash " . md5(json_encode($states) . " not in List";
+
                             foreach ($this->getSceneHashList() as $kkey => $kval) {
 
                                 if ($kval == md5(json_encode($states))) {
