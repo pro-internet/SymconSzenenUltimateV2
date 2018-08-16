@@ -268,6 +268,8 @@
             $events = $this->checkFolder("Events", null, 5);
             $sceneData = $this->checkFolder("SceneData", null, 6);
 
+            $sceneCheckBlock = $this->checkBoolean("Block");
+            $this->hide($sceneCheckBlock);
 
             $daysetActivated = $this->isSensorSet();
             $daysetSensor = $this->ReadPropertyInteger("Sensor");
@@ -962,7 +964,6 @@
             }
 
             $sceneDataVar = $this->searchObjectByName("SceneData");
-            $sceneData = IPS_GetObject($sceneDataVar);
 
             $allScenes = $this->getAllScenesSorted();
 
@@ -970,7 +971,7 @@
 
             if (IPS_HasChildren($sceneData['ObjectID'])) {
 
-                // Null - Offen - Aus Szene
+                // Null - Offen - Aus Szene ==> entspricht md5("")
                 $ary[0] = "d41d8cd98f00b204e9800998ecf8427e";
 
                 foreach ($allScenes as $scene) {
@@ -1121,9 +1122,17 @@
 
                         }
 
-                        SetValue($sceneDataVar, json_encode($states));
+                        if (!in_array(json_encode($states), $this->getSceneHashList())) {
 
-                        $this->refreshSceneHashList();
+                            SetValue($sceneDataVar, json_encode($states));
+
+                            $this->refreshSceneHashList();
+
+                        } else {
+
+                            $this->sendWebfrontNotification("Szene existiert bereits", "Diese Szene existiert bereits, doppelte Szenen können zu Fehlern führen!", "Bulb", 5);                            
+
+                        }
 
                     }
 
@@ -1173,6 +1182,8 @@
                         }
 
                     }
+
+                    $this->setVariableTemp($this->searchObjectByName("Block"), true, 15);
 
                 } else {
 
@@ -1316,6 +1327,12 @@
                 $targets = IPS_GetObject($this->searchObjectByName("Targets"));
                 $send = $_IPS['VARIABLE'];
                 $send = GetValue($send);
+                $block = $this->searchObjectByName("Block");
+                $blockVal = GetValue($block);
+
+                if ($blockVal) {
+                    return;
+                }
 
                 if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
 

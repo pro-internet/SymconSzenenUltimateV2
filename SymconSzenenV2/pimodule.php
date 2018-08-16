@@ -543,12 +543,18 @@ abstract class PISymconModule extends IPSModule {
         return $newScript;
     }
 
-    protected function checkScript ($name, $script, $function = true, $hide = true, $position = 1000) {
+    protected function checkScript ($name, $script, $function = true, $hide = true, $position = 1000, $parent = null) {
+
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
 
         if (!$this->doesExist($this->searchObjectByName($name))) {
             
             $script = $this->easyCreateScript($name, $script, $function);
             
+            IPS_SetParent($script, $parent);
+
             if ($hide) {
 
                 $this->hide($script);
@@ -2705,6 +2711,41 @@ abstract class PISymconModule extends IPSModule {
 
         if (!$this->arrayNotEmpty($arrayB) && !$this->arrayNotEmpty($arrayA)) {
             return array();
+        }
+
+    }
+
+    // Setzt Variable für bestimmte Zeit auf Wert, danach auf 0 / false
+    protected function setVariableTemp ($id, $val, $seconds = 1) {
+
+        if ($this->doesExist($id)) {
+
+            SetValue($id, $val);
+
+            $script = $this->checkScript("TimerEnd", "<?php if (IPS_HasChildren(\$_IPS['SELF'])) { foreach (IPS_GetChildren(\$_IPS['SELF']) as \$child) { IPS_DeleteEvent(\$child); } } SetValue($id, $val); IPS_DeleteScript(\$_IPS['SELF']); ?>", false, true, 1000, $id);
+
+            IPS_SetScriptTimer($script, $seconds);
+
+        } else {
+            echo $this->getVariableInformationString($id);
+        }
+
+    }
+
+
+    // Analyse
+    protected function getVariableInformationString ($id, $functionName = "getVariableInformationString", $meldung = "") {
+
+        if ($this->doesExist($id)) {
+
+            $var = IPS_GetObject($id);
+
+            return $functionName . ": Variable" . $var['ObjectName'] . " (#" . $id . ")" . "[" . GetValue($id) . "] " . $meldung;
+
+        } else {
+
+            return $functionName . ": Variable #" . $id . " existiert nicht!";
+
         }
 
     }
