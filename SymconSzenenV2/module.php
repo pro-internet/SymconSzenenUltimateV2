@@ -133,7 +133,7 @@
             $this->checkSceneTimerVars();
 
             // $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
-            $this->easyCreateOnChangeFunctionEvent("onChange Szene", $this->searchObjectByName("Szene"), "onSzenenChange", $this->searchObjectByName("Events"));
+            //$this->easyCreateOnChangeFunctionEvent("onChange Szene", $this->searchObjectByName("Szene"), "onSzenenChange", $this->searchObjectByName("Events"));
 
             if ($daysetActivated) {
 
@@ -506,6 +506,7 @@
                         SetValue($this->searchObjectByName("LastScene"), null);
                         //SetValue($this->searchObjectByName($allScenes[0]), 1);
                         SetValue($this->searchObjectByName("Szene"), 0);
+                        $this->executeSceneById(0);
 
                         // if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
 
@@ -1024,6 +1025,7 @@
                     if ($dsVal != -1) {
 
                         SetValue($this->searchObjectByName("Szene"), $dsVal);
+                        $this->executeSceneById($dsVal);
 
                     }
 
@@ -1152,73 +1154,17 @@
 
                 $allScenes = $this->getAllScenesSorted();
                 
-                if ($sceneDataVal != null && $sceneDataVal != "") {
+                $sceneData = json_encode($sceneDataVal);
 
-                    $json = json_decode($sceneDataVal);
+                foreach ($sceneData as $kvar => $kval) {
 
-                    foreach ($json as $id => $val) {
-
-                        $oldVal = GetValue($id);
-
-                        if ($oldVal != $val) {
-
-                            $prnt = IPS_GetParent($id);
-
-                            if ($this->isInstance($prnt)) {
-
-                                $prnt = IPS_GetInstance($prnt);
-
-                                if ($prnt['ModuleInfo']['ModuleName'] == "SymconSzenenV2") {
-
-                                    ////echo "Szenenmodul " . ".." . " schalten ...";
-                                    Sleep(1);
-                                    SetValue($id, $val);
-
-                                } else {
-                                    $this->setDevice($id, $val);
-                                }
-
-                            } else {
-                                $this->setDevice($id, $val);
-                            }
-
-                        }
-
-                    }
-
-                    $this->setVariableTemp($this->searchObjectByName("Block"), true, 15);
-
-                } else {
-
-                    // if ($senderName == $allScenes[0]) {
-
-                    //     $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
-
-                    // } else {
-
-                        $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
-
-                    // }
+                    $this->setDevice($kvar, $kval);
 
                 }
 
             }
 
             SetValue($senderVar, -1);
-
-        }
-
-        public function onSzenenChange() {
-
-            $sender = $_IPS['VARIABLE'];
-            $senderVal = GetValue($sender);
-            $alleScenes = $this->getAllScenesSorted();
-
-            // if ($_IPS['OLDVALUE'] == $senderVal) {
-            //     return;
-            // }
-
-            $this->executeSceneById($senderVal);
 
         }
 
@@ -1239,7 +1185,8 @@
                 $allScenes = $this->getAllScenesSorted();
 
                 //SetValue($this->searchObjectByName($allScenes[0]), 1);
-                SetValue($this->searchObjectByName("Szene"), 0);
+                //SetValue($this->searchObjectByName("Szene"), 0);
+                $this->executeSceneById(0);
 
                 $this->deleteObject($this->searchObjectByName("Timer Status"));
                 $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
@@ -1325,6 +1272,7 @@
                                 if (!$anyTrue) {
 
                                     SetValue($this->searchObjectByName("Szene"), 0);
+                                    //$this->executeSceneById(0);
 
                                 } else {
 
@@ -1556,6 +1504,20 @@
 
         }
 
+        public function setScene ($sender, $var, $val) {
+
+            if ($sender == "WebFront") {
+
+                $this->executeSceneById($val);
+                SetValue($var, $val);
+
+            } else {
+
+                SetValue($var, $val);
+
+            }
+
+        }
 
 
         // Analyse Tools
