@@ -961,21 +961,28 @@
 
             }
 
-            $sceneData = $this->searchObjectByName("SceneData");
+            $sceneDataVar = $this->searchObjectByName("SceneData");
             $sceneData = IPS_GetObject($sceneData);
+
+            $allScenes = $this->getAllScenesSorted();
 
             $ary = array();
 
             if (IPS_HasChildren($sceneData['ObjectID'])) {
 
-                foreach ($sceneData['ChildrenIDs'] as $child) {
+                // Null - Offen - Aus Szene
+                $ary[0] = "d41d8cd98f00b204e9800998ecf8427e";
 
-                    $childVal = GetValue($child);
+                foreach ($allScenes as $scene) {
+
+                    if ($scene != $allScenes[0]) {
+
+                        $sceneVal = $this->searchObjectByName($scene . " SceneData", $sceneDataVar);
+                        $ary[] = md5($sceneVal);
+
+                    }
                     //$childVal = md5($childVal);
                     //if (!in_array(md5($childVal), $ary)) {
-
-                        $ary[] = md5($childVal);
-
                     //}
 
                 }
@@ -1555,6 +1562,8 @@
         }
 
 
+
+        // Analyse Tools
 
         public function GetSceneOverview () {
 
