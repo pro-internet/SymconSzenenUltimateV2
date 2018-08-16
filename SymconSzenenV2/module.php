@@ -536,6 +536,7 @@
         public function getAllScenesSorted () {
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+
             usort($scenes, function($a, $b) {
 
                 $sc1 = IPS_GetObject($this->searchObjectByName($a));
@@ -546,6 +547,33 @@
             }); 
 
             return $scenes;
+
+        }
+
+        public function getAllScenesSortedNew () {
+
+            $scenes = $this->ReadPropertyString("Names");
+            $scenes = json_decode($scenes);
+
+            $scenesData = $this->searchObjectByName("SceneData");
+
+            $scns = array();
+
+            if (count($scenes) > 0) {
+
+                foreach ($scenes as $sc) {
+
+                    if ($this->doesExist($this->searchObjectByName($sc->Name . " SceneData"), $scenedsData)) {
+
+                        $scns[] = $this->searchObjectByName($sc->Name . " SceneData"), $scenedsData);
+
+                    }
+
+                }
+
+            }
+
+            return $scns;
 
         }
 
