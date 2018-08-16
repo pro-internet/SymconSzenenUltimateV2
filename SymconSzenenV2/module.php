@@ -1673,8 +1673,8 @@
 
         public function SetScene ($sceneId) {
 
-            SetValue($this->searchObjectByName("Szene"), $sceneId);
             $this->executeSceneById($sceneId);
+            SetValue($this->searchObjectByName("Szene"), $sceneId);
 
         }
 
