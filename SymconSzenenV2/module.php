@@ -300,7 +300,8 @@
             //$this->checkString("", false, $this->InstanceID, "|AFTER|" . $sceneVar, null, true);
 
             // $this->addProfile($optionen, $this->prefix . ".Options" . $this->InstanceID);
-            $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+            $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, false);
+            $this->addVariableCustomAction($sceneVar, $this->searchObjectByName("SetScene"));
 
             // $this->setIcon($optionen, "Gear");
             $this->setIcon($sceneVar, "Rocket");
@@ -324,6 +325,8 @@
         public function CheckScripts () {
     
             // Hier werden alle nötigen Scripts erstellt (SetValue wird automatisch erstellt)
+            $setScene = $this->checkScript("SetScene", "<?php SetValue(\$IPS_VARIABLE, \$IPS_VALUE);" . $this->prefix . "_executeSceneById($this->InstanceID, \$IPS_VALUE); ?>", false, true);
+
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
             if ($timeIsActivated) {

@@ -1444,6 +1444,20 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function addVariableCustomAction ($var, $actionId) {
+
+        if ($this->doesExist($var) && $this->doesExist($actionId)) {
+
+            IPS_SetVariableCustomAction($var, $actionId);
+
+        } else {
+
+            echo $this->getVariableInformationString($var);
+
+        }
+
+    }
+
     protected function addTime ($vid) {
 
         if (IPS_VariableProfileExists("~UnixTimestampTime")) {
