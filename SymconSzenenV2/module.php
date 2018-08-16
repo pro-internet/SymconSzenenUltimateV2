@@ -147,7 +147,7 @@
 
             }
 
-            $this->addProfile($this->searchObjectByName("Szene"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+            $this->addProfile($this->searchObjectByName("Szene"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, false);
 
             $this->deleteUnusedVars();
 
@@ -1169,7 +1169,7 @@
         }
 
         public function onSzenenChange () {
-            
+
         }
 
         public function onStatusChange () {
