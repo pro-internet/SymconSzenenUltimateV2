@@ -563,9 +563,9 @@
 
                 foreach ($scenes as $sc) {
 
-                    if ($this->doesExist($this->searchObjectByName($sc->Name . " SceneData", $scenedsData))) {
+                    if ($this->doesExist($this->searchObjectByName($sc->Name . " SceneData", $scenesData))) {
 
-                        $scns[] = $this->searchObjectByName($sc->Name . " SceneData", $scenedsData);
+                        $scns[] = $this->searchObjectByName($sc->Name . " SceneData", $scenesData);
 
                     }
 
