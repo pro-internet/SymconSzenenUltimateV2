@@ -1706,7 +1706,18 @@
 
             if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
-                foreach ($targets['ChildrenIDs'] as $child) {
+                $tgsSorted = $targets['ChildrenIDs'];
+
+                    usort($tgsSorted, function ($a, $b) {
+
+                        $obj1 = IPS_GetObject($a);
+                        $obj2 = IPS_GetObject($b);
+
+                        return $obj1['ObjectPosition'] > $obj2['ObjectPosition'];
+
+                    });
+
+                foreach ($tgsSorted as $child) {
 
                         $child = IPS_GetObject($child);
 
