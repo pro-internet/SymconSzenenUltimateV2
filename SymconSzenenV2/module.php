@@ -1313,99 +1313,99 @@
 
         }
 
-        protected function checkCurrentScene () {
+        // protected function checkCurrentScene () {
 
-            $states = array();
-            $targets = IPS_GetObject($this->searchObjectByName("Targets"));
+        //     $states = array();
+        //     $targets = IPS_GetObject($this->searchObjectByName("Targets"));
 
-            if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
+        //     if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
 
-                return;
+        //         return;
 
-            }
+        //     }
 
-            if (!$this->arrayNotEmpty($this->getSceneHashList())) {
+        //     if (!$this->arrayNotEmpty($this->getSceneHashList())) {
 
-                return;
+        //         return;
 
-            }
+        //     }
 
-            if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
+        //     if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
-                foreach ($targets['ChildrenIDs'] as $child) {
+        //         foreach ($targets['ChildrenIDs'] as $child) {
 
-                        $child = IPS_GetObject($child);
+        //                 $child = IPS_GetObject($child);
 
-                        if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+        //                 if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
 
-                            $child = IPS_GetLink($child['ObjectID']);
+        //                     $child = IPS_GetLink($child['ObjectID']);
 
-                            $tg = $child['TargetID'];
+        //                     $tg = $child['TargetID'];
 
-                            $states[$tg] = GetValue($tg);
+        //                     $states[$tg] = GetValue($tg);
 
-                        }
+        //                 }
 
-                    }
+        //             }
 
-                    if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
+        //             if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
 
-                        $found = false;
+        //                 $found = false;
 
-                        if (!$found) {
+        //                 if (!$found) {
 
-                            $obj = IPS_GetObject($this->searchObjectByName("Targets"));
+        //                     $obj = IPS_GetObject($this->searchObjectByName("Targets"));
 
-                            $anyTrue = false;
+        //                     $anyTrue = false;
 
-                            foreach ($obj['ChildrenIDs'] as $child) {
+        //                     foreach ($obj['ChildrenIDs'] as $child) {
 
-                                if ($this->isLink($child)) {
+        //                         if ($this->isLink($child)) {
 
-                                    $child = IPS_GetLink($child);
-                                    $childVal = GetValue($child['TargetID']);
+        //                             $child = IPS_GetLink($child);
+        //                             $childVal = GetValue($child['TargetID']);
 
-                                    if ($childVal == true) {
+        //                             if ($childVal == true) {
 
-                                        $anyTrue = true;
+        //                                 $anyTrue = true;
 
-                                    }
+        //                             }
 
-                                }
+        //                         }
 
-                            }
+        //                     }
 
-                            if (!$anyTrue) {
+        //                     if (!$anyTrue) {
 
-                                SetValue($this->searchObjectByName("Szene"), 0);
+        //                         SetValue($this->searchObjectByName("Szene"), 0);
 
-                            } else {
+        //                     } else {
 
-                                SetValue($this->searchObjectByName("Szene"), 999);
+        //                         SetValue($this->searchObjectByName("Szene"), 999);
 
-                            }
+        //                     }
 
-                        }
+        //                 }
 
-                    } else {
+        //             } else {
 
-                        foreach ($this->getSceneHashList() as $kkey => $kval) {
+        //                 foreach ($this->getSceneHashList() as $kkey => $kval) {
 
-                            if ($kval == md5(json_encode($states))) {
+        //                     if ($kval == md5(json_encode($states))) {
 
-                                //$found = true;
-                                SetValue($this->searchObjectByName("Szene"), $kkey);
+        //                         //$found = true;
+        //                         SetValue($this->searchObjectByName("Szene"), $kkey);
 
-                            }
+        //                     }
 
-                        }
+        //                 }
 
-                    }
-                    //////echo md5(json_encode($states));
+        //             }
+        //             //////echo md5(json_encode($states));
 
-                }
+        //         }
 
-        }
+        // }
 
         public function executeSceneById ($id) {
 
