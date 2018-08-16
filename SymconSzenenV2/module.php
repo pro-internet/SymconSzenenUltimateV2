@@ -1605,7 +1605,7 @@
 
                         if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
 
-                            echo "Hash " . md5(json_encode($states) . " not in List";
+                            echo "Hash " . md5(json_encode($states)) . " not in List";
 
                             $found = false;
 
