@@ -1205,7 +1205,6 @@
                 
                 //if ($sceneDataVal != null && $sceneDataVal != "") {
 
-                echo "targetSensorChange";
                 $states = array();
                 $targets = IPS_GetObject($this->searchObjectByName("Targets"));
                 $send = $_IPS['VARIABLE'];
@@ -1230,6 +1229,8 @@
                 }
 
                 if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
+
+                    echo "targetSensorChange";
 
                     foreach ($targets['ChildrenIDs'] as $child) {
 
