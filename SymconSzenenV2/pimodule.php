@@ -497,7 +497,7 @@ abstract class PISymconModule extends IPSModule {
         IPS_SetParent($newVariable, $position);
         //IPS_SetPosition($newVariable, $index);
         $this->setPosition($newVariable, $index);
-        IPS_SetIdent($newVariable, $this->nameToIdent($name));
+        $this->setIdent($newVariable, $this->nameToIdent($name), __LINE__);
         
         if ($defaultValue != null) {
             SetValue($newVariable, $defaultValue);
@@ -519,7 +519,7 @@ abstract class PISymconModule extends IPSModule {
         $newScript = IPS_CreateScript(0);
         
         IPS_SetName($newScript, $name);
-        IPS_SetIdent($newScript, $this->nameToIdent($name));
+        $this->setIdent($newScript, $this->nameToIdent($name), __LINE__);
         
         if ($function == true) {
 
@@ -596,7 +596,7 @@ abstract class PISymconModule extends IPSModule {
             }
             IPS_SetName($eid, $onChangeEventName);
             IPS_SetEventActive($eid, true);
-            IPS_SetIdent($eid, $this->nameToIdent($onChangeEventName));
+            $this->setIdent($eid, $this->nameToIdent($onChangeEventName), __LINE__);
 
             return $eid;
 
@@ -619,11 +619,34 @@ abstract class PISymconModule extends IPSModule {
             }
             IPS_SetName($eid, $onChangeEventName);
             IPS_SetEventActive($eid, true);
-            IPS_SetIdent($eid, $this->nameToIdent($onChangeEventName));
+            $this->setIdent($eid, $this->nameToIdent($onChangeEventName), __LINE__);
             return $eid;
         }
     }
 
+    protected function setIdent ($var, $ident, $line = "") {
+
+        if ($this->doesExist($var)) {
+
+            if(IPS_SetIdent($var, $ident)) {
+
+                return true;
+
+            } else {
+
+                echo "SetIdent failed! Line: " . $line;
+                return false;
+
+            }
+
+        } else {
+
+            echo "SetIdent failed: Var #" . $var . " unknown!";
+            return false;
+
+        }
+
+    }
 
     // Such Funktionen
 
@@ -1562,7 +1585,7 @@ abstract class PISymconModule extends IPSModule {
 
         $units = IPS_CreateInstance($this->getModuleGuidByName());
         IPS_SetName($units, $name);
-        IPS_SetIdent($units, $this->nameToIdent($name));
+        $this->setIdent($units, $this->nameToIdent($name), __LINE__);
         IPS_SetParent($units, $this->InstanceID);
         return $units;
 
@@ -1822,7 +1845,7 @@ abstract class PISymconModule extends IPSModule {
 
                 if ($ident == true) {
 
-                    IPS_SetIdent($link, $this->nameToIdent($linkName));
+                    $this->setIdent($link, $this->nameToIdent($linkName), __LINE__);
 
                 }
 
@@ -2642,7 +2665,7 @@ abstract class PISymconModule extends IPSModule {
                                 $link = IPS_CreateLink();
                                 IPS_SetName($link, $obj['ObjectName']);
                                 IPS_SetParent($link, $newFolder);
-                                IPS_SetIdent($link, $this->nameToIdent($ownName . $obj['ObjectName']));
+                                $this->setIdent($link, $this->nameToIdent($ownName . $obj['ObjectName']), __LINE__);
                                 IPS_SetLinkTargetID($link, $lnk['TargetID']);
                                 //$this->setPosition($link, $obj['ObjectPosition']);
                                 IPS_SetPosition($link, $obj['ObjectPosition']);
