@@ -2159,7 +2159,7 @@ abstract class PISymconModule extends IPSModule {
                         } else if ($parentInstanz['ModuleInfo']['ModuleName'] == "SymconSzenenV2"){
 
                             Sleep(1);
-                            SetValue($deviceID, $wert);
+                            SymconSzenenV2_SetScene($parent, $wert);
 
 
                         } else {
@@ -2759,7 +2759,7 @@ abstract class PISymconModule extends IPSModule {
     }
 
     // Setzt Variable für bestimmte Zeit auf Wert, danach auf 0 / false
-    protected function setVariableTemp ($id, $val, $seconds = 1) {
+    protected function setVariableTemp ($id, $val, $seconds = 1, $timerEnd = "") {
 
         if ($this->doesExist($id)) {
 
@@ -2767,7 +2767,7 @@ abstract class PISymconModule extends IPSModule {
 
                 SetValue($id, $val);
 
-                $script = $this->checkScript("TimerEnd", "<?php if (IPS_HasChildren(\$_IPS['SELF'])) { foreach (IPS_GetChildrenIDs(\$_IPS['SELF']) as \$child) { IPS_DeleteEvent(\$child); } } SetValue($id, false); IPS_DeleteScript(\$_IPS['SELF'], true); ?>", false, true, 1000, $id);
+                $script = $this->checkScript("TimerEnd", "<?php " . $timerEnd ." if (IPS_HasChildren(\$_IPS['SELF'])) { foreach (IPS_GetChildrenIDs(\$_IPS['SELF']) as \$child) { IPS_DeleteEvent(\$child); } } SetValue($id, false); IPS_DeleteScript(\$_IPS['SELF'], true); ?>", false, true, 1000, $id);
 
                 IPS_SetScriptTimer($script, $seconds);
 
