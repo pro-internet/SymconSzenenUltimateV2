@@ -231,8 +231,8 @@
 
             }
 
-            $this->checkCurrentScene();
             $this->refreshSceneHashList();
+            $this->checkCurrentScene();
 
         }
 
@@ -550,32 +550,32 @@
 
         }
 
-        public function getAllScenesSortedNew () {
+        // public function getAllScenesSortedNew () {
 
-            $scenes = $this->ReadPropertyString("Names");
-            $scenes = json_decode($scenes);
+        //     $scenes = $this->ReadPropertyString("Names");
+        //     $scenes = json_decode($scenes);
 
-            $scenesData = $this->searchObjectByName("SceneData");
+        //     $scenesData = $this->searchObjectByName("SceneData");
 
-            $scns = array();
+        //     $scns = array();
 
-            if (count($scenes) > 0) {
+        //     if (count($scenes) > 0) {
 
-                foreach ($scenes as $sc) {
+        //         foreach ($scenes as $sc) {
 
-                    if ($this->doesExist($this->searchObjectByName($sc->Name . " SceneData", $scenesData))) {
+        //             if ($this->doesExist($this->searchObjectByName($sc->Name . " SceneData", $scenesData))) {
 
-                        $scns[] = $this->searchObjectByName($sc->Name . " SceneData", $scenesData);
+        //                 $scns[] = $this->searchObjectByName($sc->Name . " SceneData", $scenesData);
 
-                    }
+        //             }
 
-                }
+        //         }
 
-            }
+        //     }
 
-            return $scns;
+        //     return $scns;
 
-        }
+        // }
 
         protected function getTimerLengthBySceneName ($sceneName) {
 
