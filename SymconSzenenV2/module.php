@@ -1168,6 +1168,10 @@
 
         }
 
+        public function onSzenenChange () {
+            
+        }
+
         public function onStatusChange () {
 
             $var = $_IPS['VARIABLE'];
