@@ -1647,7 +1647,7 @@
 
                         } else {
 
-                            echo "Hash " . md5(json_encode($states) . " in List";
+                            echo "Hash " . md5(json_encode($states)) . " in List";
 
                             foreach ($this->getSceneHashList() as $kkey => $kval) {
 
