@@ -2722,7 +2722,7 @@ abstract class PISymconModule extends IPSModule {
 
             SetValue($id, $val);
 
-            $script = $this->checkScript("TimerEnd", "<?php if (IPS_HasChildren(\$_IPS['SELF'])) { foreach (IPS_GetChildren(\$_IPS['SELF']) as \$child) { IPS_DeleteEvent(\$child); } } SetValue($id, $val); IPS_DeleteScript(\$_IPS['SELF']); ?>", false, true, 1000, $id);
+            $script = $this->checkScript("TimerEnd", "<?php if (IPS_HasChildren(\$_IPS['SELF'])) { foreach (IPS_GetChildrenIDs(\$_IPS['SELF']) as \$child) { IPS_DeleteEvent(\$child); } } SetValue($id, $val); IPS_DeleteScript(\$_IPS['SELF']); ?>", false, true, 1000, $id);
 
             IPS_SetScriptTimer($script, $seconds);
 
