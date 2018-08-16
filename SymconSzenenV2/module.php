@@ -1154,7 +1154,7 @@
 
                 $allScenes = $this->getAllScenesSorted();
                 
-                $sceneData = json_encode($sceneDataVal);
+                $sceneData = json_decode($sceneDataVal);
 
                 foreach ($sceneData as $kvar => $kval) {
 
