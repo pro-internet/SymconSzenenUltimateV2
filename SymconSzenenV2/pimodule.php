@@ -2,7 +2,7 @@
 
 // PISymconModule v1.1
 
-abstract class PISymconModule extends IPSModule {
+abstract class PISymconModule2 extends IPSModule {
 
     public $moduleID = null;
     public $libraryID = null;
