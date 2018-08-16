@@ -262,6 +262,7 @@
         public function CheckVariables () {
 
             //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
+            $setScene = $this->checkScript("SetScene", "<?php SetValue(\$IPS_VARIABLE, \$IPS_VALUE);" . $this->prefix . "_executeSceneById($this->InstanceID, \$IPS_VALUE); ?>", false, true);
             $sceneVar = $this->checkInteger("Szene", false, null, 1, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
@@ -325,7 +326,6 @@
         public function CheckScripts () {
     
             // Hier werden alle nötigen Scripts erstellt (SetValue wird automatisch erstellt)
-            $setScene = $this->checkScript("SetScene", "<?php SetValue(\$IPS_VARIABLE, \$IPS_VALUE);" . $this->prefix . "_executeSceneById($this->InstanceID, \$IPS_VALUE); ?>", false, true);
 
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
