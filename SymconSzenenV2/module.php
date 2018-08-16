@@ -1230,8 +1230,6 @@
 
                 if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
-                    echo "targetSensorChange";
-
                     foreach ($targets['ChildrenIDs'] as $child) {
 
                             $child = IPS_GetObject($child);
@@ -1247,6 +1245,8 @@
                             }
 
                         }
+
+                        echo md5(json_encode($states));
 
                         if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
 
