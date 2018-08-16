@@ -969,7 +969,7 @@
 
             $ary = array();
 
-            if (IPS_HasChildren($sceneData['ObjectID'])) {
+            if (IPS_HasChildren($sceneDataVar)) {
 
                 // Null - Offen - Aus Szene ==> entspricht md5("")
                 $ary[0] = "d41d8cd98f00b204e9800998ecf8427e";
