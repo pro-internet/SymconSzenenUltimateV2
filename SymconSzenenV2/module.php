@@ -42,7 +42,7 @@
                 if ($this->arrayNotEmpty($allScenes)) {
 
                     $sceneID = $this->searchObjectByName($allScenes[0]);
-                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $sceneID, $this->searchObjectByName("SceneHashList"));
+                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $sceneID, $this->searchObjectByName("SceneHashList"), $this->searchObjectByName("Block"));
 
                 } else {
 
@@ -362,14 +362,14 @@
             if ($this->isSensorSet()) {
 
                 $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
-                ////echo "OldSensor: " . $oldSensor;
+                //////echo "OldSensor: " . $oldSensor;
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
                 if ($sensor != null) { 
 
                     if ($oldSensor != $sensor) {
 
-                        ////echo "Delete old DaySets ... "; 
+                        //////echo "Delete old DaySets ... "; 
                         $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
                     }
@@ -566,7 +566,7 @@
 
             $scenes = json_decode($scenes);
 
-            //print_r($scenes);
+            ////print_r($scenes);
 
             $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
@@ -638,7 +638,7 @@
                 $allTimerVars = $this->combineArrays($allTimerVars2, $allTimerVars);
                 $allSceneVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
-                //print_r($allSceneVars);
+                ////print_r($allSceneVars);
 
                 if ($allSceneVars == null) {
                     return;
@@ -740,7 +740,7 @@
 
             } else {
 
-                ////echo "Dayset activated";
+                //////echo "Dayset activated";
                 $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
@@ -919,7 +919,7 @@
 
                 }
 
-                //print_r($scenes);
+                ////print_r($scenes);
 
                 if (IPS_VariableProfileExists($this->prefix . ".DaysetScenes." . $this->InstanceID)) {
                     IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
@@ -1015,7 +1015,7 @@
             if ($automatik && !$sperre) {
 
                 $dsName = $this->getAssociationTextByValue($sensorProfile, $senderVal);
-                ////echo "dsName: " . $dsName;
+                //////echo "dsName: " . $dsName;
                 $dsObj = $this->searchObjectByName($dsName, $this->searchObjectByName("DaySets"));
 
                 $dsVal = GetValue($dsObj);
@@ -1049,7 +1049,7 @@
             if ($automatik && !$sperre) {
 
                 $dsName = $this->getAssociationTextByValue($sensorProfile, $senderVal);
-                ////echo "dsName: " . $dsName;
+                //////echo "dsName: " . $dsName;
                 $dsObj = $this->searchObjectByName($dsName, $this->searchObjectByName("DaySets"));
 
                 $dsVal = GetValue($dsObj);
@@ -1169,7 +1169,7 @@
         }
 
         public function onSzenenChange () {
-
+            // Leere Funktion, existiert nur um Fehler in der Generated.inc.php zu vermeiden bei Update
         }
 
         public function onStatusChange () {
@@ -1246,7 +1246,7 @@
 
                         }
 
-                        print_r($states);
+                        //print_r($states);
 
                         if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
 
@@ -1301,11 +1301,11 @@
 
                             }
 
-                            print_r($this->getSceneHashList());
-                            echo md5(json_encode($states));
+                            //print_r($this->getSceneHashList());
+                            //echo md5(json_encode($states));
 
                         }
-                        ////echo md5(json_encode($states));
+                        //////echo md5(json_encode($states));
 
                     }
 
@@ -1401,7 +1401,7 @@
                         }
 
                     }
-                    ////echo md5(json_encode($states));
+                    //////echo md5(json_encode($states));
 
                 }
 
@@ -1477,7 +1477,7 @@
 
                 } else {
 
-                    //echo "Ist bereits gestartet!";
+                    ////echo "Ist bereits gestartet!";
 
                 }
 
@@ -1505,7 +1505,7 @@
 
                 } else {
 
-                    //echo "Läuft nicht!";
+                    ////echo "Läuft nicht!";
 
                 }
 
@@ -1537,26 +1537,26 @@
 
             $sceneDataFolder = $this->searchObjectByName("SceneData");
 
-            //echo $sceneDataFolder;
+            ////echo $sceneDataFolder;
 
             if (count($szenen) > 0) {
 
                 foreach ($szenen as $szene) {
-                    //echo $szene . "\n";
+                    ////echo $szene . "\n";
 
                     if ($szenen[0] != $szene) {
 
                         $szenenId = $this->searchObjectByName($szene . " SceneData", $sceneDataFolder);
 
-                    //echo $szenenId;
+                    ////echo $szenenId;
 
                     $szene = json_decode(GetValue($szenenId));
 
-                    echo IPS_GetName($szenenId) . ": \n";
+                    //echo IPS_GetName($szenenId) . ": \n";
 
                     foreach ($szene as $k => $val) {
 
-                        echo "   " . $k . "(" . IPS_GetName($k) . ") ==>" . $val . "\n";
+                        //echo "   " . $k . "(" . IPS_GetName($k) . ") ==>" . $val . "\n";
 
                     }
 
@@ -1566,7 +1566,7 @@
 
             } else {
 
-                echo "Keine Szenen vorhanden!";
+                //echo "Keine Szenen vorhanden!";
 
             }
 
