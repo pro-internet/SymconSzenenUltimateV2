@@ -28,6 +28,8 @@
         public function Create() {
 
             parent::Create();
+
+            $this->deleteObject($this->searchObjectByName("onChange Szene", $this->searchObjectByName("Events")));
  
         }
  

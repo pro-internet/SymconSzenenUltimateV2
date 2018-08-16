@@ -1998,6 +1998,10 @@ abstract class PISymconModule2 extends IPSModule {
             return null;
         }
 
+        if ($id == "ERROR") {
+            return null;
+        }
+
         if (!$this->doesExist($id)) {
             return null; 
         }
