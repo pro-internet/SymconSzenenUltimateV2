@@ -1061,6 +1061,7 @@
                     if ($dsVal != -1) {
 
                         SetValue($this->searchObjectByName("Szene"), $dsVal);
+                        $this->executeSceneById($dsVal);
 
                     }
 
