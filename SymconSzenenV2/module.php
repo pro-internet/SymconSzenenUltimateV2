@@ -962,7 +962,7 @@
             }
 
             $sceneDataVar = $this->searchObjectByName("SceneData");
-            $sceneData = IPS_GetObject($sceneData);
+            $sceneData = IPS_GetObject($sceneDataVar);
 
             $allScenes = $this->getAllScenesSorted();
 
