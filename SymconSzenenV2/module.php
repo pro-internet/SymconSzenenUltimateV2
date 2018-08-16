@@ -262,7 +262,7 @@
         public function CheckVariables () {
 
             //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
-            $setScene = $this->checkScript("SetScene", "<?php SetValue(\$IPS_VARIABLE, \$IPS_VALUE);" . $this->prefix . "_executeSceneById($this->InstanceID, \$IPS_VALUE); ?>", false, true);
+            $setScene = $this->checkScript("SetScene", "<?php " . $this->prefix . "_setScene($this->InstanceID, \$_IPS['SENDER'], $IPS_VARIABLE, $IPS_VALUE); ?>", false, true);
             $sceneVar = $this->checkInteger("Szene", false, null, 1, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
