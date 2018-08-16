@@ -2763,7 +2763,7 @@ abstract class PISymconModule extends IPSModule {
 
         if ($this->doesExist($id)) {
 
-            if (!$this->doesExist($this->searchObjectByName("TimerEnd"))) {
+            if (!$this->doesExist($this->searchObjectByName("TimerEnd", $id))) {
 
                 SetValue($id, $val);
 
