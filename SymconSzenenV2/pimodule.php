@@ -258,11 +258,9 @@ abstract class PISymconModule2 extends IPSModule {
     }
 
     protected function onDetailsChangeHide () {
-
     }
 
     protected function onDetailsChangeShow () {
-        
     }
 
     public function onDetailsChange () {
