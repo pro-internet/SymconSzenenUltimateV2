@@ -16,3 +16,6 @@ SymconSzenenV2 gibt die Möglichkeit zu 3 verschiedenen Modi:
 * Stoppt die Zeitschaltung 
 # :warning: Hinweis
 * Die Szenen können noch über das WebFront an der "Szene" Variable verändert werden, jedoch können die Szenen von Außen nur über ein SymconSzenenV2_SetScene($instanzID, $szenenID) geschaltet werden. 
+
+# IP-Symcon Versionen
+:white_check_mark: IP-Symcon 5.0+   :x: IP-Symcon <5.0
