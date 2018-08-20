@@ -1,5 +1,5 @@
-# SymconSzenenUltimateV2
-SymconSzenenUltimate gibt die Möglichkeit zu 3 verschiedenen Modi:
+# SymconSzenenV2
+SymconSzenenV2 gibt die Möglichkeit zu 3 verschiedenen Modi:
 ### Als SzenenDaySet
 * Hierbei können beliebig viele Szenen erstellt werden und ein DaySet Sensor kann angegeben werden. Nun kann für jedes DaySet eine Szene ausgewählt werden, welche automatisch ausgeführt wird (Außer die Automatik ist deaktiviert oder die Sperre ist aktiviert)
 ### Als SzenenZeitSteuerung
@@ -15,4 +15,4 @@ SymconSzenenUltimate gibt die Möglichkeit zu 3 verschiedenen Modi:
 ### SymconSzenenV2_Stop($instanzID);
 * Stoppt die Zeitschaltung 
 # :warning: Hinweis
-* Die Szenen können noch über das WebFront an der "Szene" Variable verändert werden, jedoch können die Szenen von Außen nur über ein SymconSzenenV2_SetScene($instanzID, $szenenID) geschaltet werden.
+* Die Szenen können noch über das WebFront an der "Szene" Variable verändert werden, jedoch können die Szenen von Außen nur über ein SymconSzenenV2_SetScene($instanzID, $szenenID) geschaltet werden. 
