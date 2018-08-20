@@ -99,6 +99,8 @@ abstract class PISymconModule2 extends IPSModule {
 
     }
 
+    //----------------------------------------------------------------------------------
+
     public function CheckVariables () {
 
         // Hier werden alle nötigen Variablen erstellt
@@ -120,6 +122,8 @@ abstract class PISymconModule2 extends IPSModule {
     public function CheckProfiles () {
 
     }
+
+    //----------------------------------------------------------------------------------
 
     ##########################
     ##                      ##
@@ -323,28 +327,6 @@ abstract class PISymconModule2 extends IPSModule {
 
     }
 
-    protected function createRealOnChangeEvents ($ary, $parent = null) {
-        if ($parent == null) {
-            $parent = $this->InstanceID;
-        }
-        $newEvents = array();
-        if ($ary != null) {
-            if (count($ary) > 0) {
-                foreach ($ary as $funcString) {
-                    if (strpos($funcString, "|") !== false) {
-                        $funcAry = explode("|", $funcString);
-                        $targetID = intval($funcAry[0]);
-                        $function = $funcAry[1];
-                        if ($this->doesExist($targetID)) {
-                            $newName = IPS_GetName($targetID);
-                            $newName = "onChange " . $newName;
-                            $newEvents[] = $this->easyCreateRealOnChangeFunctionEvent($newName, $targetID, $function, $parent);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     // CheckVar Funktionen
 
@@ -621,6 +603,68 @@ abstract class PISymconModule2 extends IPSModule {
             IPS_SetEventActive($eid, true);
             $this->setIdent($eid, $this->nameToIdent($onChangeEventName), __LINE__);
             return $eid;
+        }
+    }
+
+    protected function createOnChangeEvents ($ary, $parent = null) {
+
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+
+        $newEvents = array();
+
+        if ($ary != null) {
+
+            if (count($ary) > 0) {
+
+                foreach ($ary as $funcString) {
+
+                    if (strpos($funcString, "|") !== false) {
+
+                        $funcAry = explode("|", $funcString);
+                        $targetID = intval($funcAry[0]);
+                        $function = $funcAry[1];
+
+                        if ($this->doesExist($targetID)) {
+
+                            $newName = IPS_GetName($targetID);
+                            $newName = "onChange " . $newName;
+
+                            $newEvents[] = $this->easyCreateOnChangeFunctionEvent($newName, $targetID, $function, $parent);
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    protected function createRealOnChangeEvents ($ary, $parent = null) {
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+        $newEvents = array();
+        if ($ary != null) {
+            if (count($ary) > 0) {
+                foreach ($ary as $funcString) {
+                    if (strpos($funcString, "|") !== false) {
+                        $funcAry = explode("|", $funcString);
+                        $targetID = intval($funcAry[0]);
+                        $function = $funcAry[1];
+                        if ($this->doesExist($targetID)) {
+                            $newName = IPS_GetName($targetID);
+                            $newName = "onChange " . $newName;
+                            $newEvents[] = $this->easyCreateRealOnChangeFunctionEvent($newName, $targetID, $function, $parent);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -2541,46 +2585,6 @@ abstract class PISymconModule2 extends IPSModule {
 
     }
 
-    // array("TargetID|Function")
-    protected function createOnChangeEvents ($ary, $parent = null) {
-
-        if ($parent == null) {
-            $parent = $this->InstanceID;
-        }
-
-        $newEvents = array();
-
-        if ($ary != null) {
-
-            if (count($ary) > 0) {
-
-                foreach ($ary as $funcString) {
-
-                    if (strpos($funcString, "|") !== false) {
-
-                        $funcAry = explode("|", $funcString);
-                        $targetID = intval($funcAry[0]);
-                        $function = $funcAry[1];
-
-                        if ($this->doesExist($targetID)) {
-
-                            $newName = IPS_GetName($targetID);
-                            $newName = "onChange " . $newName;
-
-                            $newEvents[] = $this->easyCreateOnChangeFunctionEvent($newName, $targetID, $function, $parent);
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    }
-
     protected function getValueIfPossible ($id) {
 
         if ($id == null || $id == 0) {
@@ -2782,7 +2786,6 @@ abstract class PISymconModule2 extends IPSModule {
         }
 
     }
-
 
     // Analyse
     protected function getVariableInformationString ($id, $functionName = "getVariableInformationString", $meldung = "") {
