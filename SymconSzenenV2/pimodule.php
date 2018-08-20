@@ -2180,7 +2180,7 @@ abstract class PISymconModule2 extends IPSModule {
                         SetValue($device['ObjectID'], $wert);
                     }
                         
-                    // wenn int oder floar
+                    // wenn int oder float
                     if($getVar['VariableType'] == 1 || $getVar['VariableType'] == 2) { 
                         
                         if(is_int($wert) || is_float($wert)){
