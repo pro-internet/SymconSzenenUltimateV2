@@ -30,12 +30,6 @@
 	{ "type": "SelectVariable", "name": "Sensor", "caption": "Sensor" },
 	{ "type": "Label", "label": "Zeitschaltung Konfiguration" },	
 	{ "type": "CheckBox", "name": "ModeTime", "caption": "Zeitschaltung aktivieren" },
-	{ "type": "CheckBox", "name": "Loop", "caption": "Zeitschaltung loopen" },
-	{ "type": "Select", "name": "TimeVarMode", "caption": "Zeit in", "options":[
-
-		{ "caption": "Sekunden", "value": 0 },
-		{ "caption": "Minuten", "value": 1 }
-
-	] }
+	{ "type": "CheckBox", "name": "Loop", "caption": "Zeitschaltung loopen" }
   ]
 }
