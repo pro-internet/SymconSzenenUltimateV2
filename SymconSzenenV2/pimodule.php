@@ -2429,6 +2429,37 @@ abstract class PISymconModule2 extends IPSModule {
 
     }
 
+    protected function getAllCoreInstancesBase ($instanceName) {
+
+        $all = IPS_GetObject(0);
+        $instanzen = array();
+
+        if (IPS_HasChildren($all['ObjectID'])) {
+
+            $found = false;
+
+            foreach ($all['ChildrenIDs'] as $child) {
+
+                if ($this->isInstance($child) && $child != 0) {
+
+                    $child = IPS_GetInstance($child);
+
+                    if ($child['ModuleInfo']['ModuleName'] == $instanceName) {
+
+                        $instanzen[] = $child['InstanceID'];
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return $instanzen;
+
+    }
+
     protected function getArchiveControlInstance () {
 
         return $this->getCoreInstanceBase("Archive Control");
