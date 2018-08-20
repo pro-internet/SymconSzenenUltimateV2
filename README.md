@@ -1,4 +1,4 @@
-# SymconSzenenUltimateV2
+# SymconSzenenV2
 SymconSzenenUltimate gibt die Möglichkeit zu 3 verschiedenen Modi:
 ### Als SzenenDaySet
 * Hierbei können beliebig viele Szenen erstellt werden und ein DaySet Sensor kann angegeben werden. Nun kann für jedes DaySet eine Szene ausgewählt werden, welche automatisch ausgeführt wird (Außer die Automatik ist deaktiviert oder die Sperre ist aktiviert)
