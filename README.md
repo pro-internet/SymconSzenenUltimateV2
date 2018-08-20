@@ -18,4 +18,10 @@ SymconSzenenV2 gibt die Möglichkeit zu 3 verschiedenen Modi:
 * Die Szenen können noch über das WebFront an der "Szene" Variable verändert werden, jedoch können die Szenen von Außen nur über ein SymconSzenenV2_SetScene($instanzID, $szenenID) geschaltet werden. 
 
 # IP-Symcon Versionen
-:white_check_mark: IP-Symcon 5.0+   :x: IP-Symcon <5.0
+master_dev  = :white_check_mark: IP-Symcon 5.0+   :x: IP-Symcon <5.0
+master      = :x: IP-Symcon 5.0+ :white_check_mark: IP-Symcon 4.0             
+
+| Branch        | IPS 5.0           | IPS 4.2  |
+| ------------- |:-------------:| -----:|
+| master     | :x: | :white_check_mark: |
+| master_dev      | :white_check_mark: | :x: |
