@@ -2,7 +2,7 @@
 
 // PISymconModule v1.1
 
-abstract class PISymconModule extends IPSModule {
+abstract class PISymconModule2 extends IPSModule {
 
     public $moduleID = null;
     public $libraryID = null;
@@ -99,6 +99,8 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    //----------------------------------------------------------------------------------
+
     public function CheckVariables () {
 
         // Hier werden alle nötigen Variablen erstellt
@@ -120,6 +122,8 @@ abstract class PISymconModule extends IPSModule {
     public function CheckProfiles () {
 
     }
+
+    //----------------------------------------------------------------------------------
 
     ##########################
     ##                      ##
@@ -323,28 +327,6 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    protected function createRealOnChangeEvents ($ary, $parent = null) {
-        if ($parent == null) {
-            $parent = $this->InstanceID;
-        }
-        $newEvents = array();
-        if ($ary != null) {
-            if (count($ary) > 0) {
-                foreach ($ary as $funcString) {
-                    if (strpos($funcString, "|") !== false) {
-                        $funcAry = explode("|", $funcString);
-                        $targetID = intval($funcAry[0]);
-                        $function = $funcAry[1];
-                        if ($this->doesExist($targetID)) {
-                            $newName = IPS_GetName($targetID);
-                            $newName = "onChange " . $newName;
-                            $newEvents[] = $this->easyCreateRealOnChangeFunctionEvent($newName, $targetID, $function, $parent);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     // CheckVar Funktionen
 
@@ -497,7 +479,7 @@ abstract class PISymconModule extends IPSModule {
         IPS_SetParent($newVariable, $position);
         //IPS_SetPosition($newVariable, $index);
         $this->setPosition($newVariable, $index);
-        IPS_SetIdent($newVariable, $this->nameToIdent($name));
+        $this->setIdent($newVariable, $this->nameToIdent($name), __LINE__);
         
         if ($defaultValue != null) {
             SetValue($newVariable, $defaultValue);
@@ -519,7 +501,7 @@ abstract class PISymconModule extends IPSModule {
         $newScript = IPS_CreateScript(0);
         
         IPS_SetName($newScript, $name);
-        IPS_SetIdent($newScript, $this->nameToIdent($name));
+        $this->setIdent($newScript, $this->nameToIdent($name), __LINE__);
         
         if ($function == true) {
 
@@ -543,12 +525,18 @@ abstract class PISymconModule extends IPSModule {
         return $newScript;
     }
 
-    protected function checkScript ($name, $script, $function = true, $hide = true, $position = 1000) {
+    protected function checkScript ($name, $script, $function = true, $hide = true, $position = 1000, $parent = null) {
+
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
 
         if (!$this->doesExist($this->searchObjectByName($name))) {
             
             $script = $this->easyCreateScript($name, $script, $function);
             
+            IPS_SetParent($script, $parent);
+
             if ($hide) {
 
                 $this->hide($script);
@@ -574,7 +562,14 @@ abstract class PISymconModule extends IPSModule {
         if (!$this->doesExist($this->searchObjectByName($onChangeEventName, $parent))) {
 
             $eid = IPS_CreateEvent(0);
-            IPS_SetEventTrigger($eid, 0, $targetId);
+            if (IPS_SetEventTrigger($eid, 0, $targetId)) {
+
+
+            } else {
+
+                echo "FEHLER 577: " . $onChangeEventName . " " . $targetId . "  FUNCTION: $function";
+
+            }
             IPS_SetParent($eid, $parent);
             if ($autoFunctionToText) {
                 IPS_SetEventScript($eid, "<?php " . $this->prefix . "_" . $function . "(" . $this->InstanceID . "); ?>");
@@ -583,7 +578,7 @@ abstract class PISymconModule extends IPSModule {
             }
             IPS_SetName($eid, $onChangeEventName);
             IPS_SetEventActive($eid, true);
-            IPS_SetIdent($eid, $this->nameToIdent($onChangeEventName));
+            $this->setIdent($eid, $this->nameToIdent($onChangeEventName), __LINE__);
 
             return $eid;
 
@@ -606,11 +601,96 @@ abstract class PISymconModule extends IPSModule {
             }
             IPS_SetName($eid, $onChangeEventName);
             IPS_SetEventActive($eid, true);
-            IPS_SetIdent($eid, $this->nameToIdent($onChangeEventName));
+            $this->setIdent($eid, $this->nameToIdent($onChangeEventName), __LINE__);
             return $eid;
         }
     }
 
+    protected function createOnChangeEvents ($ary, $parent = null) {
+
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+
+        $newEvents = array();
+
+        if ($ary != null) {
+
+            if (count($ary) > 0) {
+
+                foreach ($ary as $funcString) {
+
+                    if (strpos($funcString, "|") !== false) {
+
+                        $funcAry = explode("|", $funcString);
+                        $targetID = intval($funcAry[0]);
+                        $function = $funcAry[1];
+
+                        if ($this->doesExist($targetID)) {
+
+                            $newName = IPS_GetName($targetID);
+                            $newName = "onChange " . $newName;
+
+                            $newEvents[] = $this->easyCreateOnChangeFunctionEvent($newName, $targetID, $function, $parent);
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    protected function createRealOnChangeEvents ($ary, $parent = null) {
+        if ($parent == null) {
+            $parent = $this->InstanceID;
+        }
+        $newEvents = array();
+        if ($ary != null) {
+            if (count($ary) > 0) {
+                foreach ($ary as $funcString) {
+                    if (strpos($funcString, "|") !== false) {
+                        $funcAry = explode("|", $funcString);
+                        $targetID = intval($funcAry[0]);
+                        $function = $funcAry[1];
+                        if ($this->doesExist($targetID)) {
+                            $newName = IPS_GetName($targetID);
+                            $newName = "onChange " . $newName;
+                            $newEvents[] = $this->easyCreateRealOnChangeFunctionEvent($newName, $targetID, $function, $parent);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected function setIdent ($var, $ident, $line = "") {
+
+        if ($this->doesExist($var)) {
+
+            if(IPS_SetIdent($var, $ident)) {
+
+                return true;
+
+            } else {
+
+                echo "SetIdent failed! Line: " . $line;
+                return false;
+
+            }
+
+        } else {
+
+            echo "SetIdent failed: Var #" . $var . " unknown!";
+            return false;
+
+        }
+
+    }
 
     // Such Funktionen
 
@@ -893,7 +973,7 @@ abstract class PISymconModule extends IPSModule {
 
     protected function createDynamicProfile ($profileName, $elements) {
 
-        if ($profileName != null && count($elements) > 0 ) {
+        if ($profileName != null && $this->arrayNotEmpty($elements)) {
 
             $min = 0;
             $max = count($elements) - 1;
@@ -1431,6 +1511,20 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function addVariableCustomAction ($var, $actionId) {
+
+        if ($this->doesExist($var) && $this->doesExist($actionId)) {
+
+            IPS_SetVariableCustomAction($var, $actionId);
+
+        } else {
+
+            echo $this->getVariableInformationString($var);
+
+        }
+
+    }
+
     protected function addTime ($vid) {
 
         if (IPS_VariableProfileExists("~UnixTimestampTime")) {
@@ -1535,7 +1629,7 @@ abstract class PISymconModule extends IPSModule {
 
         $units = IPS_CreateInstance($this->getModuleGuidByName());
         IPS_SetName($units, $name);
-        IPS_SetIdent($units, $this->nameToIdent($name));
+        $this->setIdent($units, $this->nameToIdent($name), __LINE__);
         IPS_SetParent($units, $this->InstanceID);
         return $units;
 
@@ -1795,7 +1889,7 @@ abstract class PISymconModule extends IPSModule {
 
                 if ($ident == true) {
 
-                    IPS_SetIdent($link, $this->nameToIdent($linkName));
+                    $this->setIdent($link, $this->nameToIdent($linkName), __LINE__);
 
                 }
 
@@ -1945,6 +2039,10 @@ abstract class PISymconModule extends IPSModule {
     protected function deleteObject ($id) {
 
         if ($id == 0) {
+            return null;
+        }
+
+        if ($id == "ERROR") {
             return null;
         }
 
@@ -2106,6 +2204,17 @@ abstract class PISymconModule extends IPSModule {
                                 
                             }
                             
+                        } else if ($parentInstanz['ModuleInfo']['ModuleName'] == "SymconSzenenV2"){
+
+                            Sleep(1);
+                            SymconSzenenV2_SetScene($parent, $wert);
+
+
+                        } else {
+
+                            // Anderes / Unbekanntes Modul
+                            SetValue($deviceID, $wert);
+
                         }
                     } else {
                     
@@ -2115,7 +2224,7 @@ abstract class PISymconModule extends IPSModule {
                         SetValue($device['ObjectID'], $wert);
                     }
                         
-                    // wenn int oder floar
+                    // wenn int oder float
                     if($getVar['VariableType'] == 1 || $getVar['VariableType'] == 2) { 
                         
                         if(is_int($wert) || is_float($wert)){
@@ -2320,6 +2429,37 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function getAllCoreInstancesBase ($instanceName) {
+
+        $all = IPS_GetObject(0);
+        $instanzen = array();
+
+        if (IPS_HasChildren($all['ObjectID'])) {
+
+            $found = false;
+
+            foreach ($all['ChildrenIDs'] as $child) {
+
+                if ($this->isInstance($child) && $child != 0) {
+
+                    $child = IPS_GetInstance($child);
+
+                    if ($child['ModuleInfo']['ModuleName'] == $instanceName) {
+
+                        $instanzen[] = $child['InstanceID'];
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return $instanzen;
+
+    }
+
     protected function getArchiveControlInstance () {
 
         return $this->getCoreInstanceBase("Archive Control");
@@ -2476,46 +2616,6 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
-    // array("TargetID|Function")
-    protected function createOnChangeEvents ($ary, $parent = null) {
-
-        if ($parent == null) {
-            $parent = $this->InstanceID;
-        }
-
-        $newEvents = array();
-
-        if ($ary != null) {
-
-            if (count($ary) > 0) {
-
-                foreach ($ary as $funcString) {
-
-                    if (strpos($funcString, "|") !== false) {
-
-                        $funcAry = explode("|", $funcString);
-                        $targetID = intval($funcAry[0]);
-                        $function = $funcAry[1];
-
-                        if ($this->doesExist($targetID)) {
-
-                            $newName = IPS_GetName($targetID);
-                            $newName = "onChange " . $newName;
-
-                            $newEvents[] = $this->easyCreateOnChangeFunctionEvent($newName, $targetID, $function, $parent);
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    }
-
     protected function getValueIfPossible ($id) {
 
         if ($id == null || $id == 0) {
@@ -2604,7 +2704,7 @@ abstract class PISymconModule extends IPSModule {
                                 $link = IPS_CreateLink();
                                 IPS_SetName($link, $obj['ObjectName']);
                                 IPS_SetParent($link, $newFolder);
-                                IPS_SetIdent($link, $this->nameToIdent($ownName . $obj['ObjectName']));
+                                $this->setIdent($link, $this->nameToIdent($ownName . $obj['ObjectName']), __LINE__);
                                 IPS_SetLinkTargetID($link, $lnk['TargetID']);
                                 //$this->setPosition($link, $obj['ObjectPosition']);
                                 IPS_SetPosition($link, $obj['ObjectPosition']);
@@ -2649,6 +2749,91 @@ abstract class PISymconModule extends IPSModule {
 
     }
 
+    protected function arrayNotEmpty ($array) {
+
+        if ($array == null) {
+
+            return false;
+
+        } else if (count($array) > 0) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+
+    }
+
+    protected function combineArrays ($arrayA, $arrayB) {
+
+        if ($this->arrayNotEmpty($arrayA)) {
+
+            foreach ($arrayA as $ary) {
+
+                $arrayB[] = $ary;
+    
+            }
+
+            return $arrayB;
+
+        } else if ($this->arrayNotEmpty($arrayB)) {
+
+            foreach ($arrayB as $ary) {
+
+                $arrayA[] = $ary;
+    
+            }
+
+            return $arrayA;
+
+        }
+
+        if (!$this->arrayNotEmpty($arrayB) && !$this->arrayNotEmpty($arrayA)) {
+            return array();
+        }
+
+    }
+
+    // Setzt Variable für bestimmte Zeit auf Wert, danach auf 0 / false
+    protected function setVariableTemp ($id, $val, $seconds = 1, $timerEnd = "") {
+
+        if ($this->doesExist($id)) {
+
+            if (!$this->doesExist($this->searchObjectByName("TimerEnd", $id))) {
+
+                SetValue($id, $val);
+
+                $script = $this->checkScript("TimerEnd", "<?php " . $timerEnd ." if (IPS_HasChildren(\$_IPS['SELF'])) { foreach (IPS_GetChildrenIDs(\$_IPS['SELF']) as \$child) { IPS_DeleteEvent(\$child); } } SetValue($id, false); IPS_DeleteScript(\$_IPS['SELF'], true); ?>", false, true, 1000, $id);
+
+                IPS_SetScriptTimer($script, $seconds);
+
+            }
+
+        } else {
+            echo $this->getVariableInformationString($id);
+        }
+
+    }
+
+    // Analyse
+    protected function getVariableInformationString ($id, $functionName = "getVariableInformationString", $meldung = "") {
+
+        if ($this->doesExist($id)) {
+
+            $var = IPS_GetObject($id);
+
+            return $functionName . ": Variable" . $var['ObjectName'] . " (#" . $id . ")" . "[" . GetValue($id) . "] " . $meldung;
+
+        } else {
+
+            return $functionName . ": Variable #" . $id . " existiert nicht!";
+
+        }
+
+    }
 
 }
 

@@ -3,13 +3,17 @@
     require(__DIR__ . "\\pimodule.php");
 
     // Klassendefinition
-    class SymconSzenenV2 extends PISymconModule {
+    class SymconSzenenV2 extends PISymconModule2 {
  
         public $sensorOld = null;
 
         public $Details = true;
 
         public $GeräteFolder = null;
+
+        public $BlockingTime = 15;
+
+        public $Version = "5.1";
 
         // Der Konstruktor des Moduls
         // Überschreibt den Standard Kontruktor von IPS
@@ -24,6 +28,8 @@
         public function Create() {
 
             parent::Create();
+
+            $this->deleteObject($this->searchObjectByName("onChange Szene", $this->searchObjectByName("Events")));
  
         }
  
@@ -39,20 +45,20 @@
 
             if ($allScenes != null) {
 
-                if (count($allScenes) > 0) {
+                if ($this->arrayNotEmpty($allScenes)) {
 
                     $sceneID = $this->searchObjectByName($allScenes[0]);
-                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $sceneID);
+                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $sceneID, $this->searchObjectByName("SceneHashList"), $this->searchObjectByName("Block"));
 
                 } else {
 
-                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"));
+                    return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $this->searchObjectByName("Block"));
 
                 }
 
             } else {
 
-                return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"));
+                return array("instance", "script", $this->searchObjectByName("SceneData"), $this->searchObjectByName("Geräte"), $this->searchObjectByName("LastScene"), $this->searchObjectByName("Block"));
 
             }
 
@@ -133,12 +139,11 @@
             $this->checkSceneTimerVars();
 
             // $this->easyCreateOnChangeFunctionEvent("onChange Optionen", $this->searchObjectByName("Einstellungen"), "onOptionsChange", $this->searchObjectByName("Events"));
-            $this->easyCreateOnChangeFunctionEvent("onChange Szene", $this->searchObjectByName("Szene"), "onSzenenChange", $this->searchObjectByName("Events"));
+            //$this->easyCreateOnChangeFunctionEvent("onChange Szene", $this->searchObjectByName("Szene"), "onSzenenChange", $this->searchObjectByName("Events"));
 
             if ($daysetActivated) {
 
                  $this->easyCreateOnChangeFunctionEvent("onChange Sensor", $this->ReadPropertyInteger("Sensor"), "onSensorChange", $this->searchObjectByName("Events"));
-                 $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
 
             }
 
@@ -148,7 +153,7 @@
 
             }
 
-            $this->addProfile($this->searchObjectByName("Szene"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, true);
+            $this->addProfile($this->searchObjectByName("Szene"), $this->prefix . ".ScenesVarProfile." . $this->InstanceID, false);
 
             $this->deleteUnusedVars();
 
@@ -160,10 +165,13 @@
             $daysetSensor = $this->ReadPropertyInteger("Sensor");
 
             // Experimental
-
+ 
             if ($daysetActivated) {
 
                 $switches = $this->createSwitches(array("Automatik|false|0", "Sperre|false|1"));
+
+                $this->easyCreateOnChangeFunctionEvent("onChange Automatik", $this->searchObjectByName("Automatik"), "onAutomatikChange", $this->searchObjectByName("Events"));
+                $this->easyCreateOnChangeFunctionEvent("onChange Sperre", $this->searchObjectByName("Sperre"), "onSperreChange", $this->searchObjectByName("Events"));
 
                 $daysets = $this->checkFolder("DaySets", null, 7);
 
@@ -223,7 +231,8 @@
 
             }
 
-
+            $this->refreshSceneHashList();
+            $this->checkCurrentScene();
 
         }
 
@@ -243,16 +252,31 @@
 
         }
 
+        public function onSperreChange () {
+
+            $sperreVar = $this->searchObjectByName("Sperre");
+            $sperreVal = GetValue($sperreVar);
+
+            if ($sperreVal == false) {
+
+                $this->onSensorChangeInternal();
+
+            }
+
+        }
 
         public function CheckVariables () {
 
             //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
-            $sceneVar = $this->checkInteger("Szene", false, null, 3, 0);
+            $setScene = $this->checkScript("SetScene", "<?php " . $this->prefix . "_setSceneOut($this->InstanceID, \$_IPS['SENDER'], \$IPS_VARIABLE, \$IPS_VALUE); ?>", false, true);
+            $sceneVar = $this->checkInteger("Szene", false, null, 1, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
             $events = $this->checkFolder("Events", null, 5);
             $sceneData = $this->checkFolder("SceneData", null, 6);
 
+            $sceneCheckBlock = $this->checkBoolean("Block");
+            $this->hide($sceneCheckBlock);
 
             $daysetActivated = $this->isSensorSet();
             $daysetSensor = $this->ReadPropertyInteger("Sensor");
@@ -283,7 +307,8 @@
             //$this->checkString("", false, $this->InstanceID, "|AFTER|" . $sceneVar, null, true);
 
             // $this->addProfile($optionen, $this->prefix . ".Options" . $this->InstanceID);
-            $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+            $this->addProfile($sceneVar, $this->prefix . ".ScenesVarProfile." . $this->InstanceID, false);
+            $this->addVariableCustomAction($sceneVar, $this->searchObjectByName("SetScene"));
 
             // $this->setIcon($optionen, "Gear");
             $this->setIcon($sceneVar, "Rocket");
@@ -296,16 +321,18 @@
         public function RegisterProperties () {
     
             $this->RegisterPropertyBoolean("ModeDaySet", true);
-            $this->RegisterPropertyString("Names", "[{\"ID\":0,\"Name\":\"Offen\"},{\"ID\":0,\"Name\":\"Ausblick\"},{\"ID\":0,\"Name\":\"Beschattung\"},{\"ID\":0,\"Name\":\"Geschlossen\"}]");
+            $this->RegisterPropertyString("Names", "[{\"Name\":\"Aus\",\"ID\":0}]");
             $this->RegisterPropertyBoolean("ModeTime", false);
             $this->RegisterPropertyBoolean("Loop", false);
             $this->RegisterPropertyInteger("Sensor", null);
-    
+            $this->RegisterPropertyInteger("TimeVarMode", 0);
+
         }
     
         public function CheckScripts () {
     
             // Hier werden alle nötigen Scripts erstellt (SetValue wird automatisch erstellt)
+
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
 
             if ($timeIsActivated) {
@@ -327,7 +354,8 @@
             // $this->checkVariableProfile($this->prefix . ".Options" . $this->InstanceID, $this->varTypeByName("int"), 0, 3, 0, array("Zeige Einstellungen" => 0, "Modul einklappen" => 1, "Start" => 2));
             //$this->checkVariableProfile($this->prefix . ".StartStop." . $this->InstanceID, 1, 0, 1, 0, array("Start" => 1));
             $this->checkVariableProfile($this->prefix . ".SceneOptions", $this->varTypeByName("int"), 0, 1, 0, array("Speichern" => 0, "Ausführen" => 1));
-            $this->checkVariableProfile($this->prefix . ".SceneTimerVar", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
+            $this->checkVariableProfile($this->prefix . ".SceneTimerVarSek", $this->varTypeByName("int"), 0, 3600, 1, null, "", " s");
+            $this->checkVariableProfile($this->prefix . ".SceneTimerVarMin", $this->varTypeByName("int"), 0, 600, 1, null, "", " min");
 
         }
 
@@ -340,14 +368,14 @@
             if ($this->isSensorSet()) {
 
                 $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("Events")));
-                //echo "OldSensor: " . $oldSensor;
+                //////echo "OldSensor: " . $oldSensor;
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
                 if ($sensor != null) { 
 
                     if ($oldSensor != $sensor) {
 
-                        //echo "Delete old DaySets ... "; 
+                        //////echo "Delete old DaySets ... "; 
                         $this->deleteAllChildren($this->searchObjectByName("DaySets"));
 
                     }
@@ -375,7 +403,7 @@
 
                         if (!$this->doesExist($this->searchObjectByName("onChangeSensor " . $childTarget . " " . $this->InstanceID))) {
 
-                            $this->easyCreateOnChangeFunctionEvent("onChangeSensor " . $childTarget . " " . $this->InstanceID, $childTarget, "<?php " . $this->prefix . "_targetSensorChange(" . $this->InstanceID . ");" . " ?>", $this->searchObjectByName("Events"), false);
+                            $this->easyCreateRealOnChangeFunctionEvent("onChangeSensor " . $childTarget . " " . $this->InstanceID, $childTarget, "<?php " . $this->prefix . "_targetSensorChange(" . $this->InstanceID . ");" . " ?>", $this->searchObjectByName("Events"), false);
 
                         }
 
@@ -484,6 +512,7 @@
                         SetValue($this->searchObjectByName("LastScene"), null);
                         //SetValue($this->searchObjectByName($allScenes[0]), 1);
                         SetValue($this->searchObjectByName("Szene"), 0);
+                        $this->executeSceneById(0);
 
                         // if ($this->profileHasAssociation($this->prefix . ".StartStop." . $this->InstanceID, "Stop")) {
 
@@ -507,13 +536,31 @@
         public function getAllScenesSorted () {
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
+
+            usort($scenes, function($a, $b) {
+
+                $sc1 = IPS_GetObject($this->searchObjectByName($a));
+                $sc2 = IPS_GetObject($this->searchObjectByName($b));
+
+                return $sc1['ObjectPosition'] > $sc2['ObjectPosition'];
+
+            }); 
+
             return $scenes;
 
         }
 
         protected function getTimerLengthBySceneName ($sceneName) {
 
+            $timeMode = $this->ReadPropertyInteger("TimeVarMode");
             $timer = GetValue($this->searchObjectByName($sceneName . " Timer"));
+
+            if ($timeMode == 1) {
+
+                $timer = $timer * 60;
+
+            }
+
             return $timer;
 
         }
@@ -526,13 +573,15 @@
 
             $scenes = json_decode($scenes);
 
-            //print_r($scenes);
+            ////print_r($scenes);
 
             $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
             $sceneNames = null;
 
-            if (count($scenes) > 0) {
+            if ($this->arrayNotEmpty($scenes)) {
+
+                $counter = 0;
 
                 foreach ($scenes as $scene) {
 
@@ -540,7 +589,7 @@
 
                     if ($existingScenes != null) {
 
-                        if (count($existingScenes) > 0) {
+                        if ($this->arrayNotEmpty($existingScenes)) {
 
                             foreach ($existingScenes as $escene) {
     
@@ -565,6 +614,10 @@
                         $this->setIcon($newInt, "Rocket");
                         $this->addProfile($newInt, $this->prefix . ".SceneOptions");
 
+
+
+                        IPS_SetPosition($newSceneData, $newPos);
+
                         $this->easyCreateOnChangeFunctionEvent("onChange " . $newInt, $newInt, "onSceneVarChange", $this->searchObjectByName("Events"));
 
                         if ($scene == $scenes[0]) {
@@ -587,10 +640,12 @@
 
             if ($modeActivated) {
 
-                $allTimerVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
+                $allTimerVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVarSek");
+                $allTimerVars2 = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVarMin");
+                $allTimerVars = $this->combineArrays($allTimerVars2, $allTimerVars);
                 $allSceneVars = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
-                //print_r($allSceneVars);
+                ////print_r($allSceneVars);
 
                 if ($allSceneVars == null) {
                     return;
@@ -602,7 +657,7 @@
 
                     $sceneVarObj = IPS_GetObject($this->searchObjectByName($sceneVar));
 
-                    if (count($allTimerVars) > 0) {
+                    if ($this->arrayNotEmpty($allTimerVars)) {
 
                         foreach ($allTimerVars as $timerVar) {
 
@@ -622,8 +677,36 @@
 
                         $checkTimer = $this->checkInteger($sceneVarObj['ObjectName'] . " Timer", false, "", "|AFTER|" . $this->searchObjectByname($sceneVar), 10);
                         $this->setIcon($checkTimer, "Clock");
-                        $this->addProfile($checkTimer, $this->prefix . ".SceneTimerVar");
+
+                        $timerVarMode = $this->ReadPropertyInteger("TimeVarMode");
+
+                        if ($timerVarMode == 0) {
+
+                            $this->addProfile($checkTimer, $this->prefix . ".SceneTimerVarSek");
+
+                        } else if ($timerVarMode == 1) {
+
+                            $this->addProfile($checkTimer, $this->prefix . ".SceneTimerVarMin");
+
+                        }
+
                         $this->addSetValue($checkTimer);
+
+                    } else if ($this->doesExist($this->searchObjectByName($sceneVarObj['ObjectName'] . " Timer"))) {
+
+                        $timerVarMode = $this->ReadPropertyInteger("TimeVarMode");
+
+                        $timer = $this->searchObjectByName($sceneVarObj['ObjectName'] . " Timer");
+
+                        if ($timerVarMode == 0) {
+
+                            $this->addProfile($timer, $this->prefix . ".SceneTimerVarSek");
+
+                        } else if ($timerVarMode == 1) {
+
+                            $this->addProfile($timer, $this->prefix . ".SceneTimerVarMin");
+
+                        }
 
                     }
 
@@ -637,7 +720,9 @@
         protected function deleteUnusedVars () {
 
             $existingScenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
-            $existingSceneTimers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVar");
+            $existingSceneTimers = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVarSek");
+            $existingSceneTimers2 = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneTimerVarMin");
+            $existingSceneTimers = $this->combineArrays($existingSceneTimers, $existingSceneTimers2);
             $timerIsEnabled = $this->ReadPropertyBoolean("ModeTime");
             $daysetActivated = $this->isSensorSet();
 
@@ -653,6 +738,8 @@
 
             if (!$daysetActivated) {
 
+                $this->deleteObject($this->searchObjectByRealName("onChange Automatik"), $this->searchObjectByName("Events"));
+                $this->deleteObject($this->searchObjectByRealName("onChange Sperre"), $this->searchObjectByName("Events"));
                 $this->deleteObject($this->AutomatikVar);
                 $this->deleteObject($this->SperreVar);
 
@@ -660,7 +747,7 @@
 
             } else {
 
-                //echo "Dayset activated";
+                //////echo "Dayset activated";
                 $oldSensor = $this->eventGetTriggerVariable($this->searchObjectByName("onChange Sensor", $this->searchObjectByName("DaySets")));
                 $sensor = $this->ReadPropertyInteger("Sensor");
 
@@ -680,7 +767,7 @@
 
                 if ($existingSceneTimers != null) {
 
-                    if (count($existingSceneTimers) > 0) {
+                    if ($this->arrayNotEmpty($existingSceneTimers)) {
 
                         foreach ($existingSceneTimers as $timerVar) {
 
@@ -800,7 +887,7 @@
 
             $ary = null;
 
-            if (count($scenes) > 0) {
+            if ($this->arrayNotEmpty($scenes)) {
 
                 foreach ($scenes as $scene) {
 
@@ -818,23 +905,28 @@
 
             $scenes = $this->getAllVarsByVariableCustomProfile($this->prefix . ".SceneOptions");
 
+            $scenesByList = $this->ReadPropertyString("Names");
+            $scenesByList = json_decode($scenesByList);
+
             $assocs = null;
 
             $counter = 0;
 
-            if (count($scenes) > 0) {
+            if ($this->arrayNotEmpty($scenes)) {
 
-                foreach ($scenes as $scene) {
+                foreach ($scenesByList as $scene) {
 
-                    $scene = IPS_GetObject($this->searchObjectByName($scene));
+                    // $scene = IPS_GetObject($this->searchObjectByName($scene));
 
-                    $sceneName = $scene['ObjectName'];
+                    $sceneName = $scene->Name;
 
                     $assocs[$sceneName] = $counter;
                     
                     $counter = $counter + 1;
 
                 }
+
+                ////print_r($scenes);
 
                 if (IPS_VariableProfileExists($this->prefix . ".DaysetScenes." . $this->InstanceID)) {
                     IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
@@ -857,24 +949,59 @@
 
         protected function getSceneHashList () {
 
-            $sceneData = $this->searchObjectByName("SceneData");
-            $sceneData = IPS_GetObject($sceneData);
+            if ($this->doesExist($this->searchObjectByName("SceneHashList"))) {
+
+                $shl = GetValue($this->searchObjectByName("SceneHashList"));
+
+                $shl = json_decode($shl);
+
+            } else {
+
+                $shl = null;
+
+            }
+
+            return $shl;
+
+        }
+
+        protected function refreshSceneHashList () {
+
+            if (!$this->doesExist($this->searchObjectByName("SceneHashList"))) {
+
+                $shl = $this->checkString("SceneHashList");
+                $this->hide($shl);
+
+            }
+
+            $sceneDataVar = $this->searchObjectByName("SceneData");
+
+            $allScenes = $this->getAllScenesSorted();
 
             $ary = array();
 
-            if (IPS_HasChildren($sceneData['ObjectID'])) {
+            if (IPS_HasChildren($sceneDataVar)) {
 
-                foreach ($sceneData['ChildrenIDs'] as $child) {
+                // Null - Offen - Aus Szene ==> entspricht md5("")
+                $ary[0] = "d41d8cd98f00b204e9800998ecf8427e";
 
-                    $childVal = GetValue($child);
+                foreach ($allScenes as $scene) {
+
+                    if ($scene != $allScenes[0]) {
+
+                        $sceneVal = GetValue($this->searchObjectByName($scene . " SceneData", $sceneDataVar));
+                        $ary[] = md5($sceneVal);
+
+                    }
                     //$childVal = md5($childVal);
-                    $ary[] = md5($childVal);
+                    //if (!in_array(md5($childVal), $ary)) {
+                    //}
 
                 }
 
             }
 
-            return $ary;
+            SetValue($this->searchObjectByName("SceneHashList"), json_encode($ary));
 
         }
 
@@ -895,7 +1022,7 @@
             if ($automatik && !$sperre) {
 
                 $dsName = $this->getAssociationTextByValue($sensorProfile, $senderVal);
-                //echo "dsName: " . $dsName;
+                //////echo "dsName: " . $dsName;
                 $dsObj = $this->searchObjectByName($dsName, $this->searchObjectByName("DaySets"));
 
                 $dsVal = GetValue($dsObj);
@@ -905,6 +1032,7 @@
                     if ($dsVal != -1) {
 
                         SetValue($this->searchObjectByName("Szene"), $dsVal);
+                        $this->executeSceneById($dsVal);
 
                     }
 
@@ -915,14 +1043,47 @@
 
         }
 
-        public function onAutomatikChange () {
+        public function onSensorChangeInternal () {
 
+            $senderVar = $this->ReadPropertyInteger("Sensor");
+            $senderVal = GetValue($senderVar);
             $automatik = GetValue($this->AutomatikVar);
+            $sperre = GetValue($this->SperreVar);
+            $sensor = $this->ReadPropertyInteger("Sensor");
+            $sensorProfile = $this->getVariableProfileByVariable($sensor);
+            $sensorVal = GetValue($sensor);
+
+            if ($automatik && !$sperre) {
+
+                $dsName = $this->getAssociationTextByValue($sensorProfile, $senderVal);
+                //////echo "dsName: " . $dsName;
+                $dsObj = $this->searchObjectByName($dsName, $this->searchObjectByName("DaySets"));
+
+                $dsVal = GetValue($dsObj);
+
+
+
+                    if ($dsVal != -1) {
+
+                        SetValue($this->searchObjectByName("Szene"), $dsVal);
+                        $this->executeSceneById($dsVal);
+
+                    }
+
+                
+
+            }
+
+        }
+
+        public function onAutomatikChange() {
+
+            $automatik = GetValue($this->searchObjectByName("Automatik"));
 
             // Wenn Automatik auf true
             if ($automatik) {
 
-                $this->targetSensorChange();
+                $this->onSensorChangeInternal();
 
             } else {
             // Wenn Automatik auf false, Timer Löschen (Funktion prüft autom. ob Element existiert)!
@@ -956,7 +1117,7 @@
 
                     $states = array();
 
-                    if (count($targets['ChildrenIDs']) > 0)  {
+                    if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
                         foreach ($targets['ChildrenIDs'] as $child) {
 
@@ -974,7 +1135,17 @@
 
                         }
 
-                        SetValue($sceneDataVar, json_encode($states));
+                        if (!in_array(json_encode($states), $this->getSceneHashList())) {
+
+                            SetValue($sceneDataVar, json_encode($states));
+
+                            $this->refreshSceneHashList();
+
+                        } else {
+
+                            $this->sendWebfrontNotification("Szene existiert bereits", "Diese Szene existiert bereits, doppelte Szenen können zu Fehlern führen!", "Bulb", 5);                            
+
+                        }
 
                     }
 
@@ -991,33 +1162,11 @@
 
                 $allScenes = $this->getAllScenesSorted();
                 
-                if ($sceneDataVal != null && $sceneDataVal != "") {
+                $sceneData = json_decode($sceneDataVal);
 
-                    $json = json_decode($sceneDataVal);
+                foreach ($sceneData as $kvar => $kval) {
 
-                    foreach ($json as $id => $val) {
-
-                        $oldVal = GetValue($id);
-
-                        if ($oldVal != $val) {
-
-                            $this->setDevice($id, $val);
-
-                        }
-
-                    }
-
-                } else {
-
-                    // if ($senderName == $allScenes[0]) {
-
-                    //     $this->setAllInLinkList($this->searchObjectByName("Targets"), false);
-
-                    // } else {
-
-                        $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
-
-                    // }
+                    $this->setDevice($kvar, $kval);
 
                 }
 
@@ -1027,66 +1176,8 @@
 
         }
 
-        public function onSzenenChange() {
-
-            $sender = $_IPS['VARIABLE'];
-            $senderVal = GetValue($sender);
-            $alleScenes = $this->getAllScenesSorted();
-
-            // if ($_IPS['OLDVALUE'] == $senderVal) {
-            //     return;
-            // }
-
-            if ($senderVal == 999) {
-                return;
-            }
-
-            if ($senderVal == 0) {
-
-                //echo "Auf aus gesetzt";
-                $targets = $this->searchObjectByName("Targets");
-                $this->setAllInLinkList($targets, false);
-                return;
-            
-            }
-
-            $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $senderVal);
-            $sceneDataVal = GetValue($this->searchObjectByName($sceneName . " SceneData", $this->searchObjectByName("SceneData")));
-            
-            if ($sceneDataVal != null && $sceneDataVal != "") {
-
-                $sceneData = json_decode($sceneDataVal);
-
-                foreach ($sceneData as $devId => $devVal) {
-
-                    // if ($this->doesExist($devId)) {
-
-                        $devValOld = GetValue($devId);
-
-                    if ($devValOld != $devVal) {
-                        $this->setDevice($devId, $devVal);
-                    }
-
-                    // }
-
-                }
-
-            } else {
-
-                // if ($sceneName == $alleScenes[0]) {
-
-                //     $targets = $this->searchObjectByName("Targets");
-
-                //     $this->setAllInLinkList($targets, false);
-
-                // } else {
-
-                    echo "Keinen Szenendaten vorhanden!";
-
-                // }
-
-            }
-
+        public function onSzenenChange () {
+            // Leere Funktion, existiert nur um Fehler in der Generated.inc.php zu vermeiden bei Update
         }
 
         public function onStatusChange () {
@@ -1107,6 +1198,7 @@
 
                 //SetValue($this->searchObjectByName($allScenes[0]), 1);
                 SetValue($this->searchObjectByName("Szene"), 0);
+                $this->executeSceneById(0);
 
                 $this->deleteObject($this->searchObjectByName("Timer Status"));
                 $this->deleteObject($this->getFirstChildFrom($this->searchObjectByName("nextElement")));
@@ -1125,7 +1217,18 @@
                 $targets = IPS_GetObject($this->searchObjectByName("Targets"));
                 $send = $_IPS['VARIABLE'];
                 $send = GetValue($send);
+                $block = $this->searchObjectByName("Block");
+                $blockVal = GetValue($block);
 
+                if ($blockVal) {
+                    return;
+                }
+
+                if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
+
+                    return;
+
+                }
 
                 if ($_IPS['OLDVALUE'] == $send) {
 
@@ -1133,7 +1236,7 @@
 
                 }
 
-                if (count($targets['ChildrenIDs']) > 0)  {
+                if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
 
                     foreach ($targets['ChildrenIDs'] as $child) {
 
@@ -1150,6 +1253,8 @@
                             }
 
                         }
+
+                        //print_r($states);
 
                         if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
 
@@ -1181,6 +1286,7 @@
                                 if (!$anyTrue) {
 
                                     SetValue($this->searchObjectByName("Szene"), 0);
+                                    //$this->executeSceneById(0);
 
                                 } else {
 
@@ -1203,8 +1309,11 @@
 
                             }
 
+                            //print_r($this->getSceneHashList());
+                            //echo md5(json_encode($states));
+
                         }
-                        //echo md5(json_encode($states));
+                        //////echo md5(json_encode($states));
 
                     }
 
@@ -1212,10 +1321,54 @@
 
         }
 
+        public function executeSceneById ($id) {
 
+            $targets = $this->searchObjectByName("Targets");
+
+            if ($id == 0) {
+
+                $this->setAllInLinkList($targets, false);
+                $this->setVariableTemp($this->searchObjectByName("Block"), true, $this->BlockingTime, $this->prefix . "_CheckCurrentScene(" . $this->InstanceID . ");");
+                return;
+
+            }
+
+            if ($id == 999) {
+                return;
+            }
+
+            
+            $sceneName = $this->getAssociationTextByValue($this->prefix . ".ScenesVarProfile." . $this->InstanceID, $id);
+            $sceneDataVal = GetValue($this->searchObjectByName($sceneName . " SceneData", $this->searchObjectByName("SceneData")));
+            
+            if ($sceneDataVal != null && $sceneDataVal != "") {
+
+                $scene = json_decode($sceneDataVal);
+
+                foreach ($scene as $sid => $sval) {
+
+                    $currentVal = GetValue($sid);
+
+                    if ($sval != $currentVal) {
+
+                        $this->setDevice($sid, $sval);
+
+                    }
+
+                }
+
+                $this->setVariableTemp($this->searchObjectByName("Block"), true, $this->BlockingTime, $this->prefix . "_CheckCurrentScene(" . $this->InstanceID . ");");
+
+            } else {
+
+                $this->sendWebfrontNotification("Keine Szenen Daten", "Es konnten keine Szenen Daten gefunden werden!", "Bulb", 5);
+
+            }
+
+
+        }
 
         //  Öffentliche Funktionen
-
         public function Start () {
 
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
@@ -1226,9 +1379,6 @@
 
                 if ($started) {
 
-                    // $this->changeAssociations($this->prefix . ".Options" . $this->InstanceID, array("Start" => "Stop"));
-                    // $this->addProfile($this->searchObjectByName("Einstellungen"), $this->prefix . ".Options" . $this->InstanceID);
-
                     $this->nextElement();
 
                     SetValue($this->searchObjectByName("Einstellungen"), -1);
@@ -1236,7 +1386,7 @@
 
                 } else {
 
-                    echo "Ist bereits gestartet!";
+                    ////echo "Ist bereits gestartet!";
 
                 }
 
@@ -1264,11 +1414,334 @@
 
                 } else {
 
-                    echo "Läuft nicht!";
+                    ////echo "Läuft nicht!";
 
                 }
 
             }
+
+        }
+
+        public function setSceneOut ($sender, $var, $val) {
+
+            if ($sender == "WebFront") {
+
+                $this->executeSceneById($val);
+                SetValue($var, $val);
+
+            } else {
+
+                SetValue($var, $val);
+
+            }
+
+        }
+
+
+        public function CheckCurrentScene () {
+
+                    
+                //if ($sceneDataVal != null && $sceneDataVal != "") {
+
+                //echo "Check current scene";
+
+                $states = array();
+                $targets = IPS_GetObject($this->searchObjectByName("Targets"));
+                $block = $this->searchObjectByName("Block");
+                $blockVal = GetValue($block);
+
+
+                if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
+
+                    return;
+
+                }
+
+                if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
+
+                    $tgsSorted = $targets['ChildrenIDs'];
+
+                    usort($tgsSorted, function ($a, $b) {
+
+                        $obj1 = IPS_GetObject($a);
+                        $obj2 = IPS_GetObject($b);
+
+                        return $obj1['ObjectPosition'] > $obj2['ObjectPosition'];
+
+                    });
+
+                    foreach ($tgsSorted as $child) {
+
+                            $child = IPS_GetObject($child);
+
+                            if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                                $child = IPS_GetLink($child['ObjectID']);
+
+                                $tg = $child['TargetID'];
+
+                                $states[$tg] = GetValue($tg);
+
+                            }
+
+                        }
+
+                        //print_r($states);
+
+                        if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
+
+                            //echo "Hash " . md5(json_encode($states)) . " not in List";
+
+                            $found = false;
+
+                            if (!$found) {
+
+                                $obj = IPS_GetObject($this->searchObjectByName("Targets"));
+
+                                $anyTrue = false;
+
+                                foreach ($obj['ChildrenIDs'] as $child) {
+
+                                    if ($this->isLink($child)) {
+
+                                        $child = IPS_GetLink($child);
+                                        $childVal = GetValue($child['TargetID']);
+
+                                        if ($childVal == true) {
+
+                                            $anyTrue = true;
+
+                                        }
+
+                                    }
+
+                                }
+
+                                if (!$anyTrue) {
+
+                                    SetValue($this->searchObjectByName("Szene"), 0);
+                                    //$this->executeSceneById(0);
+
+                                } else {
+
+                                    SetValue($this->searchObjectByName("Szene"), 999);
+
+                                }
+
+                            }
+
+                        } else {
+
+                            //echo "Hash " . md5(json_encode($states)) . " in List";
+
+                            foreach ($this->getSceneHashList() as $kkey => $kval) {
+
+                                if ($kval == md5(json_encode($states))) {
+
+                                    //$found = true;
+                                    SetValue($this->searchObjectByName("Szene"), $kkey);
+
+                                }
+
+                            }
+
+                            //print_r($this->getSceneHashList());
+                            //echo md5(json_encode($states));
+
+                        }
+                        //////echo md5(json_encode($states));
+
+                    }
+
+                //}
+
+    
+
+        }
+
+        public function CheckCurrentSceneDev () {
+
+                    
+            //if ($sceneDataVal != null && $sceneDataVal != "") {
+
+            //echo "Check current scene";
+
+            $states = array();
+            $targets = IPS_GetObject($this->searchObjectByName("Targets"));
+            $block = $this->searchObjectByName("Block");
+            $blockVal = GetValue($block);
+
+
+            if (!$this->arrayNotEmpty($targets['ChildrenIDs'])) {
+
+                return;
+
+            }
+
+            if ($this->arrayNotEmpty($targets['ChildrenIDs']))  {
+
+                $tgsSorted = $targets['ChildrenIDs'];
+
+                    usort($tgsSorted, function ($a, $b) {
+
+                        $obj1 = IPS_GetObject($a);
+                        $obj2 = IPS_GetObject($b);
+
+                        return $obj1['ObjectPosition'] > $obj2['ObjectPosition'];
+
+                    });
+
+                foreach ($tgsSorted as $child) {
+
+                        $child = IPS_GetObject($child);
+
+                        if ($child['ObjectType'] == $this->objectTypeByName("Link")) {
+
+                            $child = IPS_GetLink($child['ObjectID']);
+
+                            $tg = $child['TargetID'];
+
+                            $states[$tg] = GetValue($tg);
+
+                        }
+
+                    }
+
+                    //print_r($states);
+
+                    echo "States: \n";
+                    print_r($states);
+                    echo json_encode($states) . "\n";
+                    echo md5(json_encode($states)) . "\n";
+
+                    echo "-------------";
+                    print_r($this->getSceneHashList());
+
+                    if (!in_array(md5(json_encode($states)), $this->getSceneHashList())) {
+
+                        //echo "Hash " . md5(json_encode($states)) . " not in List";
+
+                        $found = false;
+
+                        if (!$found) {
+
+                            $obj = IPS_GetObject($this->searchObjectByName("Targets"));
+
+                            $anyTrue = false;
+
+                            foreach ($obj['ChildrenIDs'] as $child) {
+
+                                if ($this->isLink($child)) {
+
+                                    $child = IPS_GetLink($child);
+                                    $childVal = GetValue($child['TargetID']);
+
+                                    if ($childVal == true) {
+
+                                        $anyTrue = true;
+
+                                    }
+
+                                }
+
+                            }
+
+                            if (!$anyTrue) {
+
+                                SetValue($this->searchObjectByName("Szene"), 0);
+                                //$this->executeSceneById(0);
+
+                            } else {
+
+                                SetValue($this->searchObjectByName("Szene"), 999);
+
+                            }
+
+                        }
+
+                    } else {
+
+                        //echo "Hash " . md5(json_encode($states)) . " in List";
+
+                        foreach ($this->getSceneHashList() as $kkey => $kval) {
+
+                            if ($kval == md5(json_encode($states))) {
+
+                                //$found = true;
+                                SetValue($this->searchObjectByName("Szene"), $kkey);
+
+                            }
+
+                        }
+
+                        //print_r($this->getSceneHashList());
+                        //echo md5(json_encode($states));
+
+                    }
+                    //////echo md5(json_encode($states));
+
+                }
+
+            //}
+
+
+
+    }
+
+
+        public function SetScene ($sceneId) {
+
+            $this->executeSceneById($sceneId);
+            SetValue($this->searchObjectByName("Szene"), $sceneId);
+
+        }
+
+
+        // Analyse Tools
+        public function GetSceneOverview () {
+
+            $szenen = $this->getAllScenesSorted();
+
+            $sceneDataFolder = $this->searchObjectByName("SceneData");
+
+            ////echo $sceneDataFolder;
+
+            if (count($szenen) > 0) {
+
+                foreach ($szenen as $szene) {
+                    ////echo $szene . "\n";
+
+                    if ($szenen[0] != $szene) {
+
+                        $szenenId = $this->searchObjectByName($szene . " SceneData", $sceneDataFolder);
+
+                    ////echo $szenenId;
+
+                    $szene = json_decode(GetValue($szenenId));
+
+                    //echo IPS_GetName($szenenId) . ": \n";
+
+                    foreach ($szene as $k => $val) {
+
+                        //echo "   " . $k . "(" . IPS_GetName($k) . ") ==>" . $val . "\n";
+
+                    }
+
+                    }
+
+                }
+
+            } else {
+
+                //echo "Keine Szenen vorhanden!";
+
+            }
+
+        }
+
+        public function GetVersion () {
+
+            return $this->Version;
 
         }
 
