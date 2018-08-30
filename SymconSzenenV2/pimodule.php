@@ -2331,7 +2331,11 @@ abstract class PISymconModule2 extends IPSModule {
                     } else if ($device['VariableType'] == 1) {
 
                         //echo "EIB_DIMVALUE(" . $deviceParent . "  $wert";
-                        EIB_DimValue($deviceParent, $dimWert);
+                        if (@EIB_DimValue($deviceParent, $dimWert)) {
+
+                        } else {
+                            EIB_DriveShutterValue($deviceParent, $dimWert);
+                        }
 
                     }
 
