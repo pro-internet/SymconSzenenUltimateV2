@@ -2833,13 +2833,17 @@ abstract class PISymconModule2 extends IPSModule {
 
                                 $lnk = IPS_GetLink($obj['ObjectID']);
     
+                                $targetName = $lnk['TargetID'];
+
                                 $link = IPS_CreateLink();
-                                IPS_SetName($link, $obj['ObjectName']);
+                                IPS_SetName($link, $targetName);
                                 IPS_SetParent($link, $newFolder);
                                 $this->setIdent($link, $this->nameToIdent($ownName . $obj['ObjectName']), __LINE__);
                                 IPS_SetLinkTargetID($link, $lnk['TargetID']);
                                 //$this->setPosition($link, $obj['ObjectPosition']);
                                 IPS_SetPosition($link, $obj['ObjectPosition']);
+
+                                echo "IsLink " . $obj['ObjectName'] . "--" . $targetName;
     
                             } else {
                                 
