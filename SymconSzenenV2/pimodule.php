@@ -36,7 +36,7 @@ abstract class PISymconModule2 extends IPSModule {
         //$this->moduleID = $module['ModuleID'];
         //$this->libraryID = $module['LibraryID'];
 
-        $moduleJsonPath = __DIR__ . "\\module.json";
+        $moduleJsonPath = __DIR__ . "/module.json";
 
         $moduleJson = json_decode(file_get_contents($moduleJsonPath));
 
@@ -1496,7 +1496,7 @@ abstract class PISymconModule2 extends IPSModule {
 
         if (!$this->doesExist($this->searchObjectByName("SetValue"))) {
 
-            $setValueScript = $this->checkScript("SetValue", "<?php SetValue(\$IPS_VARIABLE, \$IPS_VALUE); ?>", false);
+            $setValueScript = $this->checkScript("SetValue", "<?php SetValue(\$_IPS['VARIABLE'], \$_IPS['VALUE']); ?>", false);
             $this->hide($setValueScript);
 
             IPS_SetVariableCustomAction($id, $this->searchObjectByName("SetValue"));

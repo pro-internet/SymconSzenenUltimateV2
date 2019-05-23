@@ -1,6 +1,6 @@
 <?
 
-    require(__DIR__ . "\\pimodule.php");
+    require(__DIR__ . "/pimodule.php");
 
     // Klassendefinition
     class SymconSzenenV2 extends PISymconModule2 {
