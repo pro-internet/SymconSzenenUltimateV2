@@ -304,7 +304,7 @@
             $showState = $this->ReadPropertyBoolean("ShowState");
 
             //$optionen = $this->checkInteger("Einstellungen", false, null, 99, -1);
-            $setScene = $this->checkScript("SetScene", "<?php " . $this->prefix . "_setSceneOut($this->InstanceID, \$_IPS['SENDER'], \$IPS_VARIABLE, \$IPS_VALUE); ?>", false, true);
+            $setScene = $this->checkScript("SetScene", "<?php " . $this->prefix . "_setSceneOut($this->InstanceID, \$_IPS['SENDER'], \$_IPS['VARIABLE'], \$_IPS['VALUE']); ?>", false, true);
             $sceneVar = $this->checkInteger("Szene", false, null, 1, 0);
 
             $targets = $this->checkFolder("Targets", null, 4);
