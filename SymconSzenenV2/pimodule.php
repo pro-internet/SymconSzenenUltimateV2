@@ -2810,7 +2810,7 @@ abstract class PISymconModule2 extends IPSModule {
 
                     $folder = IPS_GetObject($folder);
 
-                    $folderChildren = IPS_GetName($folder['ChildrenIDs']);
+                    $folderChildren = $folder['ChildrenIDs'];
 
                     usort($folderChildren, function($a, $b) {
 
@@ -2826,6 +2826,7 @@ abstract class PISymconModule2 extends IPSModule {
                         //($target, $linkName = "Unnamed Link", $parent = null, $linkPosition = 0, $ident = false)
 
                         $obj = IPS_GetObject($elem);
+                        print_r($obj);
 
                         if (!$this->doesExist($this->searchObjectByName($obj['ObjectName'], $newFolder))) {
 
@@ -2843,7 +2844,7 @@ abstract class PISymconModule2 extends IPSModule {
                                 //$this->setPosition($link, $obj['ObjectPosition']);
                                 IPS_SetPosition($link, $obj['ObjectPosition']);
 
-                                echo "IsLink " . $obj['ObjectName'] . "--" . $targetName;
+                                echo "IsLink " . $obj['ObjectName'];
     
                             } else {
                                 
