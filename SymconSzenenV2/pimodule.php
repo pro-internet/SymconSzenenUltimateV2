@@ -2834,7 +2834,7 @@ abstract class PISymconModule2 extends IPSModule {
 
                                 $lnk = IPS_GetLink($obj['ObjectID']);
     
-                                $targetName = $obj['ObjectName'];
+                                $targetName = IPS_GetName($lnk['TargetID']);
 
                                 $link = IPS_CreateLink();
                                 IPS_SetName($link, $targetName);
