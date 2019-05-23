@@ -2833,7 +2833,7 @@ abstract class PISymconModule2 extends IPSModule {
 
                                 $lnk = IPS_GetLink($obj['ObjectID']);
     
-                                $targetName = $lnk['TargetID'];
+                                $targetName = $obj['ObjectName'];
 
                                 $link = IPS_CreateLink();
                                 IPS_SetName($link, $targetName);
@@ -2849,7 +2849,7 @@ abstract class PISymconModule2 extends IPSModule {
                                 
                                 $elem = $obj;
 
-                                $this->linkVar($elem['ObjectID'], $elem['ObjectName'], $newFolder, $elem['ObjectPosition'], false);
+                                $this->linkVar($obj['ObjectID'], $obj['ObjectName'], $newFolder, $obj['ObjectPosition'], false);
     
                             }
 
