@@ -2810,7 +2810,7 @@ abstract class PISymconModule2 extends IPSModule {
 
                     $folder = IPS_GetObject($folder);
 
-                    $folderChildren = $folder['ChildrenIDs'];
+                    $folderChildren = IPS_GetName($folder['ChildrenIDs']);
 
                     usort($folderChildren, function($a, $b) {
 
