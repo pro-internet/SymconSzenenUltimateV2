@@ -1,5 +1,3 @@
-* :white_check_mark: Windows
-* :white_check_mark: Linux
 # SymconSzenenV2
 SymconSzenenUltimate gibt die Möglichkeit zu 3 verschiedenen Modi:
 ### Als SzenenDaySet
@@ -20,3 +18,5 @@ SymconSzenenUltimate gibt die Möglichkeit zu 3 verschiedenen Modi:
 | master     | :x: | :white_check_mark: |
 | master_dev      | :white_check_mark: | :x: |
 
+* :white_check_mark: Windows
+* :white_check_mark: Linux
