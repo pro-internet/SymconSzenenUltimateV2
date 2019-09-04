@@ -8,10 +8,15 @@ SymconSzenenUltimate gibt die Möglichkeit zu 3 verschiedenen Modi:
 ### Als Szenen Modul
 * Aktiviert man keinen der Haken, so kann das Modul als normales SzenenModul verwendet werden
 ## Öffentliche Funktionen
-### PISzenenUltimate_Start($instanzID);
+### SymconSzenenV2_SetScene($instanzID, $szenenID);
+* Schaltet Targets auf angegebenen Wert
+### SymconSzenenV2_Start($instanzID);
 * Startet die Zeitschaltung 
-### PISzenenUltimate_Stop($instanzID);
+### SymconSzenenV2_Stop($instanzID);
 * Stoppt die Zeitschaltung 
+## :warning: Hinweis
+* Die Szenen können noch über das WebFront an der "Szene" Variable verändert werden, jedoch können die Szenen von Außen nur über ein SymconSzenenV2_SetScene($instanzID, $szenenID) geschaltet werden. 
+
 # IP-Symcon Versionen
 | Branch        | IPS 5.0           | IPS 4.2  |
 | ------------- |:-------------:| -----:|
