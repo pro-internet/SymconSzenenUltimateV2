@@ -9,7 +9,7 @@
 
         public $Details = true;
 
-        public $GeräteFolder = null;
+        public $GeräteFolder = null; 
 
         public $BlockingTime = 15;
 
@@ -21,7 +21,6 @@
             // Diese Zeile nicht löschen
             parent::__construct($InstanceID);
 
-            // Selbsterstellter Code
         }
  
         // Überschreibt die interne IPS_Create($id) Funktion
