@@ -324,8 +324,10 @@
             $daysetActivated = $this->isSensorSet();
             $daysetSensor = $this->ReadPropertyInteger("Sensor");
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
-            echo "TimeIsActivated: " . $timeIsActivated;
+            
             if ($timeIsActivated) {
+
+                echo "TimeIsActivated";
 
                 $status = $this->checkBoolean("Status", true, "", 2);
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
