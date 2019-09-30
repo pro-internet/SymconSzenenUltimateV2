@@ -325,6 +325,7 @@
             $daysetSensor = $this->ReadPropertyInteger("Sensor");
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
             
+
             if ($timeIsActivated) {
 
                 $status = $this->checkBoolean("Status", true, "", 2);
