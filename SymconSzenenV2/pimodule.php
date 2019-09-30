@@ -72,8 +72,6 @@ abstract class PISymconModule2 extends IPSModule {
 
         parent::Create();
 
-        echo "Function: Create()";
-
         $this->RegisterProperties();
 
         $this->CheckProfiles();
@@ -92,8 +90,6 @@ abstract class PISymconModule2 extends IPSModule {
     public function ApplyChanges() {
 
         parent::ApplyChanges(); 
-
-        echo "Function: ApplyChanges()";
 
         $this->CheckProfiles();
 
