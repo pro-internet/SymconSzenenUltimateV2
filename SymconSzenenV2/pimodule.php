@@ -24,8 +24,6 @@ abstract class PISymconModule2 extends IPSModule {
 
         parent::__construct($InstanceID);
 
-        echo "Function: _construct()";
-
         $className = get_class($this);
 
         $moduleGUID = $this->getModuleGuidByName($className);
