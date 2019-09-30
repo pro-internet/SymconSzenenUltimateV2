@@ -344,6 +344,7 @@ abstract class PISymconModule2 extends IPSModule {
                 $this->addSwitch($nVar);
             }
             
+            
             if ($type == 1 && $profile == true) {
                 $this->addTime($nVar);
             }
