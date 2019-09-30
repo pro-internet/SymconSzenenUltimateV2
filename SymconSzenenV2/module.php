@@ -1519,7 +1519,7 @@
 
             if ($timeIsActivated) {
 
-                if ($started) {
+                if (!$started) {
 
                     $this->nextElement();
 

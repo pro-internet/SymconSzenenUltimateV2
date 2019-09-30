@@ -24,6 +24,8 @@ abstract class PISymconModule2 extends IPSModule {
 
         parent::__construct($InstanceID);
 
+        echo "Function: _construct()";
+
         $className = get_class($this);
 
         $moduleGUID = $this->getModuleGuidByName($className);
@@ -70,6 +72,8 @@ abstract class PISymconModule2 extends IPSModule {
 
         parent::Create();
 
+        echo "Function: Create()";
+
         $this->RegisterProperties();
 
         $this->CheckProfiles();
@@ -88,6 +92,8 @@ abstract class PISymconModule2 extends IPSModule {
     public function ApplyChanges() {
 
         parent::ApplyChanges(); 
+
+        echo "Function: ApplyChanges()";
 
         $this->CheckProfiles();
 
