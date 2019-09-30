@@ -276,7 +276,9 @@
 
 
             //IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
-            IPS_DeleteVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+            if (IPS_VariableProfileExists($this->prefix . ".ScenesVarProfile." . $this->InstanceID)) {
+                IPS_DeleteVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+            }
 
             if (IPS_VariableProfileExists($this->prefix . ".DaysetScenes." . $this->InstanceID)) {
 
