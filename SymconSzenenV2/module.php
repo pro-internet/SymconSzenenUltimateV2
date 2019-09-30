@@ -327,8 +327,6 @@
             
             if ($timeIsActivated) {
 
-                echo "TimeIsActivated";
-
                 $status = $this->checkBoolean("Status", true, "", 2);
                 $lastScene = $this->checkString("LastScene", false, $this->InstanceID, 5, null);
 
@@ -342,7 +340,7 @@
 
             } else {
 
-                $this->deleteObject($this->searchObjectByName("Status"));
+                //$this->deleteObject($this->searchObjectByName("Status"));
 
                 $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
 
