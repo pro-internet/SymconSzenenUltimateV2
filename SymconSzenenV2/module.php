@@ -9,7 +9,7 @@
 
         public $Details = true;
 
-        public $GeräteFolder = null;
+        public $GeräteFolder = null; 
 
         public $BlockingTime = 15;
 
@@ -21,7 +21,6 @@
             // Diese Zeile nicht löschen
             parent::__construct($InstanceID);
 
-            // Selbsterstellter Code
         }
  
         // Überschreibt die interne IPS_Create($id) Funktion
@@ -156,7 +155,7 @@
 
             $this->deleteOldDaysets();
 
-            $this->CheckVariables();
+            $this->CheckVariables("applychanges");
 
             $this->checkSceneTimerVars();
 
@@ -276,12 +275,12 @@
 
 
             //IPS_DeleteVariableProfile($this->prefix . ".Options" . $this->InstanceID);
-            IPS_DeleteVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+            if (IPS_VariableProfileExists($this->prefix . ".ScenesVarProfile." . $this->InstanceID)) {
+                IPS_DeleteVariableProfile($this->prefix . ".ScenesVarProfile." . $this->InstanceID);
+            }
 
             if (IPS_VariableProfileExists($this->prefix . ".DaysetScenes." . $this->InstanceID)) {
-
                 IPS_DeleteVariableProfile($this->prefix . ".DaysetScenes." . $this->InstanceID);
-
             }
 
         }
@@ -299,7 +298,7 @@
 
         }
 
-        public function CheckVariables () {
+        public function CheckVariables ($sender = "") {
 
             $showState = $this->ReadPropertyBoolean("ShowState");
 
@@ -325,6 +324,7 @@
             $daysetActivated = $this->isSensorSet();
             $daysetSensor = $this->ReadPropertyInteger("Sensor");
             $timeIsActivated = $this->ReadPropertyBoolean("ModeTime");
+            
 
             if ($timeIsActivated) {
 
@@ -341,9 +341,13 @@
 
             } else {
 
-                $this->deleteObject($this->searchObjectByName("Status"));
+                if ($sender == "applychanges") {
 
-                $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
+                    $this->deleteObject($this->searchObjectByName("Status"));
+
+                    $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
+
+                }
 
             }
 
@@ -1519,7 +1523,7 @@
 
             if ($timeIsActivated) {
 
-                if ($started) {
+                if (!$started) {
 
                     $this->nextElement();
 

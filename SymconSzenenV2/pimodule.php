@@ -65,7 +65,6 @@ abstract class PISymconModule2 extends IPSModule {
     }
 
 
-    // Überschreibt die interne IPS_Create($id) Funktion
     public function Create() {
 
         parent::Create();
@@ -343,6 +342,7 @@ abstract class PISymconModule2 extends IPSModule {
             if ($type == 0 && $profile == true) {
                 $this->addSwitch($nVar);
             }
+
             
             if ($type == 1 && $profile == true) {
                 $this->addTime($nVar);
