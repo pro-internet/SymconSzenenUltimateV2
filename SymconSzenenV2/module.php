@@ -155,7 +155,7 @@
 
             $this->deleteOldDaysets();
 
-            $this->CheckVariables();
+            $this->CheckVariables("applychanges");
 
             $this->checkSceneTimerVars();
 
@@ -298,7 +298,7 @@
 
         }
 
-        public function CheckVariables () {
+        public function CheckVariables ($sender = "") {
 
             $showState = $this->ReadPropertyBoolean("ShowState");
 
@@ -341,9 +341,13 @@
 
             } else {
 
-                //$this->deleteObject($this->searchObjectByName("Status"));
+                if ($sender == "applychanges") {
 
-                $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
+                    $this->deleteObject($this->searchObjectByName("Status"));
+
+                    $this->deleteObject($this->searchObjectByName("onChange Status", $this->searchObjectByName("Events")));
+
+                }
 
             }
 
